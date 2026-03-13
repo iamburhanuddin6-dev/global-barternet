@@ -1,0 +1,208 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  email          String    @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  image          String?
+  walletAddress  String?
+  bio            String?   @default("")
+
+  // Reputation
+  reputation     Float     @default(0)
+  level          Int       @default(1)
+  levelName      String    @default("Novice")
+  xp             Int       @default(0)
+  totalExchanges Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  resources       Resource[]
+  sentExchanges   Exchange[]     @relation("SentExchanges")
+  receivedExchanges Exchange[]   @relation("ReceivedExchanges")
+  notifications   Notification[]
+  sentMessages    Message[]      @relation("SentMessages")
+  achievements    UserAchievement[]
+  sessions        Session[]
+  accounts        Account[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Resource {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  category       String
+  description    String
+  estimatedValue Float
+  tags           String[]
+  condition      String   @default("good")
+  imageUrl       String?
+  status         String   @default("available") // available, in-negotiation, exchanged
+
+  ownerId String @db.ObjectId
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  offeredInExchanges  Exchange[] @relation("OfferedResource")
+  requestedInExchanges Exchange[] @relation("RequestedResource")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
+  @@index([ownerId])
+}
+
+model Exchange {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  status           String   @default("pending") // pending, negotiating, completed, cancelled
+  aiMatchScore     Float    @default(0)
+  blockchainTxHash String?
+  
+  // Participants
+  senderId   String @db.ObjectId
+  sender     User   @relation("SentExchanges", fields: [senderId], references: [id])
+  receiverId String @db.ObjectId
+  receiver   User   @relation("ReceivedExchanges", fields: [receiverId], references: [id])
+
+  // Resources being exchanged
+  offeredResourceId   String   @db.ObjectId
+  offeredResource     Resource @relation("OfferedResource", fields: [offeredResourceId], references: [id])
+  requestedResourceId String   @db.ObjectId
+  requestedResource   Resource @relation("RequestedResource", fields: [requestedResourceId], references: [id])
+
+  // Negotiation
+  senderNote   String?
+  receiverNote String?
+  counterOffer String?
+
+  // Ratings (after completion)
+  senderRating   Int?
+  receiverRating Int?
+
+  messages Message[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  completedAt DateTime?
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([status])
+}
+
+model Message {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  content  String
+  type     String @default("text") // text, system, offer
+
+  senderId   String   @db.ObjectId
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  exchangeId String   @db.ObjectId
+  exchange   Exchange @relation(fields: [exchangeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([exchangeId])
+}
+
+model Notification {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  type    String  // match, trade, system, achievement
+  title   String
+  message String
+  read    Boolean @default(false)
+  link    String?
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([read])
+}
+
+model Achievement {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String @unique
+  description String
+  icon        String
+  rarity      String // common, uncommon, rare, epic, legendary
+  xpReward    Int    @default(100)
+  condition   String // JSON string describing unlock condition
+
+  users UserAchievement[]
+}
+
+model UserAchievement {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  achievementId String   @db.ObjectId
+  unlockedAt    DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique([userId, achievementId])
+}
+
+model AIAgentLog {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  agentType String // matcher, negotiator, validator, analyst
+  action    String
+  details   String // JSON
+  status    String // success, failed, pending
+
+  createdAt DateTime @default(now())
+
+  @@index([agentType])
+  @@index([createdAt])
+}
