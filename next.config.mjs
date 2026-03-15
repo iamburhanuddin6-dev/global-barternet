@@ -4,6 +4,9 @@ const nextConfig = {
     eslint: {
         ignoreDuringBuilds: true,
     },
+    experimental: {
+        serverComponentsExternalPackages: ['@xenova/transformers', 'onnxruntime-node'],
+    },
     typescript: {
         ignoreBuildErrors: true,
     },

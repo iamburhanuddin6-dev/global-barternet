@@ -17,6 +17,12 @@ import {
     Zap,
     Globe,
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const LiveNetworkGraph = dynamic(
+    () => import('./LiveNetworkGraph'),
+    { ssr: false, loading: () => <div className="h-full w-full flex items-center justify-center text-label-secondary animate-pulse text-[13px]">Initializing Physics Engine...</div> }
+);
 
 const container = {
     hidden: { opacity: 0 },
@@ -246,61 +252,8 @@ function NetworkVisualization() {
                 </div>
             </div>
 
-            <div className="relative h-48 flex items-center justify-center">
-                <svg viewBox="0 0 400 200" className="w-full h-full" style={{ opacity: 0.9 }}>
-                    <line x1="200" y1="100" x2="80" y2="50" stroke="url(#iosLine1)" strokeWidth="0.8" opacity="0.5" />
-                    <line x1="200" y1="100" x2="320" y2="40" stroke="url(#iosLine2)" strokeWidth="0.8" opacity="0.5" />
-                    <line x1="200" y1="100" x2="60" y2="150" stroke="url(#iosLine1)" strokeWidth="0.8" opacity="0.35" />
-                    <line x1="200" y1="100" x2="340" y2="160" stroke="url(#iosLine2)" strokeWidth="0.8" opacity="0.35" />
-                    <line x1="200" y1="100" x2="150" y2="180" stroke="url(#iosLine1)" strokeWidth="0.8" opacity="0.4" />
-                    <line x1="200" y1="100" x2="280" y2="170" stroke="url(#iosLine2)" strokeWidth="0.8" opacity="0.4" />
-
-                    <defs>
-                        <linearGradient id="iosLine1" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#007AFF" />
-                            <stop offset="100%" stopColor="#5AC8FA" />
-                        </linearGradient>
-                        <linearGradient id="iosLine2" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#AF52DE" />
-                            <stop offset="100%" stopColor="#FF2D55" />
-                        </linearGradient>
-                        <radialGradient id="iosGlow">
-                            <stop offset="0%" stopColor="#007AFF" stopOpacity="0.4" />
-                            <stop offset="100%" stopColor="#007AFF" stopOpacity="0" />
-                        </radialGradient>
-                    </defs>
-
-                    {/* Center */}
-                    <circle cx="200" cy="100" r="16" fill="url(#iosGlow)" />
-                    <circle cx="200" cy="100" r="6" fill="#007AFF" opacity="0.9">
-                        <animate attributeName="r" values="6;7.5;6" dur="3s" repeatCount="indefinite" />
-                    </circle>
-                    <circle cx="200" cy="100" r="3" fill="white" opacity="0.8" />
-
-                    {[
-                        { cx: 80, cy: 50, color: '#5AC8FA' },
-                        { cx: 320, cy: 40, color: '#AF52DE' },
-                        { cx: 60, cy: 150, color: '#FF2D55' },
-                        { cx: 340, cy: 160, color: '#34C759' },
-                        { cx: 150, cy: 180, color: '#FF9500' },
-                        { cx: 280, cy: 170, color: '#007AFF' },
-                    ].map((node, i) => (
-                        <g key={i}>
-                            <circle cx={node.cx} cy={node.cy} r="10" fill={node.color} opacity="0.1" />
-                            <circle cx={node.cx} cy={node.cy} r="4" fill={node.color} opacity="0.85">
-                                <animate attributeName="r" values="4;5;4" dur={`${3 + i * 0.4}s`} repeatCount="indefinite" />
-                            </circle>
-                            <circle cx={node.cx} cy={node.cy} r="1.5" fill="white" opacity="0.6" />
-                        </g>
-                    ))}
-
-                    <circle r="1.5" fill="#5AC8FA" opacity="0.7">
-                        <animateMotion dur="4s" repeatCount="indefinite" path="M200,100 L80,50" />
-                    </circle>
-                    <circle r="1.5" fill="#AF52DE" opacity="0.7">
-                        <animateMotion dur="5s" repeatCount="indefinite" path="M200,100 L320,40" />
-                    </circle>
-                </svg>
+            <div className="relative h-[250px] w-full flex items-center justify-center -mx-2">
+                <LiveNetworkGraph />
             </div>
 
             <div className="flex items-center justify-center gap-5 mt-2">

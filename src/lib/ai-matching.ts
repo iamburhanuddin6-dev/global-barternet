@@ -1,4 +1,31 @@
 import prisma from './prisma';
+import { pipeline, env } from '@xenova/transformers';
+
+// Tell transformers.js we are running in a Node.js environment (Next.js server edge/node)
+env.allowLocalModels = false;
+
+// Singleton for the feature extraction pipeline
+class SemanticPipeline {
+    static instance: any = null;
+    static async getInstance() {
+        if (!this.instance) {
+            // using a small, extremely fast model for sentence embeddings
+            this.instance = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+        }
+        return this.instance;
+    }
+}
+
+// Calculate Cosine Similarity between two numeric vectors
+function cosineSimilarity(vecA: number[], vecB: number[]) {
+    let dotProduct = 0, normA = 0, normB = 0;
+    for (let i = 0; i < vecA.length; i++) {
+        dotProduct += vecA[i] * vecB[i];
+        normA += vecA[i] * vecA[i];
+        normB += vecB[i] * vecB[i];
+    }
+    return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+}
 
 interface MatchResult {
     resourceId: string;
@@ -14,15 +41,15 @@ export async function findMatches(
     userId: string,
     limit: number = 10
 ): Promise<MatchResult[]> {
-    // Get the source resource
-    const resource = await prisma.resource.findUnique({
+    // 1. Fetch source resource
+    const sourceResource = await prisma.resource.findUnique({
         where: { id: resourceId },
         include: { owner: true },
     });
 
-    if (!resource) return [];
+    if (!sourceResource) return [];
 
-    // Find available resources from other users
+    // 2. Fetch candidates
     const candidates = await prisma.resource.findMany({
         where: {
             id: { not: resourceId },
@@ -32,23 +59,47 @@ export async function findMatches(
         include: {
             owner: { select: { name: true, id: true, reputation: true } },
         },
-        take: 100, // Top 100 candidates
+        take: 100, // Top 100 candidates to run ML on
     });
 
-    // Score each candidate
-    const scored: MatchResult[] = candidates.map(candidate => {
+    if (candidates.length === 0) return [];
+
+    // 3. Prepare AI NLP Pipeline
+    const embedder = await SemanticPipeline.getInstance();
+
+    // Generate embedding vector for the source resource description + tags
+    const sourceText = `${sourceResource.name}. ${sourceResource.description}. Tags: ${sourceResource.tags.join(', ')}`;
+    const sourceOutput = await embedder(sourceText, { pooling: 'mean', normalize: true });
+    const sourceVector = Array.from(sourceOutput.data) as number[];
+
+    // 4. Score each candidate using Math + ML
+    const scoredPromises = candidates.map(async (candidate) => {
         const reasons: string[] = [];
         let score = 0;
 
-        // 1. Value similarity (0-40 points)
-        const valueDiff = Math.abs(resource.estimatedValue - candidate.estimatedValue);
-        const maxVal = Math.max(resource.estimatedValue, candidate.estimatedValue);
-        const valueSimilarity = maxVal > 0 ? (1 - valueDiff / maxVal) * 40 : 0;
-        score += valueSimilarity;
-        if (valueSimilarity > 30) reasons.push('Excellent value match');
-        else if (valueSimilarity > 20) reasons.push('Good value alignment');
+        // --- NLP SEMANTIC SIMILARITY (0-50 points) ---
+        const candidateText = `${candidate.name}. ${candidate.description}. Tags: ${candidate.tags.join(', ')}`;
+        const candidateOutput = await embedder(candidateText, { pooling: 'mean', normalize: true });
+        const candidateVector = Array.from(candidateOutput.data) as number[];
+        
+        // ML score gives 0 to 1 value
+        const semSim = cosineSimilarity(sourceVector, candidateVector);
+        
+        // Map 0.3 - 1.0 similarity to 0 - 50 score
+        const mlScore = Math.max(0, (semSim - 0.3) / 0.7) * 50; 
+        score += mlScore;
 
-        // 2. Category complementarity (0-20 points)
+        if (semSim > 0.85) reasons.push('High semantic NLP match');
+        else if (semSim > 0.65) reasons.push('Good contextual correlation');
+
+        // --- Value similarity (0-20 points) ---
+        const valueDiff = Math.abs(sourceResource.estimatedValue - candidate.estimatedValue);
+        const maxVal = Math.max(sourceResource.estimatedValue, candidate.estimatedValue);
+        const valueSimilarity = maxVal > 0 ? (1 - valueDiff / maxVal) * 20 : 0;
+        score += valueSimilarity;
+        if (valueSimilarity > 15) reasons.push('Excellent value parity');
+
+        // --- Category complementarity (0-15 points) ---
         const complementaryCategories: Record<string, string[]> = {
             'Computing': ['Data', 'Blockchain', 'IoT'],
             'Data': ['Computing', 'Services', 'Education'],
@@ -58,35 +109,17 @@ export async function findMatches(
             'IoT': ['Computing', 'Blockchain', 'Data'],
             'Blockchain': ['Computing', 'IoT', 'Data'],
         };
-
-        if (complementaryCategories[resource.category]?.includes(candidate.category)) {
-            score += 20;
-            reasons.push(`Complementary: ${resource.category} ↔ ${candidate.category}`);
-        } else if (resource.category === candidate.category) {
+        if (complementaryCategories[sourceResource.category]?.includes(candidate.category)) {
+            score += 15;
+            reasons.push(`Complementary: ${sourceResource.category} ↔ ${candidate.category}`);
+        } else if (sourceResource.category === candidate.category) {
             score += 10;
-            reasons.push('Same category');
         }
 
-        // 3. Tag overlap (0-20 points)
-        const sharedTags = resource.tags.filter(t =>
-            candidate.tags.map(ct => ct.toLowerCase()).includes(t.toLowerCase())
-        );
-        const tagScore = Math.min(20, sharedTags.length * 7);
-        score += tagScore;
-        if (sharedTags.length > 0) {
-            reasons.push(`Shared interests: ${sharedTags.join(', ')}`);
-        }
-
-        // 4. Owner reputation bonus (0-10 points)
-        const repScore = Math.min(10, (candidate.owner.reputation || 0) * 2);
+        // --- Owner reputation bonus (0-15 points) ---
+        const repScore = Math.min(15, (candidate.owner.reputation || 0) * 3);
         score += repScore;
-        if (repScore > 6) reasons.push('Highly trusted owner');
-
-        // 5. Freshness bonus (0-10 points - newer listings get a boost)
-        const daysOld = (Date.now() - new Date(candidate.createdAt).getTime()) / (1000 * 60 * 60 * 24);
-        const freshnessScore = Math.max(0, 10 - daysOld);
-        score += freshnessScore;
-        if (freshnessScore > 7) reasons.push('Recently listed');
+        if (repScore > 10) reasons.push('Highly trusted owner');
 
         return {
             resourceId: candidate.id,
@@ -98,30 +131,32 @@ export async function findMatches(
         };
     });
 
-    // Sort by score and return top matches
+    const scored = await Promise.all(scoredPromises);
+
+    // 5. Sort by score and return top matches
     return scored
         .sort((a, b) => b.score - a.score)
         .slice(0, limit);
 }
 
-// Background AI matching job — finds matches for all available resources
+// Background AI matching job
 export async function runMatchingJob() {
     const resources = await prisma.resource.findMany({
         where: { status: 'available' },
-        take: 50,
+        take: 20, // Smaller batch size due to ML computation cost
     });
 
     const results = [];
     for (const resource of resources) {
         const matches = await findMatches(resource.id, resource.ownerId, 3);
-        if (matches.length > 0 && matches[0].score >= 60) {
+        if (matches.length > 0 && matches[0].score >= 70) { // Higher threshold for ML matches
             // Create notification for resource owner
             await prisma.notification.create({
                 data: {
                     userId: resource.ownerId,
                     type: 'match',
-                    title: 'New AI Match Found!',
-                    message: `"${matches[0].resourceName}" by ${matches[0].ownerName} is a ${matches[0].score}% match for your "${resource.name}"`,
+                    title: 'New AI Semantic Match!',
+                    message: `"${matches[0].resourceName}" by ${matches[0].ownerName} is a ${matches[0].score}% AI match for your "${resource.name}"`,
                     link: '/exchange',
                 },
             });
@@ -138,7 +173,7 @@ export async function runMatchingJob() {
     await prisma.aIAgentLog.create({
         data: {
             agentType: 'matcher',
-            action: 'batch_matching',
+            action: 'batch_nlp_matching',
             details: JSON.stringify({
                 resourcesScanned: resources.length,
                 matchesFound: results.length,
