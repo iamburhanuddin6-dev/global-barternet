@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
 import { Toaster } from "react-hot-toast";
+import { Web3ConfigProvider } from "@/lib/web3-config";
 
 export const metadata: Metadata = {
   title: "Global BarterNet — AI-Mediated Blockchain Resource Exchange",
@@ -34,24 +35,25 @@ export default function RootLayout({
       </head>
       <body className="antialiased font-sans bg-black text-white min-h-screen">
         <Providers>
-          {children}
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              style: {
-                background: '#1C1C1E',
-                color: '#fff',
-                borderRadius: '14px',
-                border: '0.5px solid rgba(255,255,255,0.1)',
-                fontSize: '14px',
-              },
-              success: { iconTheme: { primary: '#34C759', secondary: '#fff' } },
-              error: { iconTheme: { primary: '#FF3B30', secondary: '#fff' } },
-            }}
-          />
+          <Web3ConfigProvider>
+            {children}
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                style: {
+                  background: '#1C1C1E',
+                  color: '#fff',
+                  borderRadius: '14px',
+                  border: '0.5px solid rgba(255,255,255,0.1)',
+                  fontSize: '14px',
+                },
+                success: { iconTheme: { primary: '#34C759', secondary: '#fff' } },
+                error: { iconTheme: { primary: '#FF3B30', secondary: '#fff' } },
+              }}
+            />
+          </Web3ConfigProvider>
         </Providers>
       </body>
     </html>
   );
 }
-

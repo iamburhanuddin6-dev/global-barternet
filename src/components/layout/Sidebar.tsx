@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSession } from 'next-auth/react';
 import { useBarterStore } from '@/store/barterStore';
@@ -37,6 +37,8 @@ const bottomItems = [
 export default function Sidebar() {
     const { activeTab, setActiveTab, sidebarOpen, setSidebarOpen, currentUser, fetchProfile, unreadCount } = useBarterStore();
     const { data: session } = useSession();
+    const [walletConnected, setWalletConnected] = useState(false);
+    const [walletAddress, setWalletAddress] = useState('');
 
     // Fetch profile when session is available
     useEffect(() => {
@@ -160,6 +162,41 @@ export default function Sidebar() {
                         </motion.button>
                     );
                 })}
+
+                {/* Web3 Connect Wallet Button */}
+                <motion.button
+                    onClick={async () => {
+                        if (typeof window !== 'undefined' && (window as any).ethereum) {
+                            try {
+                                const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
+                                if (accounts[0]) {
+                                    setWalletAddress(accounts[0]);
+                                    setWalletConnected(true);
+                                }
+                            } catch (e) {
+                                console.warn('Wallet connection rejected');
+                            }
+                        } else {
+                            alert('MetaMask not detected. Please install MetaMask to use blockchain features.');
+                        }
+                    }}
+                    whileTap={{ scale: 0.96 }}
+                    title={walletConnected ? walletAddress : 'Connect MetaMask Wallet'}
+                    className={`w-full mt-2 flex items-center justify-center gap-2 px-3 py-2.5 rounded-[12px] transition-all font-medium text-[13px] border ${
+                        walletConnected
+                            ? 'bg-ios-green/10 text-ios-green border-ios-green/20'
+                            : 'bg-ios-blue/10 text-ios-blue hover:bg-ios-blue/20 border-ios-blue/20'
+                    }`}
+                >
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" className="w-4 h-4 flex-shrink-0" />
+                    {sidebarOpen && (
+                        <span>
+                            {walletConnected
+                                ? `${walletAddress.substring(0, 6)}...${walletAddress.substring(walletAddress.length - 4)}`
+                                : 'Connect Wallet'}
+                        </span>
+                    )}
+                </motion.button>
 
                 {/* User Profile — iOS-style avatar row */}
                 {currentUser && (
