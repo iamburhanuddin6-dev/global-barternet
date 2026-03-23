@@ -1,0 +1,16 @@
+﻿
+≡ƒÄ¿ Generating: landing
+   Prompt: A stunning, award-winning landing page for "Global BarterNet" ΓÇö an AI-Mediated Blockchain Resource E...
+node : SyntaxError: Unexpected end of JSON input
+At line:1 char:1
++ node .stitch/stitch-generate.mjs generate-one landing > .stitch/gen-l ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (SyntaxError: Un...d of JSON input:String 
+   ) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    at JSON.parse (<anonymous>)
+    at parseJSONFromBytes (node:internal/deps/undici/undici:6433:19)
+    at successSteps (node:internal/deps/undici/undici:6414:27)
+    at readAllBytes (node:internal/deps/undici/undici:5380:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)

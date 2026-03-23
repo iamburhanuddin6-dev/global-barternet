@@ -1,0 +1,7 @@
+﻿Create Project Response: {
+  "name": "projects/15943466082474447540",
+  "title": "Global BarterNet",
+  "visibility": "PRIVATE",
+  "projectType": "TEXT_TO_UI",
+  "origin": "STITCH"
+}

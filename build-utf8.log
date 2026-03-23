@@ -1,0 +1,38 @@
+﻿
+> global-barternet@0.1.0 build
+> prisma generate && next build
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+Γ£ö Generated Prisma Client (v5.22.0) to .\node_modules\@prisma\client in 310ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+node.exe : ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ΓöîΓöÇΓöÇΓöÇΓöÇ...ΓöÇΓöÇΓöÇΓöÇΓöÉ:String 
+   ) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Γöé  Update available 5.22.0 -> 7.5.0                       Γöé
+Γöé                                                         Γöé
+Γöé  This is a major update - please follow the guide at    Γöé
+Γöé  https://pris.ly/d/major-version-upgrade                Γöé
+Γöé                                                         Γöé
+Γöé  Run the following to update                            Γöé
+Γöé    npm i --save-dev prisma@latest                       Γöé
+Γöé    npm i @prisma/client@latest                          Γöé
+ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓ
+öÇΓöÿ
+  Γû▓ Next.js 14.2.35
+  - Environments: .env
+
+   Creating an optimized production build ...

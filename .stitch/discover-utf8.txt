@@ -1,0 +1,86 @@
+﻿
+--- List Projects (v1) ---
+GET https://stitch.googleapis.com/v1/projects
+Status: 200 OK
+Response: {
+  "projects": [
+    {
+      "name": "projects/15943466082474447540",
+      "title": "Global BarterNet",
+      "visibility": "PRIVATE",
+      "createTime": "2026-03-23T00:39:09.843653Z",
+      "updateTime": "2026-03-23T00:39:09.843653Z",
+      "projectType": "TEXT_TO_UI",
+      "origin": "STITCH",
+      "designTheme": {},
+      "metadata": {
+        "userRole": "OWNER"
+      }
+    },
+    {
+      "name": "projects/7952824121082671316",
+      "title": "Global BarterNet",
+      "visibility": "PRIVATE",
+      "createTime": "2026-03-23T00:38:59.931099Z",
+      "updateTime": "2026-03-23T00:38:59.931099Z",
+      "projectType": "TEXT_TO_UI",
+      "origin": "STITCH",
+      "designTheme": {},
+      "metadata": {
+        "userRole": "OWNER"
+      }
+    },
+    {
+      "name": "projects/1428357300887
+
+--- Get Project (v1) ---
+GET https://stitch.googleapis.com/v1/projects/15943466082474447540
+Status: 200 OK
+Response: {
+  "name": "projects/15943466082474447540",
+  "title": "Global BarterNet",
+  "visibility": "PRIVATE",
+  "createTime": "2026-03-23T00:39:09.843653Z",
+  "updateTime": "2026-03-23T00:39:09.843653Z",
+  "projectType": "TEXT_TO_UI",
+  "origin": "STITCH",
+  "designTheme": {},
+  "metadata": {
+    "userRole": "OWNER"
+  }
+}
+
+
+--- List Screens (v1) ---
+GET https://stitch.googleapis.com/v1/projects/15943466082474447540/screens
+Status: 200 OK
+Response: {}
+
+
+--- Generate Screen (v1) ---
+POST https://stitch.googleapis.com/v1/projects/15943466082474447540/screens:generateFromText
+Status: 404 Not Found
+Empty response
+
+--- List Projects (no version) ---
+GET https://stitch.googleapis.com/projects
+Status: 404 Not Found
+Empty response
+
+--- MCP SSE ---
+GET https://stitch.googleapis.com/mcp
+Status: 405 Method Not Allowed
+Response: <!DOCTYPE html>
+<html lang=en>
+  <meta charset=utf-8>
+  <meta name=viewport content="initial-scale=1, minimum-scale=1, width=device-width">
+  <title>Error 405 (Method Not Allowed)!!1</title>
+  <style>
+    *{margin:0;padding:0}html,code{font:15px/22px arial,sans-serif}html{background:#fff;color:#222;padding:15px}body{margin:7% auto 0;max-width:390px;min-height:180px;padding:30px 0 15px}* > body{background:url(//www.google.com/images/errors/robot.png) 100% 5px no-repeat;padding-right:205px}p{margin:11px 0 22px;overflow:hidden}ins{color:#777;text-decoration:none}a img{border:0}@media screen and (max-width:772px){body{background:none;margin-top:0;max-width:none;padding-right:0}}#logo{background:url(//www.google.com/images/branding/googlelogo/1x/googlelogo_color_150x54dp.png) no-repeat;margin-l
+
+--- Discovery ---
+GET https://stitch.googleapis.com/$discovery/rest
+Status: 404 Not Found
+Empty response
+
+=== Done ===

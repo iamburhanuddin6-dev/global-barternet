@@ -1,0 +1,19 @@
+{
+  "name": "projects/15943466082474447540",
+  "projectId": "15943466082474447540",
+  "title": "Global BarterNet",
+  "visibility": "PRIVATE",
+  "createTime": "2026-03-23T00:39:09.843653Z",
+  "updateTime": "2026-03-23T00:39:09.843653Z",
+  "projectType": "TEXT_TO_UI",
+  "origin": "STITCH",
+  "deviceType": "DESKTOP",
+  "designTheme": {
+    "colorMode": "DARK",
+    "font": "INTER",
+    "roundness": "ROUND_EIGHT",
+    "customColor": "#007AFF",
+    "saturation": 3
+  },
+  "screens": {}
+}
