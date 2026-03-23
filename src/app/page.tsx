@@ -58,7 +58,7 @@ export default function Home() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/login');
+      router.push('/landing');
     }
   }, [status, router]);
 
