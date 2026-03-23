@@ -5,397 +5,287 @@ import { motion } from 'framer-motion';
 import { useSession } from 'next-auth/react';
 import { useBarterStore } from '@/store/barterStore';
 import {
-    TrendingUp,
-    TrendingDown,
-    Users,
-    ArrowLeftRight,
-    Brain,
-    Timer,
-    Star,
-    DollarSign,
-    Activity,
-    Zap,
-    Globe,
+  TrendingUp,
+  TrendingDown,
+  Users,
+  ArrowLeftRight,
+  Brain,
+  Timer,
+  DollarSign,
+  Activity,
+  Zap,
+  Bell,
+  Search,
+  CheckCircle,
+  Clock,
+  MoreHorizontal
 } from 'lucide-react';
-import dynamic from 'next/dynamic';
-
-const LiveNetworkGraph = dynamic(
-    () => import('./LiveNetworkGraph'),
-    { ssr: false, loading: () => <div className="h-full w-full flex items-center justify-center text-label-secondary animate-pulse text-[13px]">Initializing Physics Engine...</div> }
-);
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
+  PieChart, Pie, Cell
+} from 'recharts';
 
 const container = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: { staggerChildren: 0.06 },
-    },
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.08 } },
 };
 
 const item = {
-    hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.28, 0.84, 0.42, 1] } },
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.28, 0.84, 0.42, 1] } },
 };
 
-function formatNumber(num: number): string {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-    return num.toString();
+function formatValue(val: string | number): string {
+  if (typeof val === 'number') {
+    if (val >= 1000000000) return (val / 1000000000).toFixed(1) + 'B';
+    if (val >= 1000000) return (val / 1000000).toFixed(1) + 'M';
+    if (val >= 1000) return (val / 1000).toFixed(1) + 'K';
+    return val.toString();
+  }
+  return val;
 }
 
-interface MetricCardProps {
-    title: string;
-    value: string;
-    change: number;
-    icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
-    color: string;
-}
+/* ───── MOCK DATA FOR CHARTS ───── */
+const networkData = [
+  { name: 'Mon', volume: 4000 },
+  { name: 'Tue', volume: 3000 },
+  { name: 'Wed', volume: 5000 },
+  { name: 'Thu', volume: 2780 },
+  { name: 'Fri', volume: 6890 },
+  { name: 'Sat', volume: 2390 },
+  { name: 'Sun', volume: 3490 },
+];
 
-function MetricCard({ title, value, change, icon: Icon, color }: MetricCardProps) {
-    const isPositive = change >= 0;
-    return (
-        <motion.div variants={item} className="liquid-glass-card p-4 rounded-[20px]">
-            <div className="flex items-start justify-between">
-                <div>
-                    <p className="text-[11px] font-medium text-label-tertiary uppercase tracking-wide">{title}</p>
-                    <motion.p
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.15, type: 'spring', stiffness: 200 }}
-                        className="text-[22px] font-bold text-white mt-1 tracking-tight"
-                    >
-                        {value}
-                    </motion.p>
-                    <div className={`flex items-center gap-1 mt-1.5 ${isPositive ? 'text-ios-green' : 'text-ios-red'}`}>
-                        {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                        <span className="text-[12px] font-medium">{isPositive ? '+' : ''}{change}%</span>
-                        <span className="text-[11px] text-label-quaternary ml-0.5">7d</span>
-                    </div>
-                </div>
-                <div className="w-10 h-10 rounded-[12px] flex items-center justify-center" style={{ backgroundColor: color + '18' }}>
-                    <Icon className="w-5 h-5" style={{ color }} strokeWidth={1.8} />
-                </div>
-            </div>
-        </motion.div>
-    );
-}
-
-function RecentExchanges() {
-    const exchanges = [
-        { from: 'GPU Computing Time', to: 'ML Training Dataset', score: 94, status: 'completed', time: '2h ago', fromOwner: 'Alex C.', toOwner: 'Maria S.' },
-        { from: 'UX Design Sprint', to: 'Cloud Server Credits', score: 87, status: 'negotiating', time: '45m ago', fromOwner: 'James W.', toOwner: 'Priya P.' },
-        { from: 'Blockchain Audit', to: 'React Native Course', score: 91, status: 'pending', time: '12m ago', fromOwner: 'David K.', toOwner: 'Emma W.' },
-        { from: 'API Development', to: 'DevOps Pipeline', score: 89, status: 'completed', time: '5h ago', fromOwner: 'Raj M.', toOwner: 'Sarah L.' },
-        { from: 'Data Visualization', to: 'Backend Consulting', score: 96, status: 'negotiating', time: '1h ago', fromOwner: 'Chen W.', toOwner: 'Timo P.' },
-    ];
-
-    return (
-        <motion.div variants={item} className="ios-card p-5">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
-                    <ArrowLeftRight className="w-4 h-4 text-ios-blue" strokeWidth={1.8} />
-                    Recent Exchanges
-                </h3>
-                <button className="text-[13px] text-ios-blue font-medium">View All</button>
-            </div>
-            <div className="space-y-1">
-                {exchanges.map((ex, i) => (
-                    <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: -12 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.06 }}
-                        className="flex items-center gap-3 p-3 rounded-[12px] hover:bg-fill-quaternary transition-colors cursor-pointer"
-                    >
-                        <div className={`w-10 h-10 rounded-[10px] flex items-center justify-center text-[12px] font-bold ${ex.score >= 90
-                                ? 'bg-ios-green/12 text-ios-green'
-                                : 'bg-ios-orange/12 text-ios-orange'
-                            }`}>
-                            {ex.score}%
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1.5">
-                                <span className="text-[14px] font-medium text-white truncate">{ex.from}</span>
-                                <ArrowLeftRight className="w-3 h-3 text-label-quaternary flex-shrink-0" />
-                                <span className="text-[14px] font-medium text-white truncate">{ex.to}</span>
-                            </div>
-                            <p className="text-[11px] text-label-tertiary mt-0.5">{ex.fromOwner} ↔ {ex.toOwner}</p>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                            <span className={`ios-badge ${ex.status === 'completed' ? 'bg-ios-green/12 text-ios-green' :
-                                    ex.status === 'negotiating' ? 'bg-ios-orange/12 text-ios-orange' :
-                                        'bg-ios-blue/12 text-ios-blue'
-                                }`}>
-                                {ex.status}
-                            </span>
-                            <span className="text-[11px] text-label-quaternary">{ex.time}</span>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
-        </motion.div>
-    );
-}
-
-function AIAgentSwarm() {
-    const { agents } = useBarterStore();
-
-    return (
-        <motion.div variants={item} className="ios-card p-5">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
-                    <Brain className="w-4 h-4 text-ios-purple" strokeWidth={1.8} />
-                    AI Agents
-                </h3>
-                <div className="flex items-center gap-1.5">
-                    <span className="w-[5px] h-[5px] bg-ios-green rounded-full animate-pulse-soft" />
-                    <span className="text-[11px] text-ios-green font-medium">{agents.filter(a => a.status !== 'idle').length} Active</span>
-                </div>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-                {agents.slice(0, 4).map((agent, i) => (
-                    <motion.div
-                        key={agent.id}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: i * 0.08 }}
-                        className="p-3 rounded-[12px] bg-fill-quaternary hover:bg-fill-tertiary transition-colors cursor-pointer"
-                    >
-                        <div className="flex items-center gap-2 mb-2">
-                            <span className="text-[18px]">{agent.avatar}</span>
-                            <div>
-                                <p className="text-[13px] font-semibold text-white">{agent.name}</p>
-                                <p className="text-[11px] text-label-tertiary capitalize">{agent.type}</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded-md ${agent.status === 'scanning' ? 'bg-ios-teal/12 text-ios-teal' :
-                                    agent.status === 'negotiating' ? 'bg-ios-orange/12 text-ios-orange' :
-                                        agent.status === 'processing' ? 'bg-ios-purple/12 text-ios-purple' :
-                                            'bg-fill-tertiary text-label-tertiary'
-                                }`}>
-                                {agent.status}
-                            </span>
-                            <span className="text-[11px] text-label-secondary font-medium">{agent.efficiency}%</span>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
-        </motion.div>
-    );
-}
-
-function LiveActivityFeed() {
-    const activities = [
-        { message: 'AI found 96% match: GPU Time ↔ ML Dataset', time: '12s ago', icon: '🤖' },
-        { message: 'Exchange completed: Security Audit ↔ React Course', time: '2m ago', icon: '✅' },
-        { message: 'New resource listed: DevOps Consulting by @techguru', time: '5m ago', icon: '📦' },
-        { message: '@maria_santos earned "Top Barterer" achievement', time: '8m ago', icon: '🏆' },
-        { message: 'Smart contract executed on Polygon: 0xabc...def', time: '15m ago', icon: '⛓️' },
-        { message: 'Agent NOVA completed 50 negotiations today', time: '20m ago', icon: '⚡' },
-    ];
-
-    return (
-        <motion.div variants={item} className="ios-card p-5">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-ios-teal" strokeWidth={1.8} />
-                    Live Activity
-                </h3>
-                <span className="flex items-center gap-1.5 text-[11px] text-label-tertiary">
-                    <span className="w-[5px] h-[5px] bg-ios-green rounded-full animate-pulse-soft" />
-                    Real-time
-                </span>
-            </div>
-            <div className="space-y-2.5">
-                {activities.map((a, i) => (
-                    <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: 12 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.06 }}
-                        className="flex items-start gap-3 group"
-                    >
-                        <div className="w-7 h-7 rounded-[8px] bg-fill-quaternary flex items-center justify-center text-[13px] flex-shrink-0 group-hover:bg-fill-tertiary transition-colors">
-                            {a.icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-[13px] text-label-secondary leading-relaxed">{a.message}</p>
-                            <p className="text-[11px] text-label-quaternary mt-0.5">{a.time}</p>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
-        </motion.div>
-    );
-}
-
-function NetworkVisualization() {
-    return (
-        <motion.div variants={item} className="ios-card p-5 relative overflow-hidden min-h-[280px]">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
-                    <Globe className="w-4 h-4 text-ios-teal" strokeWidth={1.8} />
-                    Network
-                </h3>
-                <div className="ios-segment">
-                    {['1H', '24H', '7D', '30D'].map(period => (
-                        <button
-                            key={period}
-                            className={`ios-segment-item ${period === '24H' ? 'ios-segment-item-active' : ''}`}
-                        >
-                            {period}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            <div className="relative h-[250px] w-full flex items-center justify-center -mx-2">
-                <LiveNetworkGraph />
-            </div>
-
-            <div className="flex items-center justify-center gap-5 mt-2">
-                {[
-                    { label: 'Computing', color: '#5AC8FA' },
-                    { label: 'Services', color: '#AF52DE' },
-                    { label: 'Education', color: '#FF2D55' },
-                    { label: 'Data', color: '#34C759' },
-                ].map(l => (
-                    <div key={l.label} className="flex items-center gap-1.5">
-                        <span className="w-[6px] h-[6px] rounded-full" style={{ backgroundColor: l.color }} />
-                        <span className="text-[11px] text-label-tertiary">{l.label}</span>
-                    </div>
-                ))}
-            </div>
-        </motion.div>
-    );
-}
-
-function TopResources() {
-    const { resources } = useBarterStore();
-    return (
-        <motion.div variants={item} className="ios-card p-5">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-ios-orange" strokeWidth={1.8} />
-                    Trending
-                </h3>
-                <button className="text-[13px] text-ios-blue font-medium">Browse All</button>
-            </div>
-            <div className="space-y-1">
-                {resources.slice(0, 4).map((resource, i) => (
-                    <motion.div
-                        key={resource.id}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: i * 0.06 }}
-                        className="flex items-center gap-3 p-3 rounded-[12px] hover:bg-fill-quaternary transition-colors cursor-pointer"
-                    >
-                        <div className={`w-10 h-10 rounded-[10px] flex items-center justify-center text-[16px] ${resource.category === 'Computing' ? 'bg-[#5AC8FA]/12' :
-                                resource.category === 'Data' ? 'bg-[#AF52DE]/12' :
-                                    resource.category === 'Services' ? 'bg-[#FF2D55]/12' :
-                                        'bg-[#FF9500]/12'
-                            }`}>
-                            {resource.category === 'Computing' ? '💻' :
-                                resource.category === 'Data' ? '📊' :
-                                    resource.category === 'Services' ? '🛠️' : '📚'}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-[14px] font-medium text-white truncate">{resource.name}</p>
-                            <p className="text-[11px] text-label-tertiary">{resource.owner?.name || 'Unknown'} · {resource.category}</p>
-                        </div>
-                        <div className="text-right">
-                            <p className="text-[14px] font-semibold text-white">${formatNumber(resource.estimatedValue)}</p>
-                            <span className={`text-[11px] font-medium ${resource.status === 'available' ? 'text-ios-green' : 'text-ios-orange'
-                                }`}>
-                                {resource.status}
-                            </span>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
-        </motion.div>
-    );
-}
+const distributionData = [
+  { name: 'Computing', value: 400, color: '#5AC8FA' },
+  { name: 'Services', value: 300, color: '#AF52DE' },
+  { name: 'Data', value: 300, color: '#34C759' },
+  { name: 'Education', value: 200, color: '#FF2D55' },
+];
 
 export default function DashboardPage() {
-    const { metrics, currentUser, fetchMetrics, fetchResources } = useBarterStore();
-    const { data: session } = useSession();
+  const { metrics, fetchMetrics, fetchResources } = useBarterStore();
+  const { data: session } = useSession();
 
-    useEffect(() => {
-        fetchMetrics();
-        fetchResources({ limit: 6 });
-    }, [fetchMetrics, fetchResources]);
+  useEffect(() => {
+    fetchMetrics();
+    fetchResources({ limit: 6 });
+  }, [fetchMetrics, fetchResources]);
 
-    const userName = currentUser?.name?.split(' ')[0] || session?.user?.name?.split(' ')[0] || 'User';
+  const userName = session?.user?.name?.split(' ')[0] || 'Trader';
 
-    const metricCards = [
-        { title: 'Network Value', value: '$' + formatNumber(metrics.networkValue), change: metrics.networkValueChange, icon: DollarSign, color: '#007AFF' },
-        { title: 'Active Users', value: formatNumber(metrics.activeUsers), change: metrics.activeUsersChange, icon: Users, color: '#5AC8FA' },
-        { title: 'Exchange Vol.', value: formatNumber(metrics.exchangeVolume) + '/d', change: metrics.volumeChange, icon: ArrowLeftRight, color: '#34C759' },
-        { title: 'AI Efficiency', value: metrics.aiEfficiency + '%', change: metrics.efficiencyChange, icon: Brain, color: '#AF52DE' },
-        { title: 'Match Time', value: metrics.avgMatchTime + 's', change: metrics.matchTimeChange, icon: Timer, color: '#FF9500' },
-        { title: 'Satisfaction', value: metrics.satisfaction + '/5', change: 2, icon: Star, color: '#FF2D55' },
-    ];
+  // Specific 5 KPI cards exactly from prompt
+  const kpiCards = [
+    { title: 'Network Value', value: '$2.4B', change: 12.5, icon: DollarSign, color: '#007AFF' },
+    { title: 'Active Users', value: '24,891', change: 8.2, icon: Users, color: '#5AC8FA' },
+    { title: 'Exchange Volume', value: '1,247', change: 15.3, icon: ArrowLeftRight, color: '#34C759' },
+    { title: 'AI Match Rate', value: '99.7%', change: 0.5, icon: Brain, color: '#AF52DE' },
+    { title: 'Avg Match Time', value: '0.8s', change: -12.4, icon: Timer, color: '#FF9500' },
+  ];
 
-    return (
-        <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="space-y-5"
-        >
-            {/* Welcome Banner — iOS Widget style */}
-            <motion.div
-                variants={item}
-                className="liquid-glass-hero p-6 md:p-7"
-            >
-                <div className="relative z-10">
-                    <h1 className="ios-title-1 text-white">
-                        Welcome back, <span className="text-ios-blue">{userName}</span>
-                    </h1>
-                    <p className="text-label-secondary mt-2 max-w-xl text-[15px] leading-relaxed">
-                        Your AI agents found 3 new matches, completed 2 negotiations,
-                        and your reputation increased by 0.2 points.
-                    </p>
-                    <div className="flex items-center gap-3 mt-5">
-                        <motion.button
-                            whileTap={{ scale: 0.96 }}
-                            className="liquid-glass-btn rounded-[14px] px-6 py-3 text-white text-[15px] font-semibold"
-                        >
-                            List a Resource
-                        </motion.button>
-                        <motion.button
-                            whileTap={{ scale: 0.96 }}
-                            className="liquid-glass-btn rounded-[14px] px-6 py-3 text-ios-blue text-[15px] font-semibold"
-                        >
-                            View Matches
-                        </motion.button>
-                    </div>
-                </div>
-            </motion.div>
+  return (
+    <motion.div variants={container} initial="hidden" animate="show" className="space-y-6 max-w-[1400px] mx-auto">
+      
+      {/* ───── TOP HEADER ───── */}
+      <motion.div variants={item} className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-[28px] font-bold text-white tracking-tight">Dashboard</h1>
+          <p className="text-[#8E8E93] text-[15px] mt-1">Welcome back, {userName}. Here's what's happening.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E93]" />
+            <input 
+              type="text" 
+              placeholder="Search network..." 
+              className="bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] text-white rounded-full pl-10 pr-4 py-2 text-[14px] focus:outline-none focus:ring-1 focus:ring-ios-blue transition-all w-64 backdrop-blur-xl"
+            />
+          </div>
+          <button className="w-10 h-10 rounded-full bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] flex items-center justify-center text-white relative hover:bg-[rgba(255,255,255,0.1)] transition-colors">
+            <Bell className="w-4 h-4" />
+            <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-ios-red rounded-full border border-black"></span>
+          </button>
+        </div>
+      </motion.div>
 
-            {/* Metric Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-                {metricCards.map((metric, i) => (
-                    <MetricCard key={i} {...metric} />
-                ))}
+      {/* ───── KPI METRIC CARDS (5 in a row) ───── */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        {kpiCards.map((kpi, i) => (
+          <motion.div key={i} variants={item} className="liquid-glass-card p-5 rounded-[20px] relative overflow-hidden group">
+            {/* Specular shimmer top edge */}
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            
+            <div className="flex items-start justify-between mb-3">
+              <div className="w-10 h-10 rounded-[12px] flex items-center justify-center" style={{ backgroundColor: kpi.color + '15' }}>
+                <kpi.icon className="w-5 h-5" style={{ color: kpi.color }} strokeWidth={1.8} />
+              </div>
+              <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[12px] font-medium bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] ${kpi.change >= 0 ? 'text-ios-green' : 'text-ios-red'}`}>
+                {kpi.change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                {Math.abs(kpi.change)}%
+              </div>
             </div>
+            <p className="text-[24px] font-bold text-white tracking-tight">{kpi.value}</p>
+            <p className="text-[13px] text-[#8E8E93] font-medium mt-0.5">{kpi.title}</p>
+          </motion.div>
+        ))}
+      </div>
 
-            {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                <div className="lg:col-span-2 space-y-5">
-                    <NetworkVisualization />
-                    <RecentExchanges />
-                </div>
-                <div className="space-y-5">
-                    <AIAgentSwarm />
-                    <TopResources />
-                    <LiveActivityFeed />
-                </div>
+      {/* ───── CHARTS ROW ───── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Network Activity Area Chart */}
+        <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-[16px] font-semibold text-white">Network Activity</h3>
+              <p className="text-[13px] text-[#8E8E93]">Trade volume over the last 7 days</p>
             </div>
+            <div className="flex bg-[rgba(255,255,255,0.05)] rounded-[10px] p-0.5 border border-[rgba(255,255,255,0.05)]">
+              {['1D', '7D', '1M'].map((range, i) => (
+                <button key={range} className={`px-3 py-1.5 text-[12px] font-medium rounded-[8px] transition-all ${i === 1 ? 'bg-ios-blue text-white shadow-md' : 'text-[#8E8E93] hover:text-white'}`}>
+                  {range}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="h-[260px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={networkData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorVolume" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#007AFF" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#007AFF" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <XAxis dataKey="name" stroke="#8E8E93" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+                <YAxis stroke="#8E8E93" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => \`\${val / 1000}k\`} />
+                <RechartsTooltip 
+                  contentStyle={{ backgroundColor: 'rgba(20,20,22,0.8)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff' }}
+                  itemStyle={{ color: '#fff' }}
+                  cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 1, strokeDasharray: '4 4' }}
+                />
+                <Area type="monotone" dataKey="volume" stroke="#007AFF" strokeWidth={3} fillOpacity={1} fill="url(#colorVolume)" activeDot={{ r: 6, fill: '#007AFF', stroke: '#fff', strokeWidth: 2 }} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </motion.div>
-    );
+
+        {/* Resource Distribution Donut */}
+        <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+          <div className="mb-2">
+            <h3 className="text-[16px] font-semibold text-white">Resource Distribution</h3>
+            <p className="text-[13px] text-[#8E8E93]">Active trades by category</p>
+          </div>
+          <div className="h-[220px] w-full flex items-center justify-center relative">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={distributionData} cx="50%" cy="50%" innerRadius={65} outerRadius={85} paddingAngle={5} dataKey="value" stroke="none">
+                  {distributionData.map((entry, index) => (
+                    <Cell key={\`cell-\${index}\`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <RechartsTooltip 
+                  contentStyle={{ backgroundColor: 'rgba(20,20,22,0.8)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                  itemStyle={{ color: '#fff' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span className="text-[28px] font-bold text-white">1.2K</span>
+              <span className="text-[11px] text-[#8E8E93] uppercase tracking-wider font-medium">Total Active</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            {distributionData.map(d => (
+              <div key={d.name} className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: d.color }}></span>
+                <span className="text-[13px] text-white">{d.name}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* ───── RECENT TRADES TABLE ───── */}
+      <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-[16px] font-semibold text-white">Recent Trades</h3>
+          <button className="text-[13px] text-ios-blue hover:text-white transition-colors font-medium flex items-center gap-1">
+            View All
+          </button>
+        </div>
+        
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-[rgba(255,255,255,0.06)]">
+                <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Traders</th>
+                <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Exchange Pair</th>
+                <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">AI Score</th>
+                <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Status</th>
+                <th className="py-3 px-4 text-right"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { traders: ['Alex C.', 'Maria S.'], pair: 'GPU Time ↔ ML Dataset', score: 98, status: 'Completed', time: '2m ago' },
+                { traders: ['James W.', 'Priya P.'], pair: 'UX Sprint ↔ Cloud Credits', score: 87, status: 'Pending', time: '14m ago' },
+                { traders: ['David K.', 'Emma W.'], pair: 'Smart Contract ↔ React Nav', score: 91, status: 'Negotiating', time: '1h ago' },
+                { traders: ['Raj M.', 'Sarah L.'], pair: 'API Dev ↔ DevOps Pipeline', score: 94, status: 'Completed', time: '3h ago' },
+              ].map((trade, i) => (
+                <tr key={i} className="border-b border-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.02)] transition-colors group/row">
+                  <td className="py-4 px-4">
+                    <div className="flex items-center gap-2">
+                       <div className="flex -space-x-2">
+                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ios-blue to-ios-purple flex items-center justify-center text-[10px] font-bold text-white border-2 border-black">{trade.traders[0][0]}</div>
+                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ios-teal to-ios-green flex items-center justify-center text-[10px] font-bold text-white border-2 border-black">{trade.traders[1][0]}</div>
+                       </div>
+                       <span className="text-[14px] text-white flex flex-col leading-tight ml-2">
+                         <span>{trade.traders[0]} </span>
+                         <span className="text-[12px] text-[#8E8E93]">with {trade.traders[1]}</span>
+                       </span>
+                    </div>
+                  </td>
+                  <td className="py-4 px-4">
+                    <div className="flex items-center gap-2 text-[14px] text-white">
+                      <Zap className="w-4 h-4 text-ios-orange" />
+                      {trade.pair}
+                    </div>
+                  </td>
+                  <td className="py-4 px-4">
+                    <div className="flex items-center gap-2">
+                       <div className="w-full bg-[rgba(255,255,255,0.1)] h-1.5 rounded-full max-w-[80px] overflow-hidden">
+                         <div className="h-full bg-ios-blue rounded-full" style={{ width: \`\${trade.score}%\` }}></div>
+                       </div>
+                       <span className="text-[13px] text-white font-medium">{trade.score}%</span>
+                    </div>
+                  </td>
+                  <td className="py-4 px-4">
+                    <div className="flex items-center gap-1.5">
+                      {trade.status === 'Completed' ? <CheckCircle className="w-4 h-4 text-ios-green" /> : 
+                       trade.status === 'Pending' ? <Clock className="w-4 h-4 text-ios-orange" /> :
+                       <Activity className="w-4 h-4 text-ios-purple" />}
+                      <span className={\`text-[13px] font-medium \${trade.status === 'Completed' ? 'text-ios-green' : trade.status === 'Pending' ? 'text-ios-orange' : 'text-ios-purple'}\`}>
+                        {trade.status}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="py-4 px-4 text-right">
+                    <button className="text-[#8E8E93] hover:text-white p-2 rounded-lg hover:bg-[rgba(255,255,255,0.05)] transition-colors">
+                      <MoreHorizontal className="w-5 h-5" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
+
+    </motion.div>
+  );
 }

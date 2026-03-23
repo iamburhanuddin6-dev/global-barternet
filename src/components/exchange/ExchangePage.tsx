@@ -1,236 +1,218 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useBarterStore } from '@/store/barterStore';
 import {
     Search,
     Filter,
-    Grid3X3,
-    List,
     ArrowLeftRight,
-    Heart,
-    Eye,
+    Star,
     Sparkles,
     ChevronDown,
+    Activity,
+    Code,
+    Music,
+    Palette,
+    Briefcase
 } from 'lucide-react';
 
 const container = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.05 } },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 
 const item = {
-    hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.28, 0.84, 0.42, 1] } },
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.28, 0.84, 0.42, 1] } },
 };
 
-const categories = ['All', 'Computing', 'Data', 'Services', 'Education', 'Design', 'IoT', 'Blockchain'];
+const categories = ['All', 'Computing', 'Services', 'Education', 'Design'];
 
 function formatValue(val: number): string {
-    if (val >= 1000) return '$' + (val / 1000).toFixed(1) + 'K';
-    return '$' + val;
+    if (val >= 1000) return (val / 1000).toFixed(1) + 'k';
+    return val.toString();
 }
 
-export default function ExchangePage() {
-    const { resources } = useBarterStore();
-    const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-    const [selectedCategory, setSelectedCategory] = useState('All');
-    const [showFilters, setShowFilters] = useState(false);
+const mockExchangeItems = [
+    { title: 'Full-Stack Dev Hours', desc: '10 hours of senior React/Node.js development for your startup.', value: 1200, category: 'Computing', owner: 'Alex C.', stars: 4.9, match: 98, icon: Code, color: '#007AFF' },
+    { title: 'Piano Lessons', desc: 'Masterclass in classical piano. 4 sessions of 1 hour each.', value: 400, category: 'Education', owner: 'Elena R.', stars: 4.8, match: 92, icon: Music, color: '#AF52DE' },
+    { title: 'Graphic Design Package', desc: 'Complete branding kit: logo, typography, color palette.', value: 850, category: 'Design', owner: 'Marcus L.', stars: 5.0, match: 76, icon: Palette, color: '#FF2D55' },
+    { title: 'Cloud Architecture', desc: 'AWS infrastructure setup and optimization consulting.', value: 1500, category: 'Computing', owner: 'Sarah T.', stars: 4.7, match: 89, icon: Activity, color: '#5AC8FA' },
+    { title: 'Legal Consultation', desc: 'Contract review and startup incorporation advice.', value: 600, category: 'Services', owner: 'David M.', stars: 4.9, match: 65, icon: Briefcase, color: '#FF9500' },
+    { title: 'UI/UX Wireframing', desc: 'High-fidelity Figma wireframes for a 5-page application.', value: 950, category: 'Design', owner: 'Jessica K.', stars: 4.8, match: 84, icon: Palette, color: '#FF2D55' },
+];
 
-    const filteredResources = selectedCategory === 'All'
-        ? resources
-        : resources.filter(r => r.category === selectedCategory);
+export default function ExchangePage() {
+    const [selectedCategory, setSelectedCategory] = useState('All');
+    
+    const filteredItems = selectedCategory === 'All' 
+        ? mockExchangeItems 
+        : mockExchangeItems.filter(item => item.category === selectedCategory);
 
     return (
-        <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="space-y-5"
-        >
-            {/* Hero */}
-            <motion.div variants={item} className="liquid-glass-hero p-6 md:p-7">
-                <div className="flex items-center gap-2 mb-2">
-                    <span className="w-[5px] h-[5px] bg-ios-green rounded-full animate-pulse-soft" />
-                    <span className="text-[11px] font-medium text-ios-green uppercase tracking-wider">156 Live Exchanges</span>
-                </div>
-                <h1 className="ios-title-1 text-white mb-1.5">
-                    Resource <span className="text-ios-blue">Marketplace</span>
-                </h1>
-                <p className="text-label-secondary max-w-lg text-[15px]">
-                    Browse resources or let AI find the perfect match for your needs.
-                </p>
-            </motion.div>
-
-            {/* Search & Filters */}
-            <motion.div variants={item} className="flex flex-col md:flex-row gap-3">
-                <div className="flex-1 relative">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-label-tertiary" />
-                    <input
-                        type="text"
-                        placeholder="Search resources, skills, services..."
-                        className="ios-search"
-                    />
-                </div>
-                <div className="flex gap-2">
-                    <motion.button
-                        whileTap={{ scale: 0.96 }}
-                        onClick={() => setShowFilters(!showFilters)}
-                        className={`flex items-center gap-2 px-4 py-2.5 rounded-[12px] text-[13px] font-medium transition-all ${showFilters ? 'bg-ios-blue/12 text-ios-blue' : 'bg-fill-tertiary text-label-secondary'
-                            }`}
-                    >
-                        <Filter className="w-4 h-4" strokeWidth={1.8} />
-                        Filters
-                        <ChevronDown className={`w-3 h-3 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
-                    </motion.button>
-
-                    <motion.button
-                        whileTap={{ scale: 0.96 }}
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-[12px] bg-ios-blue text-white text-[13px] font-semibold shadow-ios-md"
-                    >
-                        <Sparkles className="w-4 h-4" strokeWidth={1.8} />
-                        AI Match
-                    </motion.button>
-
-                    <div className="flex rounded-[10px] bg-fill-tertiary overflow-hidden p-0.5">
-                        <button
-                            onClick={() => setViewMode('grid')}
-                            className={`p-2 rounded-[8px] transition-all ${viewMode === 'grid' ? 'bg-surface-tertiary text-white shadow-ios' : 'text-label-tertiary'}`}
-                        >
-                            <Grid3X3 className="w-4 h-4" strokeWidth={1.8} />
-                        </button>
-                        <button
-                            onClick={() => setViewMode('list')}
-                            className={`p-2 rounded-[8px] transition-all ${viewMode === 'list' ? 'bg-surface-tertiary text-white shadow-ios' : 'text-label-tertiary'}`}
-                        >
-                            <List className="w-4 h-4" strokeWidth={1.8} />
+        <motion.div variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6">
+            
+            {/* ───── LEFT CONTENT (MAIN AREA) ───── */}
+            <div className="flex-1 space-y-6">
+                
+                {/* Header & Filter Bar */}
+                <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
+                    <div>
+                        <h1 className="text-[28px] font-bold text-white tracking-tight">Exchange Marketplace</h1>
+                        <p className="text-[#8E8E93] text-[15px] mt-1">Discover resources to barter or let AI find your perfect match.</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E93]" />
+                            <input 
+                                type="text" 
+                                placeholder="Search all listings..." 
+                                className="bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] text-white rounded-full pl-9 pr-4 py-2 text-[14px] focus:outline-none focus:ring-1 focus:ring-ios-blue transition-all w-full md:w-64 backdrop-blur-xl"
+                            />
+                        </div>
+                        <button className="flex items-center gap-2 bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] text-white rounded-full px-4 py-2 text-[14px] font-medium hover:bg-[rgba(255,255,255,0.1)] transition-colors">
+                            <Filter className="w-4 h-4" />
+                            Filters
                         </button>
                     </div>
+                </motion.div>
+
+                {/* Category Pills */}
+                <motion.div variants={item} className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+                    {categories.map(cat => (
+                        <button
+                            key={cat}
+                            onClick={() => setSelectedCategory(cat)}
+                            className={\`px-5 py-2 rounded-full text-[14px] font-semibold whitespace-nowrap transition-all duration-300 \${
+                                selectedCategory === cat
+                                    ? 'bg-ios-blue text-white shadow-[0_4px_12px_rgba(0,122,255,0.3)]'
+                                    : 'bg-[rgba(255,255,255,0.04)] text-[#8E8E93] hover:bg-[rgba(255,255,255,0.08)] hover:text-white'
+                            }\`}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </motion.div>
+
+                {/* 3-Column Grid of Trading Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {filteredItems.map((resource, i) => (
+                        <motion.div
+                            key={i}
+                            variants={item}
+                            layout
+                            className="liquid-glass-card p-5 rounded-[20px] relative group border border-[rgba(255,255,255,0.08)] hover:border-[rgba(255,255,255,0.15)] transition-colors duration-500 overflow-hidden flex flex-col"
+                        >
+                            {/* Specular Highlight */}
+                            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+                            {/* Top row: Thumbnail & Match Score */}
+                            <div className="flex items-start justify-between mb-4">
+                                <div className="w-14 h-14 rounded-[14px] flex items-center justify-center border border-[rgba(255,255,255,0.1)] shadow-inner" style={{ backgroundColor: resource.color + '15' }}>
+                                    <resource.icon className="w-7 h-7" style={{ color: resource.color }} />
+                                </div>
+                                <div className="relative w-12 h-12 flex items-center justify-center">
+                                    {/* SVG Circular Progress */}
+                                    <svg className="w-12 h-12 transform -rotate-90 absolute">
+                                        <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" strokeWidth="4" fill="none" />
+                                        <circle 
+                                            cx="24" cy="24" r="20" 
+                                            stroke={resource.match >= 90 ? '#34C759' : resource.match >= 80 ? '#007AFF' : '#FF9500'} 
+                                            strokeWidth="4" fill="none" 
+                                            strokeDasharray="125" 
+                                            strokeDashoffset={125 - (125 * resource.match) / 100} 
+                                            strokeLinecap="round" 
+                                        />
+                                    </svg>
+                                    <span className="text-[12px] font-bold text-white relative z-10">{resource.match}%</span>
+                                </div>
+                            </div>
+
+                            {/* Title & Badge */}
+                            <div className="mb-3">
+                                <span className="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-2" style={{ backgroundColor: resource.color + '20', color: resource.color }}>
+                                    {resource.category}
+                                </span>
+                                <h3 className="text-[18px] font-bold text-white group-hover:text-ios-blue transition-colors duration-300 leading-tight">
+                                    {resource.title}
+                                </h3>
+                            </div>
+
+                            {/* Description */}
+                            <p className="text-[13px] text-[#8E8E93] line-clamp-2 leading-relaxed flex-grow">
+                                {resource.desc}
+                            </p>
+
+                            {/* Bottom row: Value & Owner */}
+                            <div className="mt-5 pt-4 border-t border-[rgba(255,255,255,0.06)] flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] flex items-center justify-center border border-[rgba(255,255,255,0.1)]">
+                                        <span className="text-[11px] font-bold text-white">{resource.owner[0]}</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[12px] font-semibold text-white truncate max-w-[80px]">{resource.owner}</span>
+                                        <span className="flex items-center text-[10px] text-[#FF9500]">
+                                            <Star className="w-3 h-3 fill-current mr-0.5" /> {resource.stars}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="text-right">
+                                    <span className="block text-[16px] font-bold text-white">
+                                        <span className="text-[#8E8E93] mr-1">T</span>{formatValue(resource.value)}
+                                    </span>
+                                    <span className="text-[10px] text-[#8E8E93] uppercase tracking-wider">Credit Value</span>
+                                </div>
+                            </div>
+
+                            {/* Hover Propose Button */}
+                            <div className="absolute inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                                <button className="bg-ios-blue text-white font-bold text-[14px] px-6 py-3 rounded-full flex items-center gap-2 shadow-[0_0_20px_rgba(0,122,255,0.4)] transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                    <ArrowLeftRight className="w-4 h-4" />
+                                    Propose Trade
+                                </button>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+
+            {/* ───── RIGHT SIDEBAR (AI MATCHES) ───── */}
+            <motion.div variants={item} className="w-full xl:w-[320px] flex flex-col gap-6">
+                <div className="liquid-glass-card rounded-[24px] p-6 relative overflow-hidden border border-[rgba(255,255,255,0.08)]">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-ios-purple/20 blur-[50px] rounded-full pointer-events-none"></div>
+                    
+                    <div className="flex items-center gap-2 mb-6">
+                        <Sparkles className="w-5 h-5 text-ios-purple" />
+                        <h3 className="text-[16px] font-semibold text-white tracking-tight">AI Recommended</h3>
+                    </div>
+
+                    <div className="space-y-4">
+                        {[
+                            { name: 'DevOps Pipeline Setup', req: 'Requires: 15h Frontend', match: 99, color: '#34C759' },
+                            { name: 'Machine Learning Model', req: 'Requires: DB Optimization', match: 94, color: '#007AFF' },
+                            { name: 'Smart Contract Audit', req: 'Requires: UX Audit', match: 88, color: '#FF9500' }
+                        ].map((rec, i) => (
+                            <div key={i} className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-[16px] p-4 hover:bg-[rgba(255,255,255,0.06)] transition-colors cursor-pointer group">
+                                <div className="flex items-start justify-between mb-2">
+                                    <h4 className="text-[14px] font-semibold text-white group-hover:text-ios-blue transition-colors leading-tight pr-2">
+                                        {rec.name}
+                                    </h4>
+                                    <span className="text-[12px] font-bold px-2 py-0.5 rounded-md" style={{ backgroundColor: rec.color + '20', color: rec.color }}>
+                                        {rec.match}%
+                                    </span>
+                                </div>
+                                <p className="text-[12px] text-[#8E8E93]">{rec.req}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button className="w-full mt-6 bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition-colors border border-[rgba(255,255,255,0.08)] py-3 rounded-[12px] text-[13px] font-semibold text-white text-center">
+                        View All Matches
+                    </button>
                 </div>
             </motion.div>
 
-            {/* Category Pills — iOS Segmented style */}
-            <motion.div variants={item} className="flex gap-2 overflow-x-auto pb-1">
-                {categories.map(cat => (
-                    <motion.button
-                        key={cat}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setSelectedCategory(cat)}
-                        className={`px-4 py-1.5 rounded-full text-[13px] font-medium whitespace-nowrap transition-all ${selectedCategory === cat
-                                ? 'bg-ios-blue text-white'
-                                : 'bg-fill-quaternary text-label-secondary hover:bg-fill-tertiary'
-                            }`}
-                    >
-                        {cat}
-                    </motion.button>
-                ))}
-            </motion.div>
-
-            {/* Resource Grid */}
-            <motion.div
-                variants={container}
-                className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3' : 'space-y-2'}
-            >
-                {filteredResources.map((resource, i) => (
-                    <motion.div
-                        key={resource.id}
-                        variants={item}
-                        layout
-                        className={`ios-card cursor-pointer ${viewMode === 'list' ? 'flex items-center gap-4 p-4' : 'p-5'}`}
-                    >
-                        {viewMode === 'grid' ? (
-                            <>
-                                <div className="flex items-start justify-between mb-4">
-                                    <div className={`w-11 h-11 rounded-[12px] flex items-center justify-center text-[18px] ${resource.category === 'Computing' ? 'bg-[#5AC8FA]/12' :
-                                            resource.category === 'Data' ? 'bg-[#AF52DE]/12' :
-                                                resource.category === 'Services' ? 'bg-[#FF2D55]/12' :
-                                                    'bg-[#FF9500]/12'
-                                        }`}>
-                                        {resource.category === 'Computing' ? '💻' :
-                                            resource.category === 'Data' ? '📊' :
-                                                resource.category === 'Services' ? '🛠️' : '📚'}
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <motion.button
-                                            whileTap={{ scale: 0.85 }}
-                                            className="p-1.5 rounded-full text-label-quaternary hover:text-ios-pink hover:bg-ios-pink/10 transition-all"
-                                        >
-                                            <Heart className="w-4 h-4" strokeWidth={1.8} />
-                                        </motion.button>
-                                        <span className={`ios-badge ${resource.status === 'available'
-                                                ? 'bg-ios-green/12 text-ios-green'
-                                                : 'bg-ios-orange/12 text-ios-orange'
-                                            }`}>
-                                            {resource.status}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <h3 className="text-[15px] font-semibold text-white mb-1 group-hover:text-ios-blue transition-colors">
-                                    {resource.name}
-                                </h3>
-                                <p className="text-[13px] text-label-tertiary mb-4 line-clamp-2">{resource.description}</p>
-
-                                <div className="flex flex-wrap gap-1.5 mb-4">
-                                    {resource.tags.slice(0, 3).map(tag => (
-                                        <span key={tag} className="px-2 py-0.5 rounded-md bg-fill-quaternary text-[11px] font-medium text-label-secondary">
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                <div className="flex items-center justify-between pt-3 border-t border-separator">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-ios-blue to-ios-teal flex items-center justify-center text-[10px] font-bold">
-                                            {resource.owner.charAt(0)}
-                                        </div>
-                                        <span className="text-[12px] text-label-secondary">{resource.owner}</span>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="text-[15px] font-bold text-white">{formatValue(resource.estimatedValue)}</p>
-                                        <p className="text-[11px] text-label-quaternary">est. value</p>
-                                    </div>
-                                </div>
-
-                                <div className="mt-4 flex gap-2">
-                                    <button className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-[12px] bg-ios-blue/10 text-ios-blue text-[13px] font-medium hover:bg-ios-blue/20 transition-all">
-                                        <ArrowLeftRight className="w-3.5 h-3.5" strokeWidth={1.8} />
-                                        Propose Trade
-                                    </button>
-                                    <button className="p-2.5 rounded-[12px] bg-fill-quaternary text-label-secondary hover:text-white transition-all">
-                                        <Eye className="w-3.5 h-3.5" strokeWidth={1.8} />
-                                    </button>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div className={`w-10 h-10 rounded-[10px] flex items-center justify-center text-[16px] flex-shrink-0 ${resource.category === 'Computing' ? 'bg-[#5AC8FA]/12' :
-                                        resource.category === 'Data' ? 'bg-[#AF52DE]/12' :
-                                            resource.category === 'Services' ? 'bg-[#FF2D55]/12' : 'bg-[#FF9500]/12'
-                                    }`}>
-                                    {resource.category === 'Computing' ? '💻' :
-                                        resource.category === 'Data' ? '📊' :
-                                            resource.category === 'Services' ? '🛠️' : '📚'}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <h3 className="text-[14px] font-semibold text-white">{resource.name}</h3>
-                                    <p className="text-[12px] text-label-tertiary truncate">{resource.description}</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <span className="text-[14px] font-bold text-white">{formatValue(resource.estimatedValue)}</span>
-                                    <span className={`ios-badge ${resource.status === 'available' ? 'bg-ios-green/12 text-ios-green' : 'bg-ios-orange/12 text-ios-orange'}`}>
-                                        {resource.status}
-                                    </span>
-                                    <button className="px-3 py-1.5 rounded-[10px] bg-ios-blue/10 text-ios-blue text-[12px] font-medium hover:bg-ios-blue/20 transition-all">
-                                        Trade
-                                    </button>
-                                </div>
-                            </>
-                        )}
-                    </motion.div>
-                ))}
-            </motion.div>
         </motion.div>
     );
 }

@@ -1,221 +1,174 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useBarterStore } from '@/store/barterStore';
 import {
     Brain,
+    Activity,
+    Settings,
+    PauseCircle,
+    PlayCircle,
     Zap,
     Shield,
-    BarChart3,
-    Search,
-    Activity,
-    Cpu,
-    Network,
-    RefreshCw,
-    Play,
-    Pause,
-    MoreVertical,
-    TrendingUp,
+    Bot,
+    TerminalSquare
 } from 'lucide-react';
+import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 const container = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.06 } },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
+
 const item = {
-    hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.28, 0.84, 0.42, 1] } },
+    hidden: { opacity: 0, scale: 0.95, y: 20 },
+    show: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.5, ease: [0.28, 0.84, 0.42, 1] } },
 };
 
-function AgentCard({ agent, index }: { agent: any; index: number }) {
-    const [isActive, setIsActive] = useState(agent.status !== 'idle');
-
-    const typeConfig: Record<string, { color: string; icon: any }> = {
-        matcher: { color: '#5AC8FA', icon: Search },
-        negotiator: { color: '#AF52DE', icon: Brain },
-        validator: { color: '#34C759', icon: Shield },
-        analyst: { color: '#FF9500', icon: BarChart3 },
-    };
-
-    const config = typeConfig[agent.type];
-    const Icon = config.icon;
-
-    return (
-        <motion.div
-            variants={item}
-            className="ios-card p-5 relative overflow-hidden"
-        >
-            {/* Controls */}
-            <div className="absolute top-4 right-4 flex items-center gap-1.5">
-                <motion.button
-                    whileTap={{ scale: 0.85 }}
-                    onClick={() => setIsActive(!isActive)}
-                    className="p-1.5 rounded-full bg-fill-quaternary hover:bg-fill-tertiary transition-all"
-                >
-                    {isActive ? (
-                        <Pause className="w-3.5 h-3.5 text-label-tertiary" strokeWidth={1.8} />
-                    ) : (
-                        <Play className="w-3.5 h-3.5 text-ios-green" strokeWidth={1.8} />
-                    )}
-                </motion.button>
-                <button className="p-1.5 rounded-full bg-fill-quaternary hover:bg-fill-tertiary transition-all">
-                    <MoreVertical className="w-3.5 h-3.5 text-label-tertiary" strokeWidth={1.8} />
-                </button>
-            </div>
-
-            {/* Agent Info */}
-            <div className="flex items-center gap-3.5 mb-5">
-                <div className="w-12 h-12 rounded-[14px] flex items-center justify-center shadow-ios-md relative"
-                    style={{ backgroundColor: config.color + '18' }}>
-                    <span className="text-[22px]">{agent.avatar}</span>
-                    {isActive && (
-                        <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-ios-green rounded-full border-2 border-surface-secondary" />
-                    )}
-                </div>
-                <div>
-                    <h3 className="text-[17px] font-bold text-white tracking-tight">{agent.name}</h3>
-                    <p className="text-[13px] font-medium capitalize" style={{ color: config.color }}>{agent.type} Agent</p>
-                </div>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-2 mb-4">
-                <div className="p-2.5 rounded-[10px] bg-fill-quaternary text-center">
-                    <p className="text-[16px] font-bold text-white">{agent.efficiency}%</p>
-                    <p className="text-[10px] text-label-tertiary mt-0.5">Efficiency</p>
-                </div>
-                <div className="p-2.5 rounded-[10px] bg-fill-quaternary text-center">
-                    <p className="text-[16px] font-bold text-white">{agent.matchesFound}</p>
-                    <p className="text-[10px] text-label-tertiary mt-0.5">Matches</p>
-                </div>
-                <div className="p-2.5 rounded-[10px] bg-fill-quaternary text-center">
-                    <p className="text-[16px] font-bold text-white">{Math.floor(Math.random() * 50 + 10)}</p>
-                    <p className="text-[10px] text-label-tertiary mt-0.5">Active</p>
-                </div>
-            </div>
-
-            {/* Performance Bar */}
-            <div className="mb-4">
-                <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[11px] text-label-tertiary">Performance</span>
-                    <span className="text-[12px] font-medium" style={{ color: config.color }}>{agent.efficiency}%</span>
-                </div>
-                <div className="h-[4px] bg-fill-quaternary rounded-full overflow-hidden">
-                    <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${agent.efficiency}%` }}
-                        transition={{ duration: 1, delay: index * 0.1 }}
-                        className="h-full rounded-full"
-                        style={{ backgroundColor: config.color }}
-                    />
-                </div>
-            </div>
-
-            {/* Status */}
-            <div className="flex items-center justify-between">
-                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[8px] text-[11px] font-medium`}
-                    style={{
-                        backgroundColor: (agent.status === 'scanning' ? '#5AC8FA' :
-                            agent.status === 'negotiating' ? '#FF9500' :
-                                agent.status === 'processing' ? '#AF52DE' : '#636366') + '14',
-                        color: agent.status === 'scanning' ? '#5AC8FA' :
-                            agent.status === 'negotiating' ? '#FF9500' :
-                                agent.status === 'processing' ? '#AF52DE' : '#636366'
-                    }}>
-                    {agent.status === 'scanning' && <Search className="w-3 h-3" />}
-                    {agent.status === 'negotiating' && <Activity className="w-3 h-3" />}
-                    {agent.status === 'processing' && <Cpu className="w-3 h-3" />}
-                    {agent.status === 'idle' && <RefreshCw className="w-3 h-3" />}
-                    {agent.status}
-                </span>
-                <span className="text-[11px] text-label-quaternary">
-                    {Math.floor(Math.random() * 30)}m ago
-                </span>
-            </div>
-
-            {/* AI Thought Stream */}
-            {isActive && (
-                <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    className="mt-4 pt-4 border-t border-separator"
-                >
-                    <p className="text-[11px] text-label-quaternary uppercase tracking-wider mb-2">Thought Stream</p>
-                    <div className="space-y-1.5">
-                        {[
-                            'Scanning 24 potential matches...',
-                            'Evaluating compatibility: 87%',
-                            'Optimizing trade path: A → B → C',
-                        ].map((thought, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, x: -8 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: i * 0.2 }}
-                                className="flex items-center gap-2"
-                            >
-                                <span className="w-1 h-1 rounded-full" style={{ backgroundColor: config.color }} />
-                                <span className="text-[12px] text-label-secondary font-mono">{thought}</span>
-                            </motion.div>
-                        ))}
-                    </div>
-                </motion.div>
-            )}
-        </motion.div>
-    );
-}
+const agents = [
+    { name: 'NOVA', type: 'Matcher Agent', emoji: '🤖', color: '#007AFF', status: 'Scanning', efficiency: 96, matches: 1247, data: [20, 40, 30, 70, 50, 90, 80] },
+    { name: 'ATLAS', type: 'Negotiator', emoji: '🧠', color: '#AF52DE', status: 'Negotiating', efficiency: 92, matches: 843, data: [40, 30, 50, 40, 60, 50, 70] },
+    { name: 'SENTINEL', type: 'Validator', emoji: '🛡️', color: '#34C759', status: 'Verifying', efficiency: 99, matches: 4521, data: [80, 85, 90, 85, 95, 90, 100] },
+    { name: 'ORACLE', type: 'Market Analyst', emoji: '🔮', color: '#5AC8FA', status: 'Idle', efficiency: 88, matches: 512, data: [50, 40, 60, 70, 50, 80, 60] },
+    { name: 'CIPHER', type: 'Privacy Escrow', emoji: '🔐', color: '#FF9500', status: 'Processing', efficiency: 94, matches: 890, data: [30, 50, 40, 80, 60, 70, 90] },
+    { name: 'NEXUS', type: 'Liquidity Router', emoji: '⚡', color: '#FF2D55', status: 'Routing', efficiency: 97, matches: 2104, data: [60, 70, 50, 90, 80, 100, 90] },
+];
 
 export default function AIAgentsPage() {
-    const { agents } = useBarterStore();
-    const activeCount = agents.filter(a => a.status !== 'idle').length;
-    const totalMatches = agents.reduce((sum, a) => sum + a.matchesFound, 0);
-    const avgEfficiency = (agents.reduce((sum, a) => sum + a.efficiency, 0) / agents.length).toFixed(1);
-
     return (
-        <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="space-y-5"
-        >
-            {/* Hero */}
-            <motion.div variants={item} className="liquid-glass-hero p-6 md:p-7">
-                <h1 className="ios-title-1 text-white mb-1.5">
-                    AI Agent <span className="text-ios-purple">Swarm</span>
-                </h1>
-                <p className="text-label-secondary max-w-lg text-[15px]">
-                    Autonomous AI agents continuously scan, match, and negotiate resource exchanges.
-                </p>
+        <motion.div variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6">
+            
+            {/* ───── LEFT CONTENT (MAIN AGENTS GRID) ───── */}
+            <div className="flex-1 space-y-6">
+                
+                {/* Header */}
+                <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
+                    <div>
+                        <div className="flex items-center gap-2 mb-2">
+                            <span className="w-[5px] h-[5px] bg-ios-green rounded-full animate-pulse-soft" />
+                            <span className="text-[11px] font-medium text-ios-green uppercase tracking-wider">6 Active Agents</span>
+                        </div>
+                        <h1 className="text-[28px] font-bold text-white tracking-tight flex items-center gap-3">
+                            AI Trading Agents
+                            <span className="bg-[#AF52DE]/10 text-[#AF52DE] text-[12px] px-2.5 py-1 rounded-md tracking-widest font-bold uppercase">Pro</span>
+                        </h1>
+                    </div>
+                </motion.div>
+
+                {/* 2x3 Grid of Agents */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {agents.map((agent, i) => (
+                        <motion.div
+                            key={i}
+                            variants={item}
+                            className="liquid-glass-card p-6 rounded-[24px] relative group overflow-hidden border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] hover:bg-[rgba(30,30,32,0.6)] hover:border-[rgba(255,255,255,0.15)] transition-all duration-500"
+                        >
+                            {/* Ambient Glow */}
+                            <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] rounded-full pointer-events-none opacity-20 group-hover:opacity-40 transition-opacity duration-700" style={{ backgroundColor: agent.color }}></div>
+                            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+                            {/* Top row: Icon & Status */}
+                            <div className="flex items-start justify-between mb-6">
+                                <div className="w-14 h-14 rounded-[16px] flex items-center justify-center text-[28px] shadow-inner border border-[rgba(255,255,255,0.1)]" style={{ backgroundColor: agent.color + '15' }}>
+                                    {agent.emoji}
+                                </div>
+                                <div className="flex items-center gap-2 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] px-3 py-1.5 rounded-full">
+                                    <span className={\`w-2 h-2 rounded-full \${agent.status === 'Idle' ? 'bg-[#8E8E93]' : 'animate-pulse'}\`} style={{ backgroundColor: agent.status !== 'Idle' ? agent.color : '#8E8E93' }}></span>
+                                    <span className="text-[12px] font-bold text-white">{agent.status}</span>
+                                </div>
+                            </div>
+
+                            {/* Name & Type */}
+                            <div className="mb-5">
+                                <h3 className="text-[22px] font-bold text-white tracking-tight leading-none mb-1 group-hover:text-ios-blue transition-colors duration-300">
+                                    {agent.name}
+                                </h3>
+                                <p className="text-[13px] font-medium" style={{ color: agent.color }}>{agent.type}</p>
+                            </div>
+
+                            {/* Efficiency Ring & Matches */}
+                            <div className="flex items-center gap-4 mb-6 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.03)] p-3 rounded-[16px]">
+                                <div className="relative w-12 h-12 flex items-center justify-center shrink-0">
+                                    <svg className="w-12 h-12 transform -rotate-90">
+                                        <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" strokeWidth="4" fill="none" />
+                                        <circle 
+                                            cx="24" cy="24" r="20" 
+                                            stroke={agent.color} 
+                                            strokeWidth="4" fill="none" 
+                                            strokeDasharray="125" 
+                                            strokeDashoffset={125 - (125 * agent.efficiency) / 100} 
+                                            strokeLinecap="round" 
+                                        />
+                                    </svg>
+                                    <span className="text-[12px] font-bold leading-none text-white absolute">{agent.efficiency}%</span>
+                                </div>
+                                <div>
+                                    <p className="text-[16px] font-bold text-white leading-none">{agent.matches.toLocaleString()}</p>
+                                    <p className="text-[11px] text-[#8E8E93] uppercase tracking-wider font-semibold mt-1">Matches Found</p>
+                                </div>
+                            </div>
+
+                            {/* Mini Sparkline Chart */}
+                            <div className="h-10 w-full mb-6">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={agent.data.map((val, idx) => ({ name: idx, value: val }))}>
+                                        <defs>
+                                            <linearGradient id={\`color\${agent.name}\`} x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor={agent.color} stopOpacity={0.3}/>
+                                                <stop offset="95%" stopColor={agent.color} stopOpacity={0}/>
+                                            </linearGradient>
+                                        </defs>
+                                        <Area type="monotone" dataKey="value" stroke={agent.color} strokeWidth={2} fillOpacity={1} fill={\`url(#color\${agent.name})\`} />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex gap-2">
+                                <button className="flex-1 bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] text-white text-[13px] font-semibold py-2.5 rounded-[12px] flex items-center justify-center gap-2 transition-colors border border-[rgba(255,255,255,0.05)]">
+                                    <Settings className="w-4 h-4" />
+                                    Configure
+                                </button>
+                                <button className="w-11 h-11 bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] text-white flex items-center justify-center rounded-[12px] transition-colors border border-[rgba(255,255,255,0.05)]">
+                                    {agent.status === 'Idle' ? <PlayCircle className="w-5 h-5 text-ios-green" /> : <PauseCircle className="w-5 h-5 text-ios-orange" />}
+                                </button>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+
+            {/* ───── RIGHT SIDEBAR (LIVE ACTIVITY FEED) ───── */}
+            <motion.div variants={item} className="w-full xl:w-[320px] h-full flex flex-col gap-6">
+                <div className="liquid-glass-card rounded-[24px] p-6 relative overflow-hidden border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.6)]">
+                    <div className="flex items-center gap-2 mb-6">
+                        <TerminalSquare className="w-5 h-5 text-ios-blue" />
+                        <h3 className="text-[16px] font-semibold text-white tracking-tight">Agent Terminal</h3>
+                    </div>
+
+                    <div className="space-y-4 font-mono text-[12px]">
+                        {[
+                            { agent: 'NOVA', msg: 'Match 96.2% found for Hash 0x9f2a', time: '12s ago', color: '#007AFF' },
+                            { agent: 'ATLAS', msg: 'Bidding 340 Credits -> Accepted', time: '45s ago', color: '#AF52DE' },
+                            { agent: 'SENTINEL', msg: 'Escrow contract deployed @0xabc', time: '2m ago', color: '#34C759' },
+                            { agent: 'NEXUS', msg: 'Routing liquidity pool ETH/BTC', time: '5m ago', color: '#FF2D55' },
+                            { agent: 'ORACLE', msg: 'Market volatility detected +12%', time: '8m ago', color: '#5AC8FA' },
+                            { agent: 'CIPHER', msg: 'ZK-SNARK proof generated', time: '11m ago', color: '#FF9500' },
+                            { agent: 'NOVA', msg: 'Scanning network: 24,891 nodes', time: '14m ago', color: '#007AFF' },
+                        ].map((log, i) => (
+                            <div key={i} className="flex flex-col gap-1 border-b border-[rgba(255,255,255,0.05)] pb-3 last:border-0 last:pb-0">
+                                <div className="flex justify-between items-center text-[#8E8E93]">
+                                    <span>[{log.time}]</span>
+                                </div>
+                                <div className="flex gap-2 text-white">
+                                    <span style={{ color: log.color, fontWeight: 'bold' }}>{log.agent}</span>
+                                    <span className="text-[#EBEBF5]">> {log.msg}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </motion.div>
 
-            {/* Summary Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {[
-                    { label: 'Active Agents', value: `${activeCount}/${agents.length}`, icon: Network, color: '#34C759' },
-                    { label: 'Total Matches', value: totalMatches.toLocaleString(), icon: Zap, color: '#5AC8FA' },
-                    { label: 'Avg Efficiency', value: `${avgEfficiency}%`, icon: TrendingUp, color: '#AF52DE' },
-                    { label: 'Processing', value: '94.2%', icon: Cpu, color: '#FF9500' },
-                ].map((stat, i) => (
-                    <motion.div key={i} variants={item} className="ios-card p-4 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-[12px] flex items-center justify-center"
-                            style={{ backgroundColor: stat.color + '14' }}>
-                            <stat.icon className="w-5 h-5" style={{ color: stat.color }} strokeWidth={1.8} />
-                        </div>
-                        <div>
-                            <p className="text-[17px] font-bold text-white">{stat.value}</p>
-                            <p className="text-[11px] text-label-tertiary">{stat.label}</p>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
-
-            {/* Agent Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {agents.map((agent, i) => (
-                    <AgentCard key={agent.id} agent={agent} index={i} />
-                ))}
-            </div>
         </motion.div>
     );
 }

@@ -13,30 +13,31 @@ import {
     FileCode,
     Layers,
     Activity,
+    Search
 } from 'lucide-react';
 
 const container = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.06 } },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 const item = {
-    hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.28, 0.84, 0.42, 1] } },
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.28, 0.84, 0.42, 1] } },
 };
 
 const recentTransactions = [
-    { hash: '0xabc123...def456', type: 'Exchange', from: '0x742d...bD18', to: '0x5e6f...7g8h', value: 'GPU ↔ ML Dataset', status: 'confirmed', block: 48392847, gas: '0.0042 ETH', time: '2 min ago' },
-    { hash: '0x789xyz...ghi012', type: 'Escrow', from: '0x9i0j...1k2l', to: 'Contract', value: 'UX Sprint (Locked)', status: 'confirmed', block: 48392845, gas: '0.0031 ETH', time: '5 min ago' },
-    { hash: '0xmno345...pqr678', type: 'Reputation', from: 'System', to: '0x742d...bD18', value: 'Score +0.2', status: 'pending', block: 48392848, gas: '0.0018 ETH', time: '1 min ago' },
-    { hash: '0xstu901...vwx234', type: 'NFT Mint', from: '0x3m4n...5o6p', to: '0x3m4n...5o6p', value: 'Badge: Networker', status: 'confirmed', block: 48392843, gas: '0.0025 ETH', time: '12 min ago' },
-    { hash: '0xyzb567...cde890', type: 'Multi-Party', from: '3 Parties', to: '3 Resources', value: 'Circular Exchange', status: 'confirmed', block: 48392841, gas: '0.0089 ETH', time: '20 min ago' },
+    { hash: '0xabc123...def456', type: 'Exchange', from: '0x742d...bD18', to: '0x5e6f...7g8h', value: 'GPU ↔ ML Dataset', status: 'Confirmed', block: 48392847, gas: '0.0042 ETH', time: '2 min ago' },
+    { hash: '0x789xyz...ghi012', type: 'Escrow', from: '0x9i0j...1k2l', to: 'Contract', value: 'UX Sprint (Locked)', status: 'Confirmed', block: 48392845, gas: '0.0031 ETH', time: '5 min ago' },
+    { hash: '0xmno345...pqr678', type: 'Reputation', from: 'System', to: '0x742d...bD18', value: 'Score +0.2', status: 'Pending', block: 48392848, gas: '0.0018 ETH', time: '1 min ago' },
+    { hash: '0xstu901...vwx234', type: 'NFT Mint', from: '0x3m4n...5o6p', to: '0x3m4n...5o6p', value: 'Badge: Networker', status: 'Confirmed', block: 48392843, gas: '0.0025 ETH', time: '12 min ago' },
+    { hash: '0xyzb567...cde890', type: 'Multi-Party', from: '3 Parties', to: '3 Resources', value: 'Circular Exchange', status: 'Confirmed', block: 48392841, gas: '0.0089 ETH', time: '20 min ago' },
 ];
 
 const smartContracts = [
-    { name: 'BarterProtocol', address: '0x1234...5678', version: 'v2.1.0', calls: '12,847', icon: '📜' },
-    { name: 'EscrowManager', address: '0x9abc...def0', version: 'v1.3.2', calls: '8,923', icon: '🔒' },
-    { name: 'ReputationOracle', address: '0x2468...1357', version: 'v1.5.0', calls: '45,612', icon: '⭐' },
-    { name: 'NFTCertificates', address: '0xfedc...ba98', version: 'v1.0.1', calls: '3,456', icon: '🎨' },
+    { name: 'BarterProtocol', address: '0x1234...5678', version: 'v2.1.0', calls: '12,847', icon: '📜', status: 'Active' },
+    { name: 'EscrowManager', address: '0x9abc...def0', version: 'v1.3.2', calls: '8,923', icon: '🔒', status: 'Active' },
+    { name: 'ReputationOracle', address: '0x2468...1357', version: 'v1.5.0', calls: '45,612', icon: '⭐', status: 'Active' },
+    { name: 'NFTCertificates', address: '0xfedc...ba98', version: 'v1.0.1', calls: '3,456', icon: '🎨', status: 'Active' },
 ];
 
 const typeColors: Record<string, string> = {
@@ -47,180 +48,236 @@ const typeColors: Record<string, string> = {
     'Multi-Party': '#5AC8FA',
 };
 
+function HexBlock({ number, time, delay }: { number: number, time: string, delay: number }) {
+    return (
+        <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }} 
+            animate={{ opacity: 1, scale: 1 }} 
+            transition={{ delay, duration: 0.5 }}
+            className="flex flex-col items-center group cursor-pointer"
+        >
+            <div className="relative w-20 h-24 mb-3">
+                <svg viewBox="0 0 100 115" className="absolute inset-0 w-full h-full drop-shadow-[0_0_15px_rgba(0,122,255,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(88,86,214,0.6)] transition-all duration-500">
+                    <polygon 
+                        points="50 3, 95 28, 95 83, 50 108, 5 83, 5 28" 
+                        fill="rgba(20,20,22,0.8)" 
+                        stroke="rgba(0,122,255,0.4)" 
+                        strokeWidth="2"
+                        className="group-hover:fill-[rgba(88,86,214,0.2)] transition-colors duration-500"
+                    />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 pt-1">
+                    <Hash className="w-4 h-4 text-ios-blue mb-1" />
+                    <span className="font-mono text-[11px] font-bold">#{number}</span>
+                </div>
+            </div>
+            <span className="text-[11px] text-[#8E8E93] font-mono">{time}</span>
+        </motion.div>
+    );
+}
+
+function GlowLine({ delay }: { delay: number }) {
+    return (
+        <motion.div 
+            initial={{ opacity: 0, width: 0 }} 
+            animate={{ opacity: 1, width: 40 }} 
+            transition={{ delay, duration: 0.5 }}
+            className="h-[2px] w-10 bg-gradient-to-r from-ios-blue to-ios-indigo shadow-[0_0_10px_rgba(0,122,255,0.8)] relative -mt-6"
+        >
+            <motion.div 
+                animate={{ x: [0, 40, 0] }} 
+                transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                className="w-2 h-2 rounded-full bg-white absolute -top-[3px] shadow-[0_0_10px_white]"
+            />
+        </motion.div>
+    );
+}
+
 export default function BlockchainPage() {
     return (
-        <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="space-y-5"
-        >
-            {/* Hero */}
-            <motion.div variants={item} className="liquid-glass-hero p-6 md:p-7">
-                <h1 className="ios-title-1 text-white mb-1.5">
-                    Blockchain <span className="text-ios-indigo">Explorer</span>
-                </h1>
-                <p className="text-label-secondary max-w-lg text-[15px]">
-                    Track transactions, monitor contracts, and verify network integrity.
-                </p>
+        <motion.div variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto space-y-6">
+            
+            {/* ───── HEADER ───── */}
+            <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6 relative">
+                <div className="absolute top-0 right-1/4 w-[300px] h-[300px] bg-ios-blue/10 blur-[120px] rounded-full pointer-events-none -mt-40"></div>
+                <div>
+                    <h1 className="text-[28px] font-bold text-white tracking-tight flex items-center gap-3">
+                        <Lock className="w-6 h-6 text-ios-indigo" /> 
+                        Blockchain Ledger
+                    </h1>
+                    <div className="flex items-center gap-4 mt-2">
+                        <span className="text-[#8E8E93] text-[15px]">12,847 Transactions</span>
+                        <span className="text-[rgba(255,255,255,0.1)]">|</span>
+                        <div className="flex items-center gap-1.5 text-ios-green text-[13px] font-bold">
+                            <span className="w-2 h-2 bg-ios-green rounded-full animate-pulse shadow-[0_0_10px_rgba(52,199,89,0.8)]"></span>
+                            99.99% Uptime
+                        </div>
+                    </div>
+                </div>
+                <div className="flex items-center gap-3">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E93]" />
+                        <input 
+                            type="text" 
+                            placeholder="Search Txn Hash, Address, Block..." 
+                            className="bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] text-white rounded-full pl-9 pr-4 py-2 text-[14px] focus:outline-none focus:ring-1 focus:ring-ios-blue transition-all w-full md:w-72 backdrop-blur-xl"
+                        />
+                    </div>
+                </div>
             </motion.div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {/* ───── HEX BLOCKCHAIN VISUALIZATION ───── */}
+            <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-8 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden flex items-center justify-center min-h-[200px]">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[40px] bg-ios-indigo/20 blur-[50px] rounded-full"></div>
+                <div className="flex items-center justify-center flex-wrap z-10">
+                    <HexBlock number={48392842} time="15:32:01" delay={0.1} />
+                    <GlowLine delay={0.3} />
+                    <HexBlock number={48392843} time="15:32:14" delay={0.5} />
+                    <GlowLine delay={0.7} />
+                    <HexBlock number={48392844} time="15:32:27" delay={0.9} />
+                    <GlowLine delay={1.1} />
+                    <HexBlock number={48392845} time="15:32:40" delay={1.3} />
+                    <GlowLine delay={1.5} />
+                    <HexBlock number={48392846} time="15:32:53" delay={1.7} />
+                </div>
+            </motion.div>
+
+            {/* ───── STATS GRID ───── */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                    { label: 'Transactions', value: '124,847', icon: Hash, color: '#007AFF' },
-                    { label: 'Block Height', value: '48,392,848', icon: Layers, color: '#5AC8FA' },
-                    { label: 'Gas Price', value: '23 Gwei', icon: Cpu, color: '#FF9500' },
                     { label: 'Network', value: 'Polygon zkEVM', icon: Shield, color: '#34C759' },
+                    { label: 'Block Time', value: '~1.8s', icon: Layers, color: '#007AFF' },
+                    { label: 'Gas Efficiency', value: 'Max (Batched)', icon: Cpu, color: '#FF9500' },
+                    { label: 'Total Value Locked', value: '$24.5M', icon: Activity, color: '#AF52DE' },
                 ].map((stat, i) => (
-                    <motion.div key={i} variants={item} className="ios-card p-4 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-[12px] flex items-center justify-center"
-                            style={{ backgroundColor: stat.color + '14' }}>
-                            <stat.icon className="w-5 h-5" style={{ color: stat.color }} strokeWidth={1.8} />
-                        </div>
+                    <motion.div key={i} variants={item} className="liquid-glass-card p-5 rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative group flex items-start justify-between">
+                         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                         <div>
-                            <p className="text-[17px] font-bold text-white">{stat.value}</p>
-                            <p className="text-[11px] text-label-tertiary">{stat.label}</p>
+                            <p className="text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider mb-1">{stat.label}</p>
+                            <p className="text-[17px] font-bold text-white tracking-tight">{stat.value}</p>
+                        </div>
+                        <div className="w-10 h-10 rounded-[12px] flex items-center justify-center border border-[rgba(255,255,255,0.1)] shadow-inner" style={{ backgroundColor: stat.color + '15' }}>
+                            <stat.icon className="w-5 h-5" style={{ color: stat.color }} strokeWidth={1.8} />
                         </div>
                     </motion.div>
                 ))}
             </div>
 
-            {/* Smart Contracts */}
-            <motion.div variants={item} className="ios-card p-5">
-                <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
-                        <FileCode className="w-4 h-4 text-ios-purple" strokeWidth={1.8} />
-                        Smart Contracts
-                    </h3>
-                    <button className="text-[13px] text-ios-blue font-medium">Deploy New</button>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-                    {smartContracts.map((contract, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.08 }}
-                            className="p-4 rounded-[14px] bg-fill-quaternary hover:bg-fill-tertiary transition-all cursor-pointer group"
-                        >
-                            <div className="flex items-center justify-between mb-2.5">
-                                <div className="flex items-center gap-2.5">
-                                    <span className="text-[18px]">{contract.icon}</span>
-                                    <div>
-                                        <p className="text-[14px] font-semibold text-white">{contract.name}</p>
-                                        <p className="text-[11px] text-label-tertiary font-mono">{contract.address}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="ios-badge bg-ios-green/12 text-ios-green">Active</span>
-                                    <button className="p-1 rounded-md opacity-0 group-hover:opacity-100 hover:bg-fill-tertiary transition-all">
-                                        <ExternalLink className="w-3 h-3 text-label-tertiary" strokeWidth={1.8} />
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <span className="text-[11px] text-label-tertiary">{contract.version}</span>
-                                <span className="text-[11px] text-label-tertiary">{contract.calls} calls</span>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-            </motion.div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            {/* Transactions */}
-            <motion.div variants={item} className="ios-card p-5">
-                <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
-                        <Activity className="w-4 h-4 text-ios-teal" strokeWidth={1.8} />
-                        Recent Transactions
-                    </h3>
-                    <button className="text-[13px] text-ios-blue font-medium">View All</button>
-                </div>
-                <div className="overflow-x-auto">
-                    <table className="w-full">
-                        <thead>
-                            <tr className="border-b border-separator">
-                                <th className="py-2.5 px-3 text-left text-[11px] text-label-tertiary font-medium">Tx Hash</th>
-                                <th className="py-2.5 px-3 text-left text-[11px] text-label-tertiary font-medium">Type</th>
-                                <th className="py-2.5 px-3 text-left text-[11px] text-label-tertiary font-medium">Value</th>
-                                <th className="py-2.5 px-3 text-left text-[11px] text-label-tertiary font-medium">Block</th>
-                                <th className="py-2.5 px-3 text-left text-[11px] text-label-tertiary font-medium">Gas</th>
-                                <th className="py-2.5 px-3 text-left text-[11px] text-label-tertiary font-medium">Status</th>
-                                <th className="py-2.5 px-3 text-left text-[11px] text-label-tertiary font-medium">Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {recentTransactions.map((tx, i) => (
-                                <motion.tr
-                                    key={i}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: i * 0.04 }}
-                                    className="border-b border-separator/50 hover:bg-fill-quaternary transition-colors group"
-                                >
-                                    <td className="py-3 px-3">
-                                        <div className="flex items-center gap-1.5">
-                                            <span className="text-[12px] font-mono text-ios-blue">{tx.hash}</span>
-                                            <button className="opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <Copy className="w-3 h-3 text-label-quaternary" strokeWidth={1.8} />
-                                            </button>
+                {/* ───── TRANSACTIONS TABLE ───── */}
+                <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-2">
+                            <Activity className="w-5 h-5 text-ios-teal" strokeWidth={1.8} />
+                            <h3 className="text-[18px] font-bold text-white tracking-tight">Transaction Explorer</h3>
+                        </div>
+                        <button className="text-[13px] text-ios-blue hover:text-white transition-colors font-medium bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] px-3 py-1.5 rounded-lg">
+                            Live Feed
+                        </button>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr className="border-b border-[rgba(255,255,255,0.06)]">
+                                    <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Tx Hash</th>
+                                    <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Action Type</th>
+                                    <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Value/Payload</th>
+                                    <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Status</th>
+                                    <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider text-right">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {recentTransactions.map((tx, i) => (
+                                    <motion.tr
+                                        key={i}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ delay: i * 0.04 }}
+                                        className="border-b border-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.02)] transition-colors group/row cursor-pointer"
+                                    >
+                                        <td className="py-4 px-4 text-[13px] font-mono font-medium text-ios-blue cursor-pointer hover:underline flex items-center gap-2">
+                                            {tx.hash} 
+                                            <Copy className="w-3 h-3 text-[#8E8E93] opacity-0 group-hover/row:opacity-100 transition-opacity" />
+                                        </td>
+                                        <td className="py-4 px-4">
+                                            <span className="inline-block px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider" style={{ backgroundColor: (typeColors[tx.type] || '#636366') + '20', color: typeColors[tx.type] || '#636366' }}>
+                                                {tx.type}
+                                            </span>
+                                        </td>
+                                        <td className="py-4 px-4 text-[13px] text-white">
+                                            {tx.value}
+                                        </td>
+                                        <td className="py-4 px-4">
+                                            <div className="flex items-center gap-1.5">
+                                                {tx.status === 'Confirmed' ? (
+                                                    <CheckCircle className="w-4 h-4 text-ios-green" strokeWidth={2} />
+                                                ) : (
+                                                    <Clock className="w-4 h-4 text-ios-orange animate-pulse" strokeWidth={2} />
+                                                )}
+                                                <span className={\`text-[12px] font-bold \${tx.status === 'Confirmed' ? 'text-ios-green' : 'text-ios-orange'}\`}>
+                                                    {tx.status}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td className="py-4 px-4 text-right text-[12px] text-[#8E8E93]">
+                                            {tx.time}
+                                        </td>
+                                    </motion.tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </motion.div>
+
+                {/* ───── SMART CONTRACTS INFO ───── */}
+                <motion.div variants={item} className="w-full flex flex-col gap-6">
+                    <div className="liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-ios-indigo/10 blur-[50px] rounded-full pointer-events-none"></div>
+                        
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center gap-2">
+                                <FileCode className="w-5 h-5 text-ios-indigo" />
+                                <h3 className="text-[18px] font-bold text-white tracking-tight">Verified Contracts</h3>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3">
+                            {smartContracts.map((contract, i) => (
+                                <div key={i} className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-[16px] p-4 hover:bg-[rgba(255,255,255,0.06)] transition-colors group">
+                                    <div className="flex items-start justify-between mb-2">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[18px]">{contract.icon}</span>
+                                            <h4 className="text-[14px] font-semibold text-white tracking-tight group-hover:text-ios-blue transition-colors">
+                                                {contract.name}
+                                            </h4>
                                         </div>
-                                    </td>
-                                    <td className="py-3 px-3">
-                                        <span className="ios-badge" style={{
-                                            backgroundColor: (typeColors[tx.type] || '#636366') + '14',
-                                            color: typeColors[tx.type] || '#636366',
-                                        }}>
-                                            {tx.type}
+                                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-md bg-[rgba(52,199,89,0.1)] text-ios-green uppercase">
+                                            {contract.status}
                                         </span>
-                                    </td>
-                                    <td className="py-3 px-3 text-[12px] text-label-secondary">{tx.value}</td>
-                                    <td className="py-3 px-3 text-[12px] text-label-tertiary font-mono">{tx.block.toLocaleString()}</td>
-                                    <td className="py-3 px-3 text-[12px] text-label-tertiary">{tx.gas}</td>
-                                    <td className="py-3 px-3">
-                                        <div className="flex items-center gap-1">
-                                            {tx.status === 'confirmed' ? (
-                                                <CheckCircle className="w-3.5 h-3.5 text-ios-green" strokeWidth={1.8} />
-                                            ) : (
-                                                <Clock className="w-3.5 h-3.5 text-ios-orange animate-pulse-soft" strokeWidth={1.8} />
-                                            )}
-                                            <span className={`text-[11px] font-medium ${tx.status === 'confirmed' ? 'text-ios-green' : 'text-ios-orange'}`}>
-                                                {tx.status}
+                                    </div>
+                                    <div className="flex flex-col gap-1.5 mt-3">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[11px] text-[#8E8E93] uppercase">Address</span>
+                                            <span className="text-[12px] font-mono text-white flex items-center gap-1">
+                                                {contract.address} <ExternalLink className="w-3 h-3 text-[#8E8E93]" />
                                             </span>
                                         </div>
-                                    </td>
-                                    <td className="py-3 px-3 text-[11px] text-label-quaternary">{tx.time}</td>
-                                </motion.tr>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[11px] text-[#8E8E93] uppercase">Version / Calls</span>
+                                            <span className="text-[12px] text-white font-medium">
+                                                {contract.version} <span className="text-[rgba(255,255,255,0.2)] mx-1">|</span> {contract.calls}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             ))}
-                        </tbody>
-                    </table>
-                </div>
-            </motion.div>
-
-            {/* ZK-Proof Section */}
-            <motion.div variants={item} className="ios-card p-5">
-                <div className="flex items-center gap-2 mb-3">
-                    <Lock className="w-4 h-4 text-ios-indigo" strokeWidth={1.8} />
-                    <h3 className="text-[15px] font-semibold text-white">Zero-Knowledge Proofs</h3>
-                </div>
-                <p className="text-[13px] text-label-secondary mb-4 max-w-2xl">
-                    All reputation scores and sensitive details are verified using ZK-proofs for privacy with trustless verification.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    {[
-                        { label: 'Proofs Generated', value: '45,612', desc: 'ZK-SNARKs created' },
-                        { label: 'Verification Time', value: '< 200ms', desc: 'Average proof verification' },
-                        { label: 'Privacy Level', value: 'Maximum', desc: 'Full confidentiality' },
-                    ].map((stat, i) => (
-                        <div key={i} className="p-4 rounded-[12px] bg-fill-quaternary">
-                            <p className="text-[17px] font-bold text-white">{stat.value}</p>
-                            <p className="text-[12px] text-label-secondary mt-0.5">{stat.label}</p>
-                            <p className="text-[11px] text-label-quaternary mt-1">{stat.desc}</p>
                         </div>
-                    ))}
-                </div>
-            </motion.div>
+                    </div>
+                </motion.div>
+
+            </div>
         </motion.div>
     );
 }
