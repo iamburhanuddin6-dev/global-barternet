@@ -1,4 +1,3 @@
-
 'use client';
 
 import dynamic from 'next/dynamic';
@@ -8,21 +7,22 @@ import { useEffect } from 'react';
 import { useBarterStore } from '@/store/barterStore';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
-import DashboardPage from '@/components/dashboard/DashboardPage';
-import ExchangePage from '@/components/exchange/ExchangePage';
-import AIAgentsPage from '@/components/agents/AIAgentsPage';
-import AnalyticsPage from '@/components/analytics/AnalyticsPage';
-import ReputationPage from '@/components/reputation/ReputationPage';
-import BlockchainPage from '@/components/blockchain/BlockchainPage';
-import TradesPage from '@/components/trades/TradesPage';
-import ResourcesPage from '@/components/resources/ResourcesPage';
-import SettingsPage from '@/components/settings/SettingsPage';
 import { Loader2 } from 'lucide-react';
 
 const ParticleField = dynamic(
   () => import('@/components/effects/ParticleField'),
   { ssr: false }
 );
+
+const DashboardPage = dynamic(() => import('@/components/dashboard/DashboardPage'), { ssr: false });
+const ExchangePage = dynamic(() => import('@/components/exchange/ExchangePage'), { ssr: false });
+const AIAgentsPage = dynamic(() => import('@/components/agents/AIAgentsPage'), { ssr: false });
+const AnalyticsPage = dynamic(() => import('@/components/analytics/AnalyticsPage'), { ssr: false });
+const ReputationPage = dynamic(() => import('@/components/reputation/ReputationPage'), { ssr: false });
+const BlockchainPage = dynamic(() => import('@/components/blockchain/BlockchainPage'), { ssr: false });
+const TradesPage = dynamic(() => import('@/components/trades/TradesPage'), { ssr: false });
+const ResourcesPage = dynamic(() => import('@/components/resources/ResourcesPage'), { ssr: false });
+const SettingsPage = dynamic(() => import('@/components/settings/SettingsPage'), { ssr: false });
 
 function PageContent() {
   const { activeTab } = useBarterStore();
