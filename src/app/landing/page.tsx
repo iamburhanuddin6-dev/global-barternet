@@ -160,7 +160,7 @@ export default function LandingPage() {
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+    <div className="min-h-screen bg-background text-label-primary overflow-x-hidden">
       {/* ═══ NAVBAR ═══ */}
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
@@ -171,7 +171,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/landing" className="flex items-center gap-2.5 group">
             <div className="w-8 h-8 rounded-[10px] bg-ios-blue flex items-center justify-center shadow-[0_0_20px_rgba(0,122,255,0.3)]">
-              <Zap className="w-4 h-4 text-white" />
+              <Zap className="w-4 h-4 text-label-primary" />
             </div>
             <span className="text-[17px] font-bold tracking-tight">
               Global <span className="text-ios-blue">BarterNet</span>
@@ -180,19 +180,19 @@ export default function LandingPage() {
 
           <div className="hidden md:flex items-center gap-8">
             {['Features', 'How it Works', 'AI Engine', 'Blockchain'].map((link) => (
-              <a key={link} href={`#${link.toLowerCase().replace(/ /g, '-')}`} className="text-[14px] text-label-secondary hover:text-white transition-colors font-medium">
+              <a key={link} href={`#${link.toLowerCase().replace(/ /g, '-')}`} className="text-[14px] text-label-secondary hover:text-label-primary transition-colors font-medium">
                 {link}
               </a>
             ))}
           </div>
 
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-[14px] text-label-secondary hover:text-white font-medium transition-colors hidden sm:block">
+            <Link href="/login" className="text-[14px] text-label-secondary hover:text-label-primary font-medium transition-colors hidden sm:block">
               Sign In
             </Link>
             <Link
               href="/register"
-              className="bg-ios-blue text-white text-[14px] font-semibold px-5 py-2 rounded-full hover:opacity-90 active:scale-[0.97] transition-all shadow-[0_0_20px_rgba(0,122,255,0.25)]"
+              className="bg-ios-blue text-label-primary text-[14px] font-semibold px-5 py-2 rounded-full hover:opacity-90 active:scale-[0.97] transition-all shadow-[0_0_20px_rgba(0,122,255,0.25)]"
             >
               Launch App
             </Link>
@@ -251,12 +251,12 @@ export default function LandingPage() {
           >
             <Link
               href="/register"
-              className="group bg-ios-blue text-white text-[16px] font-semibold px-8 py-3.5 rounded-[14px] hover:opacity-90 active:scale-[0.97] transition-all flex items-center gap-2 shadow-[0_4px_30px_rgba(0,122,255,0.35)]"
+              className="group bg-ios-blue text-label-primary text-[16px] font-semibold px-8 py-3.5 rounded-[14px] hover:opacity-90 active:scale-[0.97] transition-all flex items-center gap-2 shadow-[0_4px_30px_rgba(0,122,255,0.35)]"
             >
               Start Trading
               <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
-            <button className="liquid-glass-btn text-white text-[16px] font-semibold px-8 py-3.5 rounded-[14px] flex items-center gap-2">
+            <button className="liquid-glass-btn text-label-primary text-[16px] font-semibold px-8 py-3.5 rounded-[14px] flex items-center gap-2">
               <Play className="w-4 h-4 text-ios-blue" />
               Watch Demo
             </button>
@@ -282,7 +282,7 @@ export default function LandingPage() {
               >
                 <span className="text-[20px]">{card.icon}</span>
                 <div className="text-left">
-                  <p className="text-[13px] font-medium text-white">{card.label}</p>
+                  <p className="text-[13px] font-medium text-label-primary">{card.label}</p>
                   <p className="text-[11px] text-label-tertiary">{card.sub}</p>
                 </div>
               </motion.div>
@@ -373,7 +373,7 @@ export default function LandingPage() {
                 >
                   <f.icon className="w-6 h-6" style={{ color: f.color }} strokeWidth={1.5} />
                 </div>
-                <h3 className="text-[18px] font-semibold text-white mb-2">{f.title}</h3>
+                <h3 className="text-[18px] font-semibold text-label-primary mb-2">{f.title}</h3>
                 <p className="text-[14px] text-label-secondary leading-relaxed">{f.desc}</p>
               </motion.div>
             ))}
@@ -416,7 +416,7 @@ export default function LandingPage() {
                 <div className="w-10 h-10 rounded-[12px] bg-ios-blue/12 flex items-center justify-center mb-4">
                   <span className="text-[16px] font-bold text-ios-blue">{step.num}</span>
                 </div>
-                <h3 className="text-[17px] font-semibold text-white mb-2">{step.title}</h3>
+                <h3 className="text-[17px] font-semibold text-label-primary mb-2">{step.title}</h3>
                 <p className="text-[13px] text-label-secondary leading-relaxed">{step.desc}</p>
                 {i < steps.length - 1 && (
                   <div className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-20">
@@ -458,7 +458,7 @@ export default function LandingPage() {
                   <div key={agent.name} className="liquid-glass-card p-4 rounded-[16px] flex items-center gap-3">
                     <span className="text-[24px]">{agent.emoji}</span>
                     <div>
-                      <p className="text-[14px] font-semibold text-white">{agent.name}</p>
+                      <p className="text-[14px] font-semibold text-label-primary">{agent.name}</p>
                       <p className="text-[11px]" style={{ color: agent.color }}>{agent.role}</p>
                     </div>
                   </div>
@@ -539,10 +539,10 @@ export default function LandingPage() {
                 className="liquid-glass-card p-7 rounded-[20px]"
               >
                 <card.icon className="w-8 h-8 mb-4" style={{ color: card.color }} strokeWidth={1.5} />
-                <h3 className="text-[18px] font-semibold text-white mb-2">{card.title}</h3>
+                <h3 className="text-[18px] font-semibold text-label-primary mb-2">{card.title}</h3>
                 <p className="text-[14px] text-label-secondary leading-relaxed mb-5">{card.desc}</p>
                 <div className="pt-4 border-t border-separator">
-                  <p className="text-[28px] font-bold text-white">{card.value}</p>
+                  <p className="text-[28px] font-bold text-label-primary">{card.value}</p>
                   <p className="text-[12px] text-label-tertiary mt-0.5">{card.label}</p>
                 </div>
               </motion.div>
@@ -573,7 +573,7 @@ export default function LandingPage() {
             <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
               <Link
                 href="/register"
-                className="group bg-ios-blue text-white text-[17px] font-bold px-10 py-4 rounded-[16px] hover:opacity-90 active:scale-[0.97] transition-all flex items-center gap-2 shadow-[0_6px_40px_rgba(0,122,255,0.4)]"
+                className="group bg-ios-blue text-label-primary text-[17px] font-bold px-10 py-4 rounded-[16px] hover:opacity-90 active:scale-[0.97] transition-all flex items-center gap-2 shadow-[0_6px_40px_rgba(0,122,255,0.4)]"
               >
                 Join the Network
                 <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -590,7 +590,7 @@ export default function LandingPage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-7 h-7 rounded-[8px] bg-ios-blue flex items-center justify-center">
-                  <Zap className="w-3.5 h-3.5 text-white" />
+                  <Zap className="w-3.5 h-3.5 text-label-primary" />
                 </div>
                 <span className="text-[15px] font-bold">Global BarterNet</span>
               </div>
@@ -608,7 +608,7 @@ export default function LandingPage() {
                 <ul className="space-y-2.5">
                   {col.links.map((link) => (
                     <li key={link}>
-                      <a href="#" className="text-[14px] text-label-secondary hover:text-white transition-colors">{link}</a>
+                      <a href="#" className="text-[14px] text-label-secondary hover:text-label-primary transition-colors">{link}</a>
                     </li>
                   ))}
                 </ul>
@@ -619,7 +619,7 @@ export default function LandingPage() {
             <p className="text-[12px] text-label-quaternary">© 2026 Global BarterNet. All rights reserved.</p>
             <div className="flex items-center gap-4 mt-4 md:mt-0">
               {[Github, Twitter, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="text-label-quaternary hover:text-white transition-colors">
+                <a key={i} href="#" className="text-label-quaternary hover:text-label-primary transition-colors">
                   <Icon className="w-4 h-4" />
                 </a>
               ))}

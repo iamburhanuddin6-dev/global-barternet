@@ -65,7 +65,7 @@ export default function Home() {
   // Loading state
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center ios-ambient">
+      <div className="min-h-screen bg-background flex items-center justify-center ios-ambient">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="w-8 h-8 text-ios-blue animate-spin" />
           <p className="text-[#8E8E93] text-[15px]">Loading BarterNet...</p>
@@ -80,7 +80,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-black relative">
+    <div className="min-h-screen bg-background relative">
       {/* Subtle ambient background */}
       <ParticleField />
       <div className="fixed inset-0 ios-ambient pointer-events-none z-[1]" />

@@ -59,23 +59,23 @@ export default function AnalyticsPage() {
         <motion.div variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto space-y-6">
             
             {/* ----- HEADER & CONTROLS ----- */}
-            <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
+            <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[var(--liquid-glass-border)] pb-6">
                 <div>
-                    <h1 className="text-[28px] font-bold text-white tracking-tight flex items-center gap-3">
+                    <h1 className="text-[28px] font-bold text-label-primary tracking-tight flex items-center gap-3">
                         <BarChart3 className="w-6 h-6 text-ios-teal" /> 
                         Analytics & Insights
                     </h1>
                     <p className="text-[#8E8E93] text-[15px] mt-1">Deep analysis of your trading activity and network metrics.</p>
                 </div>
                 <div className="flex items-center gap-4">
-                    <div className="flex bg-[rgba(255,255,255,0.05)] rounded-[12px] p-1 border border-[rgba(255,255,255,0.05)]">
+                    <div className="flex bg-[var(--liquid-glass-bg)] rounded-[12px] p-1 border border-[var(--liquid-glass-border)]">
                         {['7D', '30D', '90D', '1Y'].map((range, i) => (
-                            <button key={range} className={`px-4 py-2 text-[13px] font-semibold rounded-[10px] transition-all ${i === 1 ? 'bg-[rgba(255,255,255,0.1)] text-white shadow-md' : 'text-[#8E8E93] hover:text-white'}`}>
+                            <button key={range} className={`px-4 py-2 text-[13px] font-semibold rounded-[10px] transition-all ${i === 1 ? 'bg-[rgba(255,255,255,0.1)] text-label-primary shadow-md' : 'text-[#8E8E93] hover:text-label-primary'}`}>
                                 {range}
                             </button>
                         ))}
                     </div>
-                    <button className="flex items-center justify-center w-10 h-10 bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] text-white rounded-[12px] hover:bg-[rgba(255,255,255,0.1)] transition-colors">
+                    <button className="flex items-center justify-center w-10 h-10 bg-[var(--liquid-glass-bg)] border border-[rgba(255,255,255,0.1)] text-label-primary rounded-[12px] hover:bg-[rgba(255,255,255,0.1)] transition-colors">
                         <Download className="w-4 h-4" />
                     </button>
                 </div>
@@ -89,7 +89,7 @@ export default function AnalyticsPage() {
                     { title: 'Avg Match Score', value: '94.2%', change: 1.2, period: 'vs last 30d', icon: Users, color: '#AF52DE' },
                     { title: 'Network Reach', value: '156', change: -2.4, period: 'countries', icon: Globe, color: '#FF9500' },
                 ].map((stat, i) => (
-                    <motion.div key={i} variants={item} className="liquid-glass-card rounded-[20px] p-5 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative group overflow-hidden">
+                    <motion.div key={i} variants={item} className="liquid-glass-card rounded-[20px] p-5 border border-[var(--liquid-glass-border)] bg-[rgba(20,20,22,0.4)] relative group overflow-hidden">
                         <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stat.color }}></div>
                         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                         
@@ -97,13 +97,13 @@ export default function AnalyticsPage() {
                             <div className="w-12 h-12 rounded-[14px] flex items-center justify-center border border-[rgba(255,255,255,0.1)] shadow-inner" style={{ backgroundColor: stat.color + '15' }}>
                                 <stat.icon className="w-6 h-6" style={{ color: stat.color }} />
                             </div>
-                            <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[12px] font-bold bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] ${stat.change >= 0 ? 'text-ios-green' : 'text-ios-orange'}`}>
+                            <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[12px] font-bold bg-[var(--liquid-glass-bg)] border border-[var(--liquid-glass-border)] ${stat.change >= 0 ? 'text-ios-green' : 'text-ios-orange'}`}>
                                 {stat.change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                                 {Math.abs(stat.change)}%
                             </div>
                         </div>
                         <div className="mt-4">
-                            <h3 className="text-[28px] font-bold text-white tracking-tight">{stat.value}</h3>
+                            <h3 className="text-[28px] font-bold text-label-primary tracking-tight">{stat.value}</h3>
                             <div className="flex items-center justify-between mt-1">
                                 <p className="text-[13px] text-[#8E8E93] font-medium">{stat.title}</p>
                                 <p className="text-[11px] text-[#8E8E93] uppercase">{stat.period}</p>
@@ -117,10 +117,10 @@ export default function AnalyticsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Volume Area Chart */}
-                <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden group">
+                <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[var(--liquid-glass-border)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-ios-blue/10 blur-[100px] rounded-full pointer-events-none -mt-40 -mr-40 group-hover:bg-ios-blue/20 transition-colors duration-1000"></div>
                     <div className="mb-6 z-10 relative">
-                        <h3 className="text-[18px] font-bold text-white tracking-tight">Trade Volume Over Time</h3>
+                        <h3 className="text-[18px] font-bold text-label-primary tracking-tight">Trade Volume Over Time</h3>
                         <p className="text-[13px] text-[#8E8E93]">Total network transaction value in Barter Credits</p>
                     </div>
                     <div className="h-[300px] w-full z-10 relative">
@@ -133,11 +133,11 @@ export default function AnalyticsPage() {
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                                <XAxis dataKey="name" stroke="#8E8E93" fontSize={12} tickLine={false} axisLine={false} dy={10} />
-                                <YAxis stroke="#8E8E93" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val/1000}k`} />
+                                <XAxis dataKey="name" stroke="var(--text-secondary)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+                                <YAxis stroke="var(--text-secondary)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val/1000}k`} />
                                 <Tooltip 
-                                    contentStyle={{ backgroundColor: 'rgba(20,20,22,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                                    itemStyle={{ color: '#fff', fontWeight: 'bold' }}
+                                    contentStyle={{ backgroundColor: 'var(--background-elevated)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                                    itemStyle={{ color: 'var(--text-primary)', fontWeight: 'bold' }}
                                     cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 1, strokeDasharray: '4 4' }}
                                 />
                                 <Area type="monotone" dataKey="value" stroke="#007AFF" strokeWidth={4} fillOpacity={1} fill="url(#colorNetVol)" activeDot={{ r: 8, fill: '#007AFF', stroke: '#1C1C1E', strokeWidth: 3 }} />
@@ -147,9 +147,9 @@ export default function AnalyticsPage() {
                 </motion.div>
 
                 {/* Match Score Distribution Histogram */}
-                <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative">
+                <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 border border-[var(--liquid-glass-border)] bg-[rgba(20,20,22,0.4)] relative">
                     <div className="mb-6">
-                        <h3 className="text-[18px] font-bold text-white tracking-tight">Match Score Distribution</h3>
+                        <h3 className="text-[18px] font-bold text-label-primary tracking-tight">Match Score Distribution</h3>
                         <p className="text-[13px] text-[#8E8E93]">AI accuracy histogram</p>
                     </div>
                     <div className="h-[300px] w-full">
@@ -162,11 +162,11 @@ export default function AnalyticsPage() {
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                                <XAxis dataKey="name" stroke="#8E8E93" fontSize={11} tickLine={false} axisLine={false} dy={10} />
-                                <YAxis stroke="#8E8E93" fontSize={11} tickLine={false} axisLine={false} />
+                                <XAxis dataKey="name" stroke="var(--text-secondary)" fontSize={11} tickLine={false} axisLine={false} dy={10} />
+                                <YAxis stroke="var(--text-secondary)" fontSize={11} tickLine={false} axisLine={false} />
                                 <Tooltip 
                                     cursor={{ fill: 'rgba(255,255,255,0.05)' }} 
-                                    contentStyle={{ backgroundColor: 'rgba(20,20,22,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                                    contentStyle={{ backgroundColor: 'var(--background-elevated)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
                                 />
                                 <Bar dataKey="value" fill="url(#colorBar)" radius={[6, 6, 0, 0]} barSize={32} />
                             </BarChart>
@@ -180,9 +180,9 @@ export default function AnalyticsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Donut Chart */}
-                <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden">
+                <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 border border-[var(--liquid-glass-border)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden">
                      <div className="mb-6">
-                        <h3 className="text-[18px] font-bold text-white tracking-tight">Category Distribution</h3>
+                        <h3 className="text-[18px] font-bold text-label-primary tracking-tight">Category Distribution</h3>
                         <p className="text-[13px] text-[#8E8E93]">Top traded resources by volume</p>
                     </div>
                     <div className="h-[240px] w-full relative">
@@ -198,24 +198,24 @@ export default function AnalyticsPage() {
                                         <Cell key={`cell-${index}`} fill={entry.color} />
                                     ))}
                                 </Pie>
-                                <Tooltip contentStyle={{ backgroundColor: 'rgba(20,20,22,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }} />
+                                <Tooltip contentStyle={{ backgroundColor: 'var(--background-elevated)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }} />
                             </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-4">
-                            <span className="text-[32px] font-bold text-white tracking-tight">100%</span>
+                            <span className="text-[32px] font-bold text-label-primary tracking-tight">100%</span>
                             <span className="text-[11px] text-[#8E8E93] font-semibold uppercase tracking-widest mt-0.5">Total Share</span>
                         </div>
                     </div>
                 </motion.div>
 
                 {/* Top Trading Partners */}
-                <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative">
+                <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[var(--liquid-glass-border)] bg-[rgba(20,20,22,0.4)] relative">
                     <div className="mb-6 flex items-center justify-between">
                         <div>
-                            <h3 className="text-[18px] font-bold text-white tracking-tight">Top Trading Partners</h3>
+                            <h3 className="text-[18px] font-bold text-label-primary tracking-tight">Top Trading Partners</h3>
                             <p className="text-[13px] text-[#8E8E93]">Users with highest successful exchange volume</p>
                         </div>
-                        <button className="bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] text-white text-[13px] font-medium px-4 py-2 rounded-[10px] transition-colors border border-[rgba(255,255,255,0.05)]">
+                        <button className="bg-[var(--liquid-glass-bg)] hover:bg-[rgba(255,255,255,0.1)] text-label-primary text-[13px] font-medium px-4 py-2 rounded-[10px] transition-colors border border-[var(--liquid-glass-border)]">
                             View Leaderboard
                         </button>
                     </div>
@@ -223,7 +223,7 @@ export default function AnalyticsPage() {
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="border-b border-[rgba(255,255,255,0.06)]">
+                                <tr className="border-b border-[var(--liquid-glass-border)]">
                                     <th className="py-3 px-4 text-[11px] font-medium text-[#8E8E93] uppercase tracking-wider">Partner</th>
                                     <th className="py-3 px-4 text-[11px] font-medium text-[#8E8E93] uppercase tracking-wider">Volume (30D)</th>
                                     <th className="py-3 px-4 text-[11px] font-medium text-[#8E8E93] uppercase tracking-wider">Trades</th>
@@ -233,21 +233,21 @@ export default function AnalyticsPage() {
                             </thead>
                             <tbody>
                                 {partnersData.map((partner, i) => (
-                                    <tr key={i} className="border-b border-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.02)] transition-colors">
-                                        <td className="py-4 px-4 text-white font-medium flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] flex items-center justify-center border border-[rgba(255,255,255,0.1)] text-[11px] text-white">
+                                    <tr key={i} className="border-b border-[var(--liquid-glass-border)] hover:bg-[rgba(255,255,255,0.02)] transition-colors">
+                                        <td className="py-4 px-4 text-label-primary font-medium flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] flex items-center justify-center border border-[rgba(255,255,255,0.1)] text-[11px] text-label-primary">
                                                 {partner.name[0]}
                                             </div>
                                             {partner.name}
                                         </td>
-                                        <td className="py-4 px-4 text-white font-bold">{partner.volume}</td>
+                                        <td className="py-4 px-4 text-label-primary font-bold">{partner.volume}</td>
                                         <td className="py-4 px-4 text-[#EBEBF5]">{partner.trades}</td>
                                         <td className="py-4 px-4">
                                             <div className="flex items-center gap-2">
                                                 <div className="w-16 bg-[rgba(255,255,255,0.1)] h-1.5 rounded-full overflow-hidden">
                                                     <div className="h-full bg-[#AF52DE] rounded-full" style={{ width: `${partner.score}%` }}></div>
                                                 </div>
-                                                <span className="text-[12px] text-white">{partner.score}%</span>
+                                                <span className="text-[12px] text-label-primary">{partner.score}%</span>
                                             </div>
                                         </td>
                                         <td className={`py-4 px-4 text-[13px] font-bold text-right ${partner.trend.startsWith('+') ? 'text-ios-green' : 'text-ios-red'}`}>

@@ -121,7 +121,7 @@ const achievements = [
    DASHBOARD PAGE
 ═══════════════════════════════════ */
 export default function DashboardPage() {
-  const { metrics, fetchMetrics, fetchResources } = useBarterStore();
+  const { metrics, exchanges, fetchMetrics, fetchResources, fetchExchanges } = useBarterStore();
   const { data: session } = useSession();
   const [selectedRange, setSelectedRange] = useState('7D');
   const [greeting, setGreeting] = useState('');
@@ -129,7 +129,8 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchMetrics();
     fetchResources({ limit: 6 });
-  }, [fetchMetrics, fetchResources]);
+    fetchExchanges({ limit: 4 });
+  }, [fetchMetrics, fetchResources, fetchExchanges]);
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -140,13 +141,56 @@ export default function DashboardPage() {
 
   const userName = session?.user?.name?.split(' ')[0] || 'Trader';
 
+  // Dynamic DB Metrics with Mock Data fallback for visually appealing Client Demo when empty
+  const isDBEmpty = metrics.networkValue === 0 && metrics.activeUsers === 0;
+
   const kpiCards = [
-    { title: 'Network Value', value: '$2.4B', numericValue: 2.4, suffix: 'B', change: 12.5, icon: DollarSign, color: '#007AFF', gradient: 'from-[#007AFF]/20 to-[#007AFF]/5' },
-    { title: 'Active Users', value: '24,891', numericValue: 24891, change: 8.2, icon: Users, color: '#5AC8FA', gradient: 'from-[#5AC8FA]/20 to-[#5AC8FA]/5' },
-    { title: 'Exchange Volume', value: '1,247', numericValue: 1247, change: 15.3, icon: ArrowLeftRight, color: '#34C759', gradient: 'from-[#34C759]/20 to-[#34C759]/5' },
-    { title: 'AI Match Rate', value: '99.7%', numericValue: 99.7, change: 0.5, icon: Brain, color: '#AF52DE', gradient: 'from-[#AF52DE]/20 to-[#AF52DE]/5' },
-    { title: 'Avg Match Time', value: '0.8s', numericValue: 0.8, suffix: 's', change: -12.4, icon: Timer, color: '#FF9500', gradient: 'from-[#FF9500]/20 to-[#FF9500]/5' },
+    { 
+      title: 'Network Value', 
+      value: isDBEmpty ? '$2.4B' : `$${(metrics.networkValue / 1000).toFixed(1)}K`, 
+      numericValue: isDBEmpty ? 2.4 : metrics.networkValue, 
+      suffix: isDBEmpty ? 'B' : 'K', 
+      change: isDBEmpty ? 12.5 : metrics.networkValueChange, 
+      icon: DollarSign, color: 'var(--ios-blue)', gradient: 'from-[#007AFF]/20 to-[#007AFF]/5' 
+    },
+    { 
+      title: 'Active Users', 
+      value: isDBEmpty ? '24,891' : metrics.activeUsers.toLocaleString(), 
+      numericValue: isDBEmpty ? 24891 : metrics.activeUsers, 
+      change: isDBEmpty ? 8.2 : metrics.activeUsersChange, 
+      icon: Users, color: 'var(--ios-teal)', gradient: 'from-[#5AC8FA]/20 to-[#5AC8FA]/5' 
+    },
+    { 
+      title: 'Exchange Volume', 
+      value: isDBEmpty ? '1,247' : metrics.exchangeVolume.toLocaleString(), 
+      numericValue: isDBEmpty ? 1247 : metrics.exchangeVolume, 
+      change: isDBEmpty ? 15.3 : metrics.volumeChange, 
+      icon: ArrowLeftRight, color: 'var(--ios-green)', gradient: 'from-[#34C759]/20 to-[#34C759]/5' 
+    },
+    { 
+      title: 'AI Match Rate', 
+      value: isDBEmpty ? '99.7%' : `${metrics.aiEfficiency}%`, 
+      numericValue: isDBEmpty ? 99.7 : metrics.aiEfficiency, 
+      change: isDBEmpty ? 0.5 : metrics.efficiencyChange, 
+      icon: Brain, color: 'var(--ios-purple)', gradient: 'from-[#AF52DE]/20 to-[#AF52DE]/5' 
+    },
+    { 
+      title: 'Avg Match Time', 
+      value: isDBEmpty ? '0.8s' : `${metrics.avgMatchTime}s`, 
+      numericValue: isDBEmpty ? 0.8 : metrics.avgMatchTime, 
+      suffix: 's', 
+      change: isDBEmpty ? -12.4 : metrics.matchTimeChange, 
+      icon: Timer, color: 'var(--ios-orange)', gradient: 'from-[#FF9500]/20 to-[#FF9500]/5' 
+    },
   ];
+
+  const dynamicRecentTrades = isDBEmpty || exchanges.length === 0 ? recentTrades : exchanges.slice(0, 4).map(e => ({
+    traders: [e.sender?.name || 'Unknown', e.receiver?.name || 'Unknown'],
+    pair: `${e.offeredResource?.name || 'Resource'} ↔ ${e.requestedResource?.name || 'Resource'}`,
+    score: e.aiMatchScore || 0,
+    status: e.status.charAt(0).toUpperCase() + e.status.slice(1),
+    time: new Date(e.createdAt).toLocaleDateString()
+  }));
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-6 max-w-[1400px] mx-auto">
@@ -169,7 +213,7 @@ export default function DashboardPage() {
               <PulseDot color="#34C759" />
               <span className="text-[12px] font-medium text-ios-green uppercase tracking-wider">Network Active</span>
             </motion.div>
-            <h1 className="text-[32px] md:text-[38px] font-extrabold text-white tracking-tight leading-tight">
+            <h1 className="text-[32px] md:text-[38px] font-extrabold text-label-primary tracking-tight leading-tight">
               {greeting}, <span className="bg-gradient-to-r from-ios-blue via-ios-purple to-ios-teal bg-clip-text text-transparent">{userName}</span>
             </h1>
             <p className="text-[#8E8E93] text-[16px] mt-2 max-w-md leading-relaxed">
@@ -179,7 +223,7 @@ export default function DashboardPage() {
               <motion.button 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-ios-blue text-white text-[14px] font-semibold px-6 py-2.5 rounded-[14px] flex items-center gap-2 shadow-[0_4px_20px_rgba(0,122,255,0.3)] hover:shadow-[0_6px_30px_rgba(0,122,255,0.4)] transition-shadow"
+                className="bg-ios-blue text-label-primary text-[14px] font-semibold px-6 py-2.5 rounded-[14px] flex items-center gap-2 shadow-[0_4px_20px_rgba(0,122,255,0.3)] hover:shadow-[0_6px_30px_rgba(0,122,255,0.4)] transition-shadow"
               >
                 <Sparkles className="w-4 h-4" />
                 Find Matches
@@ -187,7 +231,7 @@ export default function DashboardPage() {
               <motion.button 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="liquid-glass-btn text-white text-[14px] font-medium px-6 py-2.5 rounded-[14px] flex items-center gap-2"
+                className="liquid-glass-btn text-label-primary text-[14px] font-medium px-6 py-2.5 rounded-[14px] flex items-center gap-2"
               >
                 <Globe className="w-4 h-4 text-ios-teal" />
                 Explore Market
@@ -210,7 +254,7 @@ export default function DashboardPage() {
                 className="liquid-glass-card px-5 py-4 rounded-[18px] min-w-[130px]"
               >
                 <stat.icon className="w-4 h-4 mb-2" style={{ color: stat.color }} />
-                <p className="text-[22px] font-bold text-white tracking-tight">{stat.value}</p>
+                <p className="text-[22px] font-bold text-label-primary tracking-tight">{stat.value}</p>
                 <div className="flex items-center justify-between mt-1">
                   <p className="text-[11px] text-[#8E8E93]">{stat.label}</p>
                   <span className="text-[10px] text-ios-green font-medium">{stat.change}</span>
@@ -233,12 +277,12 @@ export default function DashboardPage() {
                 <div className="w-10 h-10 rounded-[12px] flex items-center justify-center" style={{ backgroundColor: kpi.color + '15' }}>
                   <kpi.icon className="w-5 h-5" style={{ color: kpi.color }} strokeWidth={1.8} />
                 </div>
-                <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[12px] font-medium bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] ${kpi.change >= 0 ? 'text-ios-green' : 'text-ios-red'}`}>
+                <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[12px] font-medium bg-[var(--liquid-glass-bg)] border border-[var(--liquid-glass-border)] ${kpi.change >= 0 ? 'text-ios-green' : 'text-ios-red'}`}>
                   {kpi.change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                   {Math.abs(kpi.change)}%
                 </div>
               </div>
-              <p className="text-[24px] font-bold text-white tracking-tight">{kpi.value}</p>
+              <p className="text-[24px] font-bold text-label-primary tracking-tight">{kpi.value}</p>
               <p className="text-[13px] text-[#8E8E93] font-medium mt-0.5">{kpi.title}</p>
             </div>
           </motion.div>
@@ -253,21 +297,21 @@ export default function DashboardPage() {
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-[16px] font-semibold text-white flex items-center gap-2">
+              <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2">
                 <Activity className="w-4 h-4 text-ios-blue" />
                 Network Activity
               </h3>
               <p className="text-[13px] text-[#8E8E93] mt-0.5">Trade volume & activity over the last 7 days</p>
             </div>
-            <div className="flex bg-[rgba(255,255,255,0.05)] rounded-[10px] p-0.5 border border-[rgba(255,255,255,0.05)]">
+            <div className="flex bg-[var(--liquid-glass-bg)] rounded-[10px] p-0.5 border border-[var(--liquid-glass-border)]">
               {['1D', '7D', '1M'].map((range) => (
                 <button 
                   key={range} 
                   onClick={() => setSelectedRange(range)}
                   className={`px-3 py-1.5 text-[12px] font-medium rounded-[8px] transition-all ${
                     selectedRange === range 
-                      ? 'bg-ios-blue text-white shadow-md' 
-                      : 'text-[#8E8E93] hover:text-white'
+                      ? 'bg-ios-blue text-label-primary shadow-md' 
+                      : 'text-[#8E8E93] hover:text-label-primary'
                   }`}
                 >
                   {range}
@@ -285,11 +329,11 @@ export default function DashboardPage() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
-                <XAxis dataKey="name" stroke="#8E8E93" fontSize={12} tickLine={false} axisLine={false} dy={10} />
-                <YAxis stroke="#8E8E93" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `${val / 1000}k`} />
+                <XAxis dataKey="name" stroke="var(--text-secondary)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
+                <YAxis stroke="var(--text-secondary)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `${val / 1000}k`} />
                 <RechartsTooltip 
-                  contentStyle={{ backgroundColor: 'rgba(20,20,22,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', color: '#fff', padding: '12px 16px' }}
-                  itemStyle={{ color: '#fff' }}
+                  contentStyle={{ backgroundColor: 'var(--background-elevated)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', color: 'var(--text-primary)', padding: '12px 16px' }}
+                  itemStyle={{ color: 'var(--text-primary)' }}
                   cursor={{ stroke: 'rgba(0,122,255,0.3)', strokeWidth: 1, strokeDasharray: '4 4' }}
                 />
                 <Area type="monotone" dataKey="volume" stroke="#007AFF" strokeWidth={2.5} fillOpacity={1} fill="url(#colorVolume)" activeDot={{ r: 6, fill: '#007AFF', stroke: '#fff', strokeWidth: 2 }} />
@@ -301,7 +345,7 @@ export default function DashboardPage() {
         {/* Resource Distribution */}
         <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <h3 className="text-[16px] font-semibold text-white flex items-center gap-2">
+          <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2">
             <BarChart3 className="w-4 h-4 text-ios-purple" />
             Resource Distribution
           </h3>
@@ -315,21 +359,21 @@ export default function DashboardPage() {
                   ))}
                 </Pie>
                 <RechartsTooltip 
-                  contentStyle={{ backgroundColor: 'rgba(20,20,22,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                  itemStyle={{ color: '#fff' }}
+                  contentStyle={{ backgroundColor: 'var(--background-elevated)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                  itemStyle={{ color: 'var(--text-primary)' }}
                 />
               </PieChart>
             </ResponsiveContainer>
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-[28px] font-bold text-white">1.2K</span>
+              <span className="text-[28px] font-bold text-label-primary">1.2K</span>
               <span className="text-[11px] text-[#8E8E93] uppercase tracking-wider font-medium">Total Active</span>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3 mt-4">
             {distributionData.map(d => (
-              <div key={d.name} className="flex items-center gap-2 p-2 rounded-[10px] hover:bg-white/[0.03] transition-colors cursor-pointer">
+              <div key={d.name} className="flex items-center gap-2 p-2 rounded-[10px] hover:bg-[var(--liquid-glass-bg)] transition-colors cursor-pointer">
                 <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: d.color }} />
-                <span className="text-[13px] text-white">{d.name}</span>
+                <span className="text-[13px] text-label-primary">{d.name}</span>
                 <span className="text-[11px] text-[#636366] ml-auto">{d.value}</span>
               </div>
             ))}
@@ -344,7 +388,7 @@ export default function DashboardPage() {
         <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           <div className="flex items-center justify-between mb-5">
-            <h3 className="text-[16px] font-semibold text-white flex items-center gap-2">
+            <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2">
               <Bot className="w-4 h-4 text-ios-blue" />
               AI Agent Feed
             </h3>
@@ -357,7 +401,7 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 + i * 0.1 }}
-                className="flex items-start gap-3 p-3 rounded-[14px] bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.06)] transition-colors cursor-pointer border border-transparent hover:border-[rgba(255,255,255,0.06)]"
+                className="flex items-start gap-3 p-3 rounded-[14px] bg-[rgba(255,255,255,0.03)] hover:bg-[var(--liquid-glass-bg)] transition-colors cursor-pointer border border-transparent hover:border-[var(--liquid-glass-border)]"
               >
                 <span className="text-[18px] mt-0.5">{log.emoji}</span>
                 <div className="flex-1 min-w-0">
@@ -375,7 +419,7 @@ export default function DashboardPage() {
         {/* Weekly Performance Bar Chart */}
         <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <h3 className="text-[16px] font-semibold text-white flex items-center gap-2 mb-1">
+          <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2 mb-1">
             <Flame className="w-4 h-4 text-ios-orange" />
             Weekly Performance
           </h3>
@@ -385,20 +429,20 @@ export default function DashboardPage() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={weeklyBarData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
-                <XAxis dataKey="day" stroke="#8E8E93" fontSize={11} tickLine={false} axisLine={false} />
-                <YAxis stroke="#8E8E93" fontSize={11} tickLine={false} axisLine={false} />
+                <XAxis dataKey="day" stroke="var(--text-secondary)" fontSize={11} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--text-secondary)" fontSize={11} tickLine={false} axisLine={false} />
                 <RechartsTooltip 
-                  contentStyle={{ backgroundColor: 'rgba(20,20,22,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                  itemStyle={{ color: '#fff' }}
+                  contentStyle={{ backgroundColor: 'var(--background-elevated)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                  itemStyle={{ color: 'var(--text-primary)' }}
                 />
                 <Bar dataKey="value" fill="#FF9500" radius={[6, 6, 0, 0]} barSize={28} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="flex justify-between items-center mt-4 pt-4 border-t border-[rgba(255,255,255,0.06)]">
+          <div className="flex justify-between items-center mt-4 pt-4 border-t border-[var(--liquid-glass-border)]">
             <div>
-              <p className="text-[20px] font-bold text-white">325</p>
+              <p className="text-[20px] font-bold text-label-primary">325</p>
               <p className="text-[11px] text-[#8E8E93]">Total this week</p>
             </div>
             <div className="flex items-center gap-1 text-ios-green text-[13px] font-medium">
@@ -411,7 +455,7 @@ export default function DashboardPage() {
         {/* Achievements */}
         <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <h3 className="text-[16px] font-semibold text-white flex items-center gap-2 mb-1">
+          <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2 mb-1">
             <Award className="w-4 h-4 text-ios-yellow" />
             Achievements
           </h3>
@@ -423,12 +467,12 @@ export default function DashboardPage() {
                 key={i}
                 className={`flex items-center gap-3 p-3 rounded-[14px] transition-all ${
                   ach.earned 
-                    ? 'bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)]' 
-                    : 'bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.03)] opacity-50'
+                    ? 'bg-[var(--liquid-glass-bg)] border border-[var(--liquid-glass-border)]' 
+                    : 'bg-[rgba(255,255,255,0.02)] border border-[var(--liquid-glass-border)] opacity-50'
                 }`}
               >
                 <span className="text-[22px]">{ach.icon}</span>
-                <span className="text-[14px] font-medium text-white flex-1">{ach.name}</span>
+                <span className="text-[14px] font-medium text-label-primary flex-1">{ach.name}</span>
                 {ach.earned ? (
                   <CheckCircle className="w-4 h-4 text-ios-green" />
                 ) : (
@@ -438,12 +482,12 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          <div className="mt-4 pt-4 border-t border-[rgba(255,255,255,0.06)]">
+          <div className="mt-4 pt-4 border-t border-[var(--liquid-glass-border)]">
             <div className="flex justify-between items-center">
               <span className="text-[13px] text-[#8E8E93]">Progress</span>
-              <span className="text-[13px] text-white font-semibold">3/5</span>
+              <span className="text-[13px] text-label-primary font-semibold">3/5</span>
             </div>
-            <div className="mt-2 w-full h-2 bg-[rgba(255,255,255,0.06)] rounded-full overflow-hidden">
+            <div className="mt-2 w-full h-2 bg-[var(--liquid-glass-bg)] rounded-full overflow-hidden">
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: '60%' }}
@@ -459,11 +503,11 @@ export default function DashboardPage() {
       <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-[16px] font-semibold text-white flex items-center gap-2">
+          <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2">
             <ArrowLeftRight className="w-4 h-4 text-ios-green" />
             Recent Trades
           </h3>
-          <button className="text-[13px] text-ios-blue hover:text-white transition-colors font-medium flex items-center gap-1 group/btn">
+          <button className="text-[13px] text-ios-blue hover:text-label-primary transition-colors font-medium flex items-center gap-1 group/btn">
             View All
             <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
           </button>
@@ -472,7 +516,7 @@ export default function DashboardPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-[rgba(255,255,255,0.06)]">
+              <tr className="border-b border-[var(--liquid-glass-border)]">
                 <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Traders</th>
                 <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Exchange Pair</th>
                 <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">AI Score</th>
@@ -487,22 +531,22 @@ export default function DashboardPage() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 + i * 0.08 }}
-                  className="border-b border-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.03)] transition-colors group/row cursor-pointer"
+                  className="border-b border-[var(--liquid-glass-border)] hover:bg-[rgba(255,255,255,0.03)] transition-colors group/row cursor-pointer"
                 >
                   <td className="py-4 px-4">
                     <div className="flex items-center gap-2">
                        <div className="flex -space-x-2">
-                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ios-blue to-ios-purple flex items-center justify-center text-[10px] font-bold text-white border-2 border-black z-10">{trade.traders[0][0]}</div>
-                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ios-teal to-ios-green flex items-center justify-center text-[10px] font-bold text-white border-2 border-black">{trade.traders[1][0]}</div>
+                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ios-blue to-ios-purple flex items-center justify-center text-[10px] font-bold text-label-primary border-2 border-black z-10">{trade.traders[0][0]}</div>
+                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ios-teal to-ios-green flex items-center justify-center text-[10px] font-bold text-label-primary border-2 border-black">{trade.traders[1][0]}</div>
                        </div>
-                       <span className="text-[14px] text-white flex flex-col leading-tight ml-2">
+                       <span className="text-[14px] text-label-primary flex flex-col leading-tight ml-2">
                          <span className="font-medium">{trade.traders[0]}</span>
                          <span className="text-[12px] text-[#8E8E93]">with {trade.traders[1]}</span>
                        </span>
                     </div>
                   </td>
                   <td className="py-4 px-4">
-                    <div className="flex items-center gap-2 text-[14px] text-white">
+                    <div className="flex items-center gap-2 text-[14px] text-label-primary">
                       <Zap className="w-4 h-4 text-ios-orange" />
                       {trade.pair}
                     </div>
@@ -512,7 +556,7 @@ export default function DashboardPage() {
                        <div className="w-full bg-[rgba(255,255,255,0.1)] h-1.5 rounded-full max-w-[80px] overflow-hidden">
                          <div className="h-full bg-ios-blue rounded-full transition-all" style={{ width: `${trade.score}%` }} />
                        </div>
-                       <span className="text-[13px] text-white font-medium">{trade.score}%</span>
+                       <span className="text-[13px] text-label-primary font-medium">{trade.score}%</span>
                     </div>
                   </td>
                   <td className="py-4 px-4">
@@ -526,7 +570,7 @@ export default function DashboardPage() {
                     </div>
                   </td>
                   <td className="py-4 px-4 text-right">
-                    <button className="text-[#8E8E93] hover:text-white p-2 rounded-lg hover:bg-[rgba(255,255,255,0.05)] transition-colors">
+                    <button className="text-[#8E8E93] hover:text-label-primary p-2 rounded-lg hover:bg-[var(--liquid-glass-bg)] transition-colors">
                       <MoreHorizontal className="w-5 h-5" />
                     </button>
                   </td>

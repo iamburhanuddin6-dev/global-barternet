@@ -62,7 +62,7 @@ export default function TradesPage() {
         >
             {/* Hero */}
             <motion.div variants={item} className="liquid-glass-hero p-6 md:p-7">
-                <h1 className="ios-title-1 text-white mb-1.5">
+                <h1 className="ios-title-1 text-label-primary mb-1.5">
                     My <span className="text-ios-blue">Trades</span>
                 </h1>
                 <p className="text-label-secondary max-w-lg text-[15px]">
@@ -81,7 +81,7 @@ export default function TradesPage() {
                     <motion.div key={i} variants={item} className="ios-card p-4 flex items-center gap-3">
                         <s.icon className="w-5 h-5" style={{ color: s.color }} strokeWidth={1.8} />
                         <div>
-                            <p className="text-[17px] font-bold text-white">{s.value}</p>
+                            <p className="text-[17px] font-bold text-label-primary">{s.value}</p>
                             <p className="text-[11px] text-label-tertiary">{s.label}</p>
                         </div>
                     </motion.div>
@@ -95,7 +95,7 @@ export default function TradesPage() {
                         key={tab}
                         onClick={() => setActiveFilter(tab)}
                         className={`px-4 py-1.5 rounded-full text-[13px] font-medium transition-all ${activeFilter === tab
-                                ? 'bg-ios-blue text-white'
+                                ? 'bg-ios-blue text-label-primary'
                                 : 'bg-fill-quaternary text-label-secondary hover:bg-fill-tertiary'
                             }`}
                     >
@@ -126,9 +126,9 @@ export default function TradesPage() {
 
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-1.5 flex-wrap">
-                                        <span className="text-[14px] font-semibold text-white">{trade.myResource}</span>
+                                        <span className="text-[14px] font-semibold text-label-primary">{trade.myResource}</span>
                                         <ArrowLeftRight className="w-3.5 h-3.5 text-label-quaternary flex-shrink-0" />
-                                        <span className="text-[14px] font-semibold text-white">{trade.theirResource}</span>
+                                        <span className="text-[14px] font-semibold text-label-primary">{trade.theirResource}</span>
                                     </div>
                                     <p className="text-[12px] text-label-tertiary mt-0.5">
                                         with <span className="text-label-secondary">{trade.counterparty}</span> · {trade.date}
@@ -173,7 +173,7 @@ export default function TradesPage() {
                                                             return (
                                                                 <div key={si} className="flex items-center gap-2">
                                                                     <div className={`w-4 h-4 rounded-full flex items-center justify-center ${done ? 'bg-ios-green' : current ? 'bg-ios-blue' : 'bg-fill-tertiary'}`}>
-                                                                        {done && <CheckCircle className="w-3 h-3 text-white" strokeWidth={2} />}
+                                                                        {done && <CheckCircle className="w-3 h-3 text-label-primary" strokeWidth={2} />}
                                                                     </div>
                                                                     <span className={`text-[12px] ${done ? 'text-label-secondary' : 'text-label-quaternary'}`}>{step}</span>
                                                                 </div>
@@ -187,11 +187,11 @@ export default function TradesPage() {
                                                     <div className="space-y-2">
                                                         <div className="flex justify-between">
                                                             <span className="text-[12px] text-label-tertiary">AI Score</span>
-                                                            <span className="text-[12px] text-white">{trade.aiScore}%</span>
+                                                            <span className="text-[12px] text-label-primary">{trade.aiScore}%</span>
                                                         </div>
                                                         <div className="flex justify-between">
                                                             <span className="text-[12px] text-label-tertiary">Counterparty</span>
-                                                            <span className="text-[12px] text-white">{trade.counterparty}</span>
+                                                            <span className="text-[12px] text-label-primary">{trade.counterparty}</span>
                                                         </div>
                                                         <div className="flex justify-between">
                                                             <span className="text-[12px] text-label-tertiary">Blockchain Tx</span>

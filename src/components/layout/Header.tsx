@@ -57,7 +57,7 @@ export default function Header() {
             case 'match': return '#34C759';
             case 'trade': return '#007AFF';
             case 'achievement': return '#FF9500';
-            case 'system': return '#8E8E93';
+            case 'system': return 'var(--text-secondary)';
             default: return '#007AFF';
         }
     };
@@ -71,7 +71,7 @@ export default function Header() {
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, ease: [0.28, 0.84, 0.42, 1] }}
-                    className="text-[17px] font-semibold text-white tracking-tight"
+                    className="text-[17px] font-semibold text-label-primary tracking-tight"
                 >
                     {tabTitles[activeTab] || 'BarterNet'}
                 </motion.h2>
@@ -111,11 +111,11 @@ export default function Header() {
                     <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={() => setShowNotifications(!showNotifications)}
-                        className="relative w-9 h-9 rounded-full liquid-glass-btn flex items-center justify-center text-label-secondary hover:text-white transition-colors"
+                        className="relative w-9 h-9 rounded-full liquid-glass-btn flex items-center justify-center text-label-secondary hover:text-label-primary transition-colors"
                     >
                         <Bell className="w-[18px] h-[18px]" strokeWidth={1.8} />
                         {unreadCount > 0 && (
-                            <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 bg-ios-red rounded-full text-[10px] font-bold flex items-center justify-center text-white px-1">
+                            <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 bg-ios-red rounded-full text-[10px] font-bold flex items-center justify-center text-label-primary px-1">
                                 {unreadCount}
                             </span>
                         )}
@@ -163,7 +163,7 @@ export default function Header() {
                                                     style={{ backgroundColor: getNotifColor(n.type) }}
                                                 />
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="text-[14px] font-medium text-white">{n.title}</p>
+                                                    <p className="text-[14px] font-medium text-label-primary">{n.title}</p>
                                                     <p className="text-[12px] text-label-secondary mt-0.5">{n.message}</p>
                                                     <p className="text-[11px] text-label-quaternary mt-1">{formatTimeAgo(n.createdAt)}</p>
                                                 </div>
@@ -182,7 +182,7 @@ export default function Header() {
                     onClick={() => setWalletConnected(!isWalletConnected)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-full text-[13px] font-semibold transition-all ${isWalletConnected
                             ? 'liquid-glass-pill text-ios-green'
-                            : 'liquid-glass-btn bg-ios-blue/60 text-white'
+                            : 'liquid-glass-btn bg-ios-blue/60 text-label-primary'
                         }`}
                 >
                     <Wallet className="w-4 h-4" strokeWidth={1.8} />

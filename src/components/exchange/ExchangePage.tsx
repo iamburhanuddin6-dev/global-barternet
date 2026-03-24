@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBarterStore } from '@/store/barterStore';
 import {
@@ -44,11 +44,35 @@ const mockExchangeItems = [
 ];
 
 export default function ExchangePage() {
+    const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
     
-    const filteredItems = selectedCategory === 'All' 
+    // Dynamic integration
+    const { resources, fetchResources } = useBarterStore();
+    
+    // Fetch real resources on mount
+    useEffect(() => {
+        fetchResources({ status: 'available' });
+    }, [fetchResources]);
+
+    // Fallback logic for presentation
+    const isDBEmpty = resources.length === 0;
+    const activeItems = isDBEmpty 
         ? mockExchangeItems 
-        : mockExchangeItems.filter(item => item.category === selectedCategory);
+        : resources.map(r => ({
+            title: r.name,
+            desc: r.description,
+            value: r.estimatedValue,
+            category: r.category,
+            owner: r.owner?.name || 'Anonymous',
+            stars: (r.owner?.reputation || 0).toFixed(1),
+            match: Math.floor(Math.random() * 30 + 70), // Simulate match score dynamically
+            icon: Sparkles, color: 'var(--ios-blue)'
+          }));
+
+    const filteredItems = selectedCategory === 'All'
+        ? activeItems
+        : activeItems.filter((item: any) => item.category === selectedCategory);
 
     return (
         <motion.div variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6">
@@ -57,9 +81,9 @@ export default function ExchangePage() {
             <div className="flex-1 space-y-6">
                 
                 {/* Header & Filter Bar */}
-                <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
+                <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[var(--liquid-glass-border)] pb-6">
                     <div>
-                        <h1 className="text-[28px] font-bold text-white tracking-tight">Exchange Marketplace</h1>
+                        <h1 className="text-[28px] font-bold text-label-primary tracking-tight">Exchange Marketplace</h1>
                         <p className="text-[#8E8E93] text-[15px] mt-1">Discover resources to barter or let AI find your perfect match.</p>
                     </div>
                     <div className="flex items-center gap-3">
@@ -68,10 +92,10 @@ export default function ExchangePage() {
                             <input 
                                 type="text" 
                                 placeholder="Search all listings..." 
-                                className="bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] text-white rounded-full pl-9 pr-4 py-2 text-[14px] focus:outline-none focus:ring-1 focus:ring-ios-blue transition-all w-full md:w-64 backdrop-blur-xl"
+                                className="bg-[var(--liquid-glass-bg)] border border-[rgba(255,255,255,0.1)] text-label-primary rounded-full pl-9 pr-4 py-2 text-[14px] focus:outline-none focus:ring-1 focus:ring-ios-blue transition-all w-full md:w-64 backdrop-blur-xl"
                             />
                         </div>
-                        <button className="flex items-center gap-2 bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.1)] text-white rounded-full px-4 py-2 text-[14px] font-medium hover:bg-[rgba(255,255,255,0.1)] transition-colors">
+                        <button className="flex items-center gap-2 bg-[var(--liquid-glass-bg)] border border-[rgba(255,255,255,0.1)] text-label-primary rounded-full px-4 py-2 text-[14px] font-medium hover:bg-[rgba(255,255,255,0.1)] transition-colors">
                             <Filter className="w-4 h-4" />
                             Filters
                         </button>
@@ -86,8 +110,8 @@ export default function ExchangePage() {
                             onClick={() => setSelectedCategory(cat)}
                             className={`px-5 py-2 rounded-full text-[14px] font-semibold whitespace-nowrap transition-all duration-300 ${
                                 selectedCategory === cat
-                                    ? 'bg-ios-blue text-white shadow-[0_4px_12px_rgba(0,122,255,0.3)]'
-                                    : 'bg-[rgba(255,255,255,0.04)] text-[#8E8E93] hover:bg-[rgba(255,255,255,0.08)] hover:text-white'
+                                    ? 'bg-ios-blue text-label-primary shadow-[0_4px_12px_rgba(0,122,255,0.3)]'
+                                    : 'bg-[var(--liquid-glass-bg)] text-[#8E8E93] hover:bg-[rgba(255,255,255,0.08)] hover:text-label-primary'
                             }`}
                         >
                             {cat}
@@ -102,7 +126,7 @@ export default function ExchangePage() {
                             key={i}
                             variants={item}
                             layout
-                            className="liquid-glass-card p-5 rounded-[20px] relative group border border-[rgba(255,255,255,0.08)] hover:border-[rgba(255,255,255,0.15)] transition-colors duration-500 overflow-hidden flex flex-col"
+                            className="liquid-glass-card p-5 rounded-[20px] relative group border border-[var(--liquid-glass-border)] hover:border-[var(--liquid-glass-border)] transition-colors duration-500 overflow-hidden flex flex-col"
                         >
                             {/* Specular Highlight */}
                             <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -125,7 +149,7 @@ export default function ExchangePage() {
                                             strokeLinecap="round" 
                                         />
                                     </svg>
-                                    <span className="text-[12px] font-bold text-white relative z-10">{resource.match}%</span>
+                                    <span className="text-[12px] font-bold text-label-primary relative z-10">{resource.match}%</span>
                                 </div>
                             </div>
 
@@ -134,7 +158,7 @@ export default function ExchangePage() {
                                 <span className="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-2" style={{ backgroundColor: resource.color + '20', color: resource.color }}>
                                     {resource.category}
                                 </span>
-                                <h3 className="text-[18px] font-bold text-white group-hover:text-ios-blue transition-colors duration-300 leading-tight">
+                                <h3 className="text-[18px] font-bold text-label-primary group-hover:text-ios-blue transition-colors duration-300 leading-tight">
                                     {resource.title}
                                 </h3>
                             </div>
@@ -145,20 +169,20 @@ export default function ExchangePage() {
                             </p>
 
                             {/* Bottom row: Value & Owner */}
-                            <div className="mt-5 pt-4 border-t border-[rgba(255,255,255,0.06)] flex items-center justify-between">
+                            <div className="mt-5 pt-4 border-t border-[var(--liquid-glass-border)] flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] flex items-center justify-center border border-[rgba(255,255,255,0.1)]">
-                                        <span className="text-[11px] font-bold text-white">{resource.owner[0]}</span>
+                                        <span className="text-[11px] font-bold text-label-primary">{resource.owner[0]}</span>
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-[12px] font-semibold text-white truncate max-w-[80px]">{resource.owner}</span>
+                                        <span className="text-[12px] font-semibold text-label-primary truncate max-w-[80px]">{resource.owner}</span>
                                         <span className="flex items-center text-[10px] text-[#FF9500]">
                                             <Star className="w-3 h-3 fill-current mr-0.5" /> {resource.stars}
                                         </span>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <span className="block text-[16px] font-bold text-white">
+                                    <span className="block text-[16px] font-bold text-label-primary">
                                         <span className="text-[#8E8E93] mr-1">T</span>{formatValue(resource.value)}
                                     </span>
                                     <span className="text-[10px] text-[#8E8E93] uppercase tracking-wider">Credit Value</span>
@@ -166,8 +190,8 @@ export default function ExchangePage() {
                             </div>
 
                             {/* Hover Propose Button */}
-                            <div className="absolute inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-                                <button className="bg-ios-blue text-white font-bold text-[14px] px-6 py-3 rounded-full flex items-center gap-2 shadow-[0_0_20px_rgba(0,122,255,0.4)] transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <div className="absolute inset-0 bg-background/60 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                                <button className="bg-ios-blue text-label-primary font-bold text-[14px] px-6 py-3 rounded-full flex items-center gap-2 shadow-[0_0_20px_rgba(0,122,255,0.4)] transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                                     <ArrowLeftRight className="w-4 h-4" />
                                     Propose Trade
                                 </button>
@@ -179,12 +203,12 @@ export default function ExchangePage() {
 
             {/* ----- RIGHT SIDEBAR (AI MATCHES) ----- */}
             <motion.div variants={item} className="w-full xl:w-[320px] flex flex-col gap-6">
-                <div className="liquid-glass-card rounded-[24px] p-6 relative overflow-hidden border border-[rgba(255,255,255,0.08)]">
+                <div className="liquid-glass-card rounded-[24px] p-6 relative overflow-hidden border border-[var(--liquid-glass-border)]">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-ios-purple/20 blur-[50px] rounded-full pointer-events-none"></div>
                     
                     <div className="flex items-center gap-2 mb-6">
                         <Sparkles className="w-5 h-5 text-ios-purple" />
-                        <h3 className="text-[16px] font-semibold text-white tracking-tight">AI Recommended</h3>
+                        <h3 className="text-[16px] font-semibold text-label-primary tracking-tight">AI Recommended</h3>
                     </div>
 
                     <div className="space-y-4">
@@ -193,9 +217,9 @@ export default function ExchangePage() {
                             { name: 'Machine Learning Model', req: 'Requires: DB Optimization', match: 94, color: '#007AFF' },
                             { name: 'Smart Contract Audit', req: 'Requires: UX Audit', match: 88, color: '#FF9500' }
                         ].map((rec, i) => (
-                            <div key={i} className="bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] rounded-[16px] p-4 hover:bg-[rgba(255,255,255,0.06)] transition-colors cursor-pointer group">
+                            <div key={i} className="bg-[rgba(255,255,255,0.03)] border border-[var(--liquid-glass-border)] rounded-[16px] p-4 hover:bg-[var(--liquid-glass-bg)] transition-colors cursor-pointer group">
                                 <div className="flex items-start justify-between mb-2">
-                                    <h4 className="text-[14px] font-semibold text-white group-hover:text-ios-blue transition-colors leading-tight pr-2">
+                                    <h4 className="text-[14px] font-semibold text-label-primary group-hover:text-ios-blue transition-colors leading-tight pr-2">
                                         {rec.name}
                                     </h4>
                                     <span className="text-[12px] font-bold px-2 py-0.5 rounded-md" style={{ backgroundColor: rec.color + '20', color: rec.color }}>
@@ -207,7 +231,7 @@ export default function ExchangePage() {
                         ))}
                     </div>
 
-                    <button className="w-full mt-6 bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition-colors border border-[rgba(255,255,255,0.08)] py-3 rounded-[12px] text-[13px] font-semibold text-white text-center">
+                    <button className="w-full mt-6 bg-[var(--liquid-glass-bg)] hover:bg-[rgba(255,255,255,0.1)] transition-colors border border-[var(--liquid-glass-border)] py-3 rounded-[12px] text-[13px] font-semibold text-label-primary text-center">
                         View All Matches
                     </button>
                 </div>

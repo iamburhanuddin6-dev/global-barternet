@@ -41,13 +41,13 @@ export default function AIAgentsPage() {
             <div className="flex-1 space-y-6">
                 
                 {/* Header */}
-                <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
+                <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[var(--liquid-glass-border)] pb-6">
                     <div>
                         <div className="flex items-center gap-2 mb-2">
                             <span className="w-[5px] h-[5px] bg-ios-green rounded-full animate-pulse-soft" />
                             <span className="text-[11px] font-medium text-ios-green uppercase tracking-wider">6 Active Agents</span>
                         </div>
-                        <h1 className="text-[28px] font-bold text-white tracking-tight flex items-center gap-3">
+                        <h1 className="text-[28px] font-bold text-label-primary tracking-tight flex items-center gap-3">
                             AI Trading Agents
                             <span className="bg-[#AF52DE]/10 text-[#AF52DE] text-[12px] px-2.5 py-1 rounded-md tracking-widest font-bold uppercase">Pro</span>
                         </h1>
@@ -60,7 +60,7 @@ export default function AIAgentsPage() {
                         <motion.div
                             key={i}
                             variants={item}
-                            className="liquid-glass-card p-6 rounded-[24px] relative group overflow-hidden border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] hover:bg-[rgba(30,30,32,0.6)] hover:border-[rgba(255,255,255,0.15)] transition-all duration-500"
+                            className="liquid-glass-card p-6 rounded-[24px] relative group overflow-hidden border border-[var(--liquid-glass-border)] bg-[rgba(20,20,22,0.4)] hover:bg-[rgba(30,30,32,0.6)] hover:border-[var(--liquid-glass-border)] transition-all duration-500"
                         >
                             {/* Ambient Glow */}
                             <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] rounded-full pointer-events-none opacity-20 group-hover:opacity-40 transition-opacity duration-700" style={{ backgroundColor: agent.color }}></div>
@@ -71,22 +71,22 @@ export default function AIAgentsPage() {
                                 <div className="w-14 h-14 rounded-[16px] flex items-center justify-center text-[28px] shadow-inner border border-[rgba(255,255,255,0.1)]" style={{ backgroundColor: agent.color + '15' }}>
                                     {agent.emoji}
                                 </div>
-                                <div className="flex items-center gap-2 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] px-3 py-1.5 rounded-full">
-                                    <span className={`w-2 h-2 rounded-full ${agent.status === 'Idle' ? 'bg-[#8E8E93]' : 'animate-pulse'}`} style={{ backgroundColor: agent.status !== 'Idle' ? agent.color : '#8E8E93' }}></span>
-                                    <span className="text-[12px] font-bold text-white">{agent.status}</span>
+                                <div className="flex items-center gap-2 bg-[var(--liquid-glass-bg)] border border-[var(--liquid-glass-border)] px-3 py-1.5 rounded-full">
+                                    <span className={`w-2 h-2 rounded-full ${agent.status === 'Idle' ? 'bg-[#8E8E93]' : 'animate-pulse'}`} style={{ backgroundColor: agent.status !== 'Idle' ? agent.color : 'var(--text-secondary)' }}></span>
+                                    <span className="text-[12px] font-bold text-label-primary">{agent.status}</span>
                                 </div>
                             </div>
 
                             {/* Name & Type */}
                             <div className="mb-5">
-                                <h3 className="text-[22px] font-bold text-white tracking-tight leading-none mb-1 group-hover:text-ios-blue transition-colors duration-300">
+                                <h3 className="text-[22px] font-bold text-label-primary tracking-tight leading-none mb-1 group-hover:text-ios-blue transition-colors duration-300">
                                     {agent.name}
                                 </h3>
                                 <p className="text-[13px] font-medium" style={{ color: agent.color }}>{agent.type}</p>
                             </div>
 
                             {/* Efficiency Ring & Matches */}
-                            <div className="flex items-center gap-4 mb-6 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.03)] p-3 rounded-[16px]">
+                            <div className="flex items-center gap-4 mb-6 bg-[rgba(255,255,255,0.03)] border border-[var(--liquid-glass-border)] p-3 rounded-[16px]">
                                 <div className="relative w-12 h-12 flex items-center justify-center shrink-0">
                                     <svg className="w-12 h-12 transform -rotate-90">
                                         <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.1)" strokeWidth="4" fill="none" />
@@ -99,10 +99,10 @@ export default function AIAgentsPage() {
                                             strokeLinecap="round" 
                                         />
                                     </svg>
-                                    <span className="text-[12px] font-bold leading-none text-white absolute">{agent.efficiency}%</span>
+                                    <span className="text-[12px] font-bold leading-none text-label-primary absolute">{agent.efficiency}%</span>
                                 </div>
                                 <div>
-                                    <p className="text-[16px] font-bold text-white leading-none">{agent.matches.toLocaleString()}</p>
+                                    <p className="text-[16px] font-bold text-label-primary leading-none">{agent.matches.toLocaleString()}</p>
                                     <p className="text-[11px] text-[#8E8E93] uppercase tracking-wider font-semibold mt-1">Matches Found</p>
                                 </div>
                             </div>
@@ -124,11 +124,11 @@ export default function AIAgentsPage() {
 
                             {/* Action Buttons */}
                             <div className="flex gap-2">
-                                <button className="flex-1 bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] text-white text-[13px] font-semibold py-2.5 rounded-[12px] flex items-center justify-center gap-2 transition-colors border border-[rgba(255,255,255,0.05)]">
+                                <button className="flex-1 bg-[var(--liquid-glass-bg)] hover:bg-[rgba(255,255,255,0.1)] text-label-primary text-[13px] font-semibold py-2.5 rounded-[12px] flex items-center justify-center gap-2 transition-colors border border-[var(--liquid-glass-border)]">
                                     <Settings className="w-4 h-4" />
                                     Configure
                                 </button>
-                                <button className="w-11 h-11 bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] text-white flex items-center justify-center rounded-[12px] transition-colors border border-[rgba(255,255,255,0.05)]">
+                                <button className="w-11 h-11 bg-[var(--liquid-glass-bg)] hover:bg-[rgba(255,255,255,0.1)] text-label-primary flex items-center justify-center rounded-[12px] transition-colors border border-[var(--liquid-glass-border)]">
                                     {agent.status === 'Idle' ? <PlayCircle className="w-5 h-5 text-ios-green" /> : <PauseCircle className="w-5 h-5 text-ios-orange" />}
                                 </button>
                             </div>
@@ -139,10 +139,10 @@ export default function AIAgentsPage() {
 
             {/*  RIGHT SIDEBAR (LIVE ACTIVITY FEED)  */}
             <motion.div variants={item} className="w-full xl:w-[320px] h-full flex flex-col gap-6">
-                <div className="liquid-glass-card rounded-[24px] p-6 relative overflow-hidden border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.6)]">
+                <div className="liquid-glass-card rounded-[24px] p-6 relative overflow-hidden border border-[var(--liquid-glass-border)] bg-[rgba(20,20,22,0.6)]">
                     <div className="flex items-center gap-2 mb-6">
                         <TerminalSquare className="w-5 h-5 text-ios-blue" />
-                        <h3 className="text-[16px] font-semibold text-white tracking-tight">Agent Terminal</h3>
+                        <h3 className="text-[16px] font-semibold text-label-primary tracking-tight">Agent Terminal</h3>
                     </div>
 
                     <div className="space-y-4 font-mono text-[12px]">
@@ -155,11 +155,11 @@ export default function AIAgentsPage() {
                             { agent: 'CIPHER', msg: 'ZK-SNARK proof generated', time: '11m ago', color: '#FF9500' },
                             { agent: 'NOVA', msg: 'Scanning network: 24,891 nodes', time: '14m ago', color: '#007AFF' },
                         ].map((log, i) => (
-                            <div key={i} className="flex flex-col gap-1 border-b border-[rgba(255,255,255,0.05)] pb-3 last:border-0 last:pb-0">
+                            <div key={i} className="flex flex-col gap-1 border-b border-[var(--liquid-glass-border)] pb-3 last:border-0 last:pb-0">
                                 <div className="flex justify-between items-center text-[#8E8E93]">
                                     <span>[{log.time}]</span>
                                 </div>
-                                <div className="flex gap-2 text-white">
+                                <div className="flex gap-2 text-label-primary">
                                     <span style={{ color: log.color, fontWeight: 'bold' }}>{log.agent}</span>
                                     <span className="text-[#EBEBF5]">> {log.msg}</span>
                                 </div>

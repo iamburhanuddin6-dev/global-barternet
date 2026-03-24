@@ -102,7 +102,7 @@ export default function ResourcesPage() {
             <motion.div variants={item} className="liquid-glass-hero p-6 md:p-7">
                 <div className="flex items-start justify-between">
                     <div>
-                        <h1 className="ios-title-1 text-white mb-1.5">
+                        <h1 className="ios-title-1 text-label-primary mb-1.5">
                             My <span className="text-ios-blue">Resources</span>
                         </h1>
                         <p className="text-label-secondary max-w-lg text-[15px]">
@@ -112,7 +112,7 @@ export default function ResourcesPage() {
                     <motion.button
                         whileTap={{ scale: 0.96 }}
                         onClick={() => setShowAddModal(true)}
-                        className="flex items-center gap-2 px-5 py-2.5 bg-ios-blue text-white text-[14px] font-semibold rounded-full shadow-ios-md"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-ios-blue text-label-primary text-[14px] font-semibold rounded-full shadow-ios-md"
                     >
                         <Plus className="w-4 h-4" strokeWidth={2} />
                         List Resource
@@ -138,7 +138,7 @@ export default function ResourcesPage() {
             {/* Table */}
             <motion.div variants={item} className="ios-card overflow-hidden">
                 <div className="flex items-center justify-between p-4 border-b border-separator">
-                    <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
+                    <h3 className="text-[15px] font-semibold text-label-primary flex items-center gap-2">
                         <Package className="w-4 h-4 text-ios-blue" strokeWidth={1.8} />
                         All Resources
                         {loading.resources && <Loader2 className="w-3.5 h-3.5 animate-spin text-label-tertiary" />}
@@ -150,7 +150,7 @@ export default function ResourcesPage() {
                             placeholder="Search..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="bg-fill-quaternary rounded-[10px] pl-9 pr-3 py-1.5 text-[13px] text-white placeholder-label-quaternary focus:outline-none focus:bg-fill-tertiary w-44 transition-colors"
+                            className="bg-fill-quaternary rounded-[10px] pl-9 pr-3 py-1.5 text-[13px] text-label-primary placeholder-label-quaternary focus:outline-none focus:bg-fill-tertiary w-44 transition-colors"
                         />
                     </div>
                 </div>
@@ -192,13 +192,13 @@ export default function ResourcesPage() {
                                                             resource.category === 'Services' ? '🛠️' : '📚'}
                                                 </div>
                                                 <div>
-                                                    <p className="text-[13px] font-medium text-white">{resource.name}</p>
+                                                    <p className="text-[13px] font-medium text-label-primary">{resource.name}</p>
                                                     <p className="text-[11px] text-label-quaternary truncate max-w-[180px]">{resource.description}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="py-3.5 px-4 text-[13px] text-label-secondary">{resource.category}</td>
-                                        <td className="py-3.5 px-4 text-[13px] font-semibold text-white">${resource.estimatedValue.toLocaleString()}</td>
+                                        <td className="py-3.5 px-4 text-[13px] font-semibold text-label-primary">${resource.estimatedValue.toLocaleString()}</td>
                                         <td className="py-3.5 px-4">
                                             <span className={`ios-badge ${resource.status === 'available' ? 'bg-ios-green/12 text-ios-green' :
                                                     resource.status === 'in-negotiation' ? 'bg-ios-orange/12 text-ios-orange' : 'bg-ios-blue/12 text-ios-blue'}`}>
@@ -221,10 +221,10 @@ export default function ResourcesPage() {
                                         </td>
                                         <td className="py-3.5 px-4">
                                             <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <button className="p-1.5 rounded-[8px] hover:bg-fill-tertiary text-label-tertiary hover:text-white transition-all">
+                                                <button className="p-1.5 rounded-[8px] hover:bg-fill-tertiary text-label-tertiary hover:text-label-primary transition-all">
                                                     <Eye className="w-3.5 h-3.5" strokeWidth={1.8} />
                                                 </button>
-                                                <button className="p-1.5 rounded-[8px] hover:bg-fill-tertiary text-label-tertiary hover:text-white transition-all">
+                                                <button className="p-1.5 rounded-[8px] hover:bg-fill-tertiary text-label-tertiary hover:text-label-primary transition-all">
                                                     <Edit3 className="w-3.5 h-3.5" strokeWidth={1.8} />
                                                 </button>
                                                 <button
@@ -252,7 +252,7 @@ export default function ResourcesPage() {
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-50 flex items-center justify-center p-4"
                     >
-                        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowAddModal(false)} />
+                        <div className="absolute inset-0 bg-background/50 backdrop-blur-sm" onClick={() => setShowAddModal(false)} />
                         <motion.div
                             initial={{ scale: 0.95, opacity: 0, y: 12 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -261,7 +261,7 @@ export default function ResourcesPage() {
                             className="relative w-full max-w-lg ios-material-ultra rounded-[20px] border border-separator shadow-ios-xl"
                         >
                             <div className="flex items-center justify-between p-5 border-b border-separator">
-                                <h2 className="text-[17px] font-bold text-white">List New Resource</h2>
+                                <h2 className="text-[17px] font-bold text-label-primary">List New Resource</h2>
                                 <button onClick={() => setShowAddModal(false)} className="p-1 rounded-full hover:bg-fill-tertiary text-label-tertiary">
                                     <X className="w-5 h-5" strokeWidth={1.8} />
                                 </button>
@@ -277,7 +277,7 @@ export default function ResourcesPage() {
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         placeholder="e.g., GPU Computing Time"
-                                        className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-white placeholder-label-quaternary focus:outline-none focus:bg-fill-tertiary transition-colors"
+                                        className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-label-primary placeholder-label-quaternary focus:outline-none focus:bg-fill-tertiary transition-colors"
                                     />
                                 </div>
                                 <div>
@@ -287,7 +287,7 @@ export default function ResourcesPage() {
                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                         placeholder="Describe your resource..."
                                         rows={3}
-                                        className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-white placeholder-label-quaternary focus:outline-none focus:bg-fill-tertiary transition-colors resize-none"
+                                        className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-label-primary placeholder-label-quaternary focus:outline-none focus:bg-fill-tertiary transition-colors resize-none"
                                     />
                                 </div>
                                 <div className="grid grid-cols-2 gap-3">
@@ -299,7 +299,7 @@ export default function ResourcesPage() {
                                         <select
                                             value={formData.category}
                                             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                            className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-white focus:outline-none focus:bg-fill-tertiary transition-colors"
+                                            className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-label-primary focus:outline-none focus:bg-fill-tertiary transition-colors"
                                         >
                                             <option value="">Select...</option>
                                             <option value="Computing">Computing</option>
@@ -318,7 +318,7 @@ export default function ResourcesPage() {
                                             value={formData.estimatedValue}
                                             onChange={(e) => setFormData({ ...formData, estimatedValue: e.target.value })}
                                             placeholder="0"
-                                            className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-white placeholder-label-quaternary focus:outline-none focus:bg-fill-tertiary transition-colors"
+                                            className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-label-primary placeholder-label-quaternary focus:outline-none focus:bg-fill-tertiary transition-colors"
                                         />
                                     </div>
                                 </div>
@@ -329,7 +329,7 @@ export default function ResourcesPage() {
                                         value={formData.tags}
                                         onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                                         placeholder="GPU, AI, Machine Learning"
-                                        className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-white placeholder-label-quaternary focus:outline-none focus:bg-fill-tertiary transition-colors"
+                                        className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-label-primary placeholder-label-quaternary focus:outline-none focus:bg-fill-tertiary transition-colors"
                                     />
                                 </div>
                             </div>
@@ -343,7 +343,7 @@ export default function ResourcesPage() {
                                 <button
                                     onClick={handleSubmit}
                                     disabled={submitting}
-                                    className="px-6 py-2.5 rounded-full bg-ios-blue text-white text-[14px] font-semibold shadow-ios-md disabled:opacity-50 flex items-center gap-2"
+                                    className="px-6 py-2.5 rounded-full bg-ios-blue text-label-primary text-[14px] font-semibold shadow-ios-md disabled:opacity-50 flex items-center gap-2"
                                 >
                                     {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
                                     List Resource

@@ -62,7 +62,7 @@ export default function Sidebar() {
                     onClick={() => setActiveTab('dashboard')}
                 >
                     <div className="w-9 h-9 rounded-[10px] bg-ios-blue flex items-center justify-center shadow-ios-md">
-                        <Zap className="w-5 h-5 text-white" />
+                        <Zap className="w-5 h-5 text-label-primary" />
                     </div>
                     <AnimatePresence>
                         {sidebarOpen && (
@@ -72,7 +72,7 @@ export default function Sidebar() {
                                 exit={{ opacity: 0, x: -8 }}
                                 transition={{ duration: 0.2 }}
                             >
-                                <h1 className="font-display font-bold text-[15px] text-white whitespace-nowrap tracking-tight">
+                                <h1 className="font-display font-bold text-[15px] text-label-primary whitespace-nowrap tracking-tight">
                                     BarterNet
                                 </h1>
                                 <p className="text-[11px] text-label-tertiary whitespace-nowrap">AI · Blockchain</p>
@@ -93,8 +93,8 @@ export default function Sidebar() {
                             onClick={() => setActiveTab(item.id)}
                             whileTap={{ scale: 0.96 }}
                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[12px] transition-all duration-200 group relative ${isActive
-                                    ? 'bg-fill-tertiary text-white'
-                                    : 'text-label-secondary hover:text-white hover:bg-fill-quaternary'
+                                    ? 'bg-fill-tertiary text-label-primary'
+                                    : 'text-label-secondary hover:text-label-primary hover:bg-fill-quaternary'
                                 }`}
                         >
                             {isActive && (
@@ -121,7 +121,7 @@ export default function Sidebar() {
                                 <motion.span
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    className="ml-auto bg-ios-red text-white text-[11px] font-semibold min-w-[20px] h-5 flex items-center justify-center rounded-full px-1.5"
+                                    className="ml-auto bg-ios-red text-label-primary text-[11px] font-semibold min-w-[20px] h-5 flex items-center justify-center rounded-full px-1.5"
                                 >
                                     {item.badge}
                                 </motion.span>
@@ -142,8 +142,8 @@ export default function Sidebar() {
                             onClick={() => setActiveTab(item.id)}
                             whileTap={{ scale: 0.96 }}
                             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[12px] transition-all duration-200 ${isActive
-                                ? 'bg-fill-tertiary text-white'
-                                : 'text-label-secondary hover:text-white hover:bg-fill-quaternary'
+                                ? 'bg-fill-tertiary text-label-primary'
+                                : 'text-label-secondary hover:text-label-primary hover:bg-fill-quaternary'
                             }`}
                         >
                             <Icon className={`w-[20px] h-[20px] flex-shrink-0 ${isActive ? 'text-ios-blue' : ''}`} strokeWidth={1.8} />
@@ -212,7 +212,7 @@ export default function Sidebar() {
                                     exit={{ opacity: 0 }}
                                     className="flex-1 min-w-0"
                                 >
-                                    <p className="text-[13px] font-semibold text-white truncate">{currentUser.name}</p>
+                                    <p className="text-[13px] font-semibold text-label-primary truncate">{currentUser.name}</p>
                                     <p className="text-[11px] text-label-tertiary">Lv.{currentUser.level} · ⭐ {currentUser.reputation}</p>
                                 </motion.div>
                             )}

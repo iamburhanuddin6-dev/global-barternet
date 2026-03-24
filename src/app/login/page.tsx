@@ -42,7 +42,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-black flex items-center justify-center p-4 ios-ambient">
+        <div className="min-h-screen bg-background flex items-center justify-center p-4 ios-ambient">
             <motion.div
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -57,9 +57,9 @@ export default function LoginPage() {
                         transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
                         className="w-16 h-16 rounded-[18px] bg-ios-blue mx-auto flex items-center justify-center shadow-lg mb-4"
                     >
-                        <Zap className="w-8 h-8 text-white" />
+                        <Zap className="w-8 h-8 text-label-primary" />
                     </motion.div>
-                    <h1 className="text-[28px] font-bold text-white tracking-tight">Welcome back</h1>
+                    <h1 className="text-[28px] font-bold text-label-primary tracking-tight">Welcome back</h1>
                     <p className="text-[#8E8E93] mt-1 text-[15px]">Sign in to Global BarterNet</p>
                 </div>
 
@@ -88,7 +88,7 @@ export default function LoginPage() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="you@example.com"
                                 required
-                                className="w-full bg-[rgba(120,120,128,0.12)] text-white rounded-[12px] pl-10 pr-4 py-3 text-[15px] outline-none focus:ring-2 focus:ring-ios-blue/50 transition-all placeholder:text-[#48484A]"
+                                className="w-full bg-[rgba(120,120,128,0.12)] text-label-primary rounded-[12px] pl-10 pr-4 py-3 text-[15px] outline-none focus:ring-2 focus:ring-ios-blue/50 transition-all placeholder:text-[#48484A]"
                             />
                         </div>
                     </div>
@@ -106,12 +106,12 @@ export default function LoginPage() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
                                 required
-                                className="w-full bg-[rgba(120,120,128,0.12)] text-white rounded-[12px] pl-10 pr-12 py-3 text-[15px] outline-none focus:ring-2 focus:ring-ios-blue/50 transition-all placeholder:text-[#48484A]"
+                                className="w-full bg-[rgba(120,120,128,0.12)] text-label-primary rounded-[12px] pl-10 pr-12 py-3 text-[15px] outline-none focus:ring-2 focus:ring-ios-blue/50 transition-all placeholder:text-[#48484A]"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#636366] hover:text-white transition-colors"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#636366] hover:text-label-primary transition-colors"
                             >
                                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                             </button>
@@ -123,7 +123,7 @@ export default function LoginPage() {
                         whileTap={{ scale: 0.97 }}
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-ios-blue text-white rounded-[14px] py-3.5 text-[15px] font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+                        className="w-full bg-ios-blue text-label-primary rounded-[14px] py-3.5 text-[15px] font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
                     >
                         {loading ? (
                             <Loader2 className="w-4 h-4 animate-spin" />

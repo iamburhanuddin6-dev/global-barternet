@@ -64,7 +64,7 @@ export default function ReputationPage() {
         >
             {/* Hero */}
             <motion.div variants={item} className="liquid-glass-hero p-6 md:p-7">
-                <h1 className="ios-title-1 text-white mb-1.5">
+                <h1 className="ios-title-1 text-label-primary mb-1.5">
                     Reputation & <span className="text-ios-orange">Achievements</span>
                 </h1>
                 <p className="text-label-secondary max-w-lg text-[15px]">
@@ -80,14 +80,14 @@ export default function ReputationPage() {
                         <div className="w-[72px] h-[72px] rounded-full bg-gradient-to-br from-ios-blue to-ios-teal flex items-center justify-center text-[28px] font-bold mx-auto mb-3 shadow-ios-md">
                             {currentUser?.name.charAt(0) || 'A'}
                         </div>
-                        <h2 className="text-[17px] font-bold text-white">{currentUser?.name}</h2>
+                        <h2 className="text-[17px] font-bold text-label-primary">{currentUser?.name}</h2>
                         <p className="text-[12px] text-label-tertiary font-mono mt-1">{currentUser?.walletAddress.slice(0, 10)}...{currentUser?.walletAddress.slice(-4)}</p>
 
                         {/* Level Badge */}
                         <div className="inline-flex items-center gap-2 mt-3 px-3.5 py-2 rounded-full bg-fill-quaternary">
                             <span className="text-[16px]">{currentLevel.icon}</span>
                             <div className="text-left">
-                                <p className="text-[12px] font-bold text-white">Level {currentLevel.level}</p>
+                                <p className="text-[12px] font-bold text-label-primary">Level {currentLevel.level}</p>
                                 <p className="text-[10px] text-label-tertiary">{currentLevel.name}</p>
                             </div>
                         </div>
@@ -111,15 +111,15 @@ export default function ReputationPage() {
                         {/* Stats */}
                         <div className="grid grid-cols-3 gap-2 mt-4">
                             <div className="p-2.5 rounded-[10px] bg-fill-quaternary">
-                                <p className="text-[16px] font-bold text-white">{currentUser?.totalExchanges}</p>
+                                <p className="text-[16px] font-bold text-label-primary">{currentUser?.totalExchanges}</p>
                                 <p className="text-[10px] text-label-tertiary">Trades</p>
                             </div>
                             <div className="p-2.5 rounded-[10px] bg-fill-quaternary">
-                                <p className="text-[16px] font-bold text-white">{currentUser?.reputation}</p>
+                                <p className="text-[16px] font-bold text-label-primary">{currentUser?.reputation}</p>
                                 <p className="text-[10px] text-label-tertiary">Rating</p>
                             </div>
                             <div className="p-2.5 rounded-[10px] bg-fill-quaternary">
-                                <p className="text-[16px] font-bold text-white">{currentUser?.badges.length}</p>
+                                <p className="text-[16px] font-bold text-label-primary">{currentUser?.badges.length}</p>
                                 <p className="text-[10px] text-label-tertiary">Badges</p>
                             </div>
                         </div>
@@ -129,7 +129,7 @@ export default function ReputationPage() {
                 {/* Achievements */}
                 <motion.div variants={item} className="ios-card p-5 lg:col-span-2">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
+                        <h3 className="text-[15px] font-semibold text-label-primary flex items-center gap-2">
                             <Award className="w-4 h-4 text-ios-orange" strokeWidth={1.8} />
                             Achievements
                         </h3>
@@ -151,7 +151,7 @@ export default function ReputationPage() {
                                     }`}
                             >
                                 <span className="text-[24px] block mb-1.5">{ach.icon}</span>
-                                <p className="text-[12px] font-semibold text-white mb-0.5">{ach.name}</p>
+                                <p className="text-[12px] font-semibold text-label-primary mb-0.5">{ach.name}</p>
                                 <p className="text-[10px] text-label-tertiary leading-tight">{ach.desc}</p>
                                 <span className="inline-block mt-2 ios-badge" style={{
                                     backgroundColor: ach.color + '14',
@@ -167,7 +167,7 @@ export default function ReputationPage() {
 
             {/* Level Progression */}
             <motion.div variants={item} className="ios-card p-5">
-                <h3 className="text-[15px] font-semibold text-white flex items-center gap-2 mb-5">
+                <h3 className="text-[15px] font-semibold text-label-primary flex items-center gap-2 mb-5">
                     <Flame className="w-4 h-4 text-ios-orange" strokeWidth={1.8} />
                     Level Progression
                 </h3>
@@ -197,7 +197,7 @@ export default function ReputationPage() {
                                     }}>
                                     {level.icon}
                                 </div>
-                                <p className={`text-[11px] mt-2 font-medium ${isCurrent ? 'text-white' : isReached ? 'text-label-secondary' : 'text-label-quaternary'}`}>
+                                <p className={`text-[11px] mt-2 font-medium ${isCurrent ? 'text-label-primary' : isReached ? 'text-label-secondary' : 'text-label-quaternary'}`}>
                                     {level.name}
                                 </p>
                                 <p className="text-[10px] text-label-quaternary mt-0.5">{level.minXP} XP</p>
@@ -210,7 +210,7 @@ export default function ReputationPage() {
             {/* Leaderboard */}
             <motion.div variants={item} className="ios-card p-5">
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
+                    <h3 className="text-[15px] font-semibold text-label-primary flex items-center gap-2">
                         <Crown className="w-4 h-4 text-ios-orange" strokeWidth={1.8} />
                         Leaderboard
                     </h3>
@@ -240,7 +240,7 @@ export default function ReputationPage() {
                                 <span className={`w-7 text-center font-bold text-[13px] ${user.rank <= 3 ? 'text-ios-orange' : 'text-label-quaternary'}`}>
                                     {user.badge || `#${user.rank}`}
                                 </span>
-                                <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold text-white"
+                                <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold text-label-primary"
                                     style={{
                                         background: user.rank === 1 ? 'linear-gradient(135deg, #FFD60A, #FF9500)' :
                                             user.rank === 2 ? 'linear-gradient(135deg, #8E8E93, #636366)' :
@@ -250,13 +250,13 @@ export default function ReputationPage() {
                                     {user.name.charAt(0)}
                                 </div>
                                 <div className="flex-1">
-                                    <p className={`text-[14px] font-medium ${isCurrentUser ? 'text-ios-blue' : 'text-white'}`}>
+                                    <p className={`text-[14px] font-medium ${isCurrentUser ? 'text-ios-blue' : 'text-label-primary'}`}>
                                         {user.name} {isCurrentUser && <span className="text-[11px] text-ios-blue">(You)</span>}
                                     </p>
                                     <p className="text-[11px] text-label-tertiary">Lv.{user.level} · {user.trades} trades</p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-[14px] font-bold text-white">{user.score.toLocaleString()}</p>
+                                    <p className="text-[14px] font-bold text-label-primary">{user.score.toLocaleString()}</p>
                                     <span className={`text-[11px] font-medium ${user.change > 0 ? 'text-ios-green' : user.change < 0 ? 'text-ios-red' : 'text-label-quaternary'}`}>
                                         {user.change > 0 ? `↑${user.change}` : user.change < 0 ? `↓${Math.abs(user.change)}` : '—'}
                                     </span>

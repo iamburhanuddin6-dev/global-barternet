@@ -59,7 +59,7 @@ function SettingsRow({ icon: Icon, label, value, color, action, hasChevron }: {
                 <Icon className="w-4 h-4" style={{ color: color || '#636366' }} strokeWidth={1.8} />
             </div>
             <div className="flex-1 min-w-0">
-                <span className="text-[15px] text-white">{label}</span>
+                <span className="text-[15px] text-label-primary">{label}</span>
             </div>
             {value && <span className="text-[15px] text-label-tertiary">{value}</span>}
             {action}
@@ -94,7 +94,7 @@ export default function SettingsPage() {
                         {currentUser?.name.charAt(0) || 'A'}
                     </div>
                     <div>
-                        <h2 className="text-[20px] font-bold text-white">{currentUser?.name || 'Arjun Verma'}</h2>
+                        <h2 className="text-[20px] font-bold text-label-primary">{currentUser?.name || 'Arjun Verma'}</h2>
                         <p className="text-[13px] text-label-tertiary">{currentUser?.email || 'arjun@barternet.io'}</p>
                         <p className="text-[12px] text-label-quaternary font-mono mt-0.5">
                             {currentUser?.walletAddress || '0x742d...bD18'}
@@ -119,7 +119,7 @@ export default function SettingsPage() {
                             <div className="w-8 h-8 rounded-[8px] flex items-center justify-center bg-[#FF9500]/18">
                                 <Shield className="w-4 h-4 text-ios-orange" strokeWidth={1.8} />
                             </div>
-                            <span className="text-[15px] text-white">Risk Tolerance</span>
+                            <span className="text-[15px] text-label-primary">Risk Tolerance</span>
                             <span className="ml-auto text-[15px] font-medium text-ios-orange">{agentRisk}%</span>
                         </div>
                         <input

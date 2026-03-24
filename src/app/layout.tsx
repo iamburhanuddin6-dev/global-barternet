@@ -4,6 +4,8 @@ import Providers from "./providers";
 import { Toaster } from "react-hot-toast";
 import { Web3ConfigProvider } from "@/lib/web3-config";
 
+import ThemeManager from "@/components/ThemeManager";
+
 export const metadata: Metadata = {
   title: "Global BarterNet — AI-Mediated Blockchain Resource Exchange",
   description: "Where AI Meets Blockchain to Create a Post-Currency Economy. Trade resources, knowledge, and services with autonomous AI agents backed by blockchain trust.",
@@ -33,22 +35,24 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className="antialiased font-sans bg-black text-white min-h-screen">
+      {/* We use global css variables applied dynamically to control body bg and text color */}
+      <body className="antialiased font-sans bg-background text-text-primary min-h-screen transition-colors duration-700">
         <Providers>
+          <ThemeManager />
           <Web3ConfigProvider>
             {children}
             <Toaster
               position="top-right"
               toastOptions={{
                 style: {
-                  background: '#1C1C1E',
-                  color: '#fff',
+                  background: 'var(--background-elevated)',
+                  color: 'var(--text-primary)',
                   borderRadius: '14px',
-                  border: '0.5px solid rgba(255,255,255,0.1)',
+                  border: '0.5px solid var(--liquid-glass-border)',
                   fontSize: '14px',
                 },
-                success: { iconTheme: { primary: '#34C759', secondary: '#fff' } },
-                error: { iconTheme: { primary: '#FF3B30', secondary: '#fff' } },
+                success: { iconTheme: { primary: 'var(--ios-green)', secondary: '#fff' } },
+                error: { iconTheme: { primary: 'var(--ios-red)', secondary: '#fff' } },
               }}
             />
           </Web3ConfigProvider>
