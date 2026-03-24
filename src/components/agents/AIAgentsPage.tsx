@@ -72,7 +72,7 @@ export default function AIAgentsPage() {
                                     {agent.emoji}
                                 </div>
                                 <div className="flex items-center gap-2 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] px-3 py-1.5 rounded-full">
-                                    <span className={\`w-2 h-2 rounded-full \${agent.status === 'Idle' ? 'bg-[#8E8E93]' : 'animate-pulse'}\`} style={{ backgroundColor: agent.status !== 'Idle' ? agent.color : '#8E8E93' }}></span>
+                                    <span className={`w-2 h-2 rounded-full ${agent.status === 'Idle' ? 'bg-[#8E8E93]' : 'animate-pulse'}`} style={{ backgroundColor: agent.status !== 'Idle' ? agent.color : '#8E8E93' }}></span>
                                     <span className="text-[12px] font-bold text-white">{agent.status}</span>
                                 </div>
                             </div>
@@ -112,12 +112,12 @@ export default function AIAgentsPage() {
                                 <ResponsiveContainer width="100%" height="100%">
                                     <AreaChart data={agent.data.map((val, idx) => ({ name: idx, value: val }))}>
                                         <defs>
-                                            <linearGradient id={\`color\${agent.name}\`} x1="0" y1="0" x2="0" y2="1">
+                                            <linearGradient id={`color${agent.name}`} x1="0" y1="0" x2="0" y2="1">
                                                 <stop offset="5%" stopColor={agent.color} stopOpacity={0.3}/>
                                                 <stop offset="95%" stopColor={agent.color} stopOpacity={0}/>
                                             </linearGradient>
                                         </defs>
-                                        <Area type="monotone" dataKey="value" stroke={agent.color} strokeWidth={2} fillOpacity={1} fill={\`url(#color\${agent.name})\`} />
+                                        <Area type="monotone" dataKey="value" stroke={agent.color} strokeWidth={2} fillOpacity={1} fill={`url(#color${agent.name})`} />
                                     </AreaChart>
                                 </ResponsiveContainer>
                             </div>

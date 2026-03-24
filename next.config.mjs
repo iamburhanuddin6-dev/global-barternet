@@ -10,7 +10,6 @@ const nextConfig = {
     typescript: {
         ignoreBuildErrors: true,
     },
-    transpilePackages: ['framer-motion', 'motion-dom', 'motion-utils'],
 };
 
 export default nextConfig;

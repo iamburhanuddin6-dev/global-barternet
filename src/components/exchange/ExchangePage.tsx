@@ -84,11 +84,11 @@ export default function ExchangePage() {
                         <button
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
-                            className={\`px-5 py-2 rounded-full text-[14px] font-semibold whitespace-nowrap transition-all duration-300 \${
+                            className={`px-5 py-2 rounded-full text-[14px] font-semibold whitespace-nowrap transition-all duration-300 ${
                                 selectedCategory === cat
                                     ? 'bg-ios-blue text-white shadow-[0_4px_12px_rgba(0,122,255,0.3)]'
                                     : 'bg-[rgba(255,255,255,0.04)] text-[#8E8E93] hover:bg-[rgba(255,255,255,0.08)] hover:text-white'
-                            }\`}
+                            }`}
                         >
                             {cat}
                         </button>

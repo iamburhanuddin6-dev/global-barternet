@@ -216,7 +216,7 @@ export default function BlockchainPage() {
                                                 ) : (
                                                     <Clock className="w-4 h-4 text-ios-orange animate-pulse" strokeWidth={2} />
                                                 )}
-                                                <span className={\`text-[12px] font-bold \${tx.status === 'Confirmed' ? 'text-ios-green' : 'text-ios-orange'}\`}>
+                                                <span className={`text-[12px] font-bold ${tx.status === 'Confirmed' ? 'text-ios-green' : 'text-ios-orange'}`}>
                                                     {tx.status}
                                                 </span>
                                             </div>

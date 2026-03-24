@@ -70,7 +70,7 @@ export default function AnalyticsPage() {
                 <div className="flex items-center gap-4">
                     <div className="flex bg-[rgba(255,255,255,0.05)] rounded-[12px] p-1 border border-[rgba(255,255,255,0.05)]">
                         {['7D', '30D', '90D', '1Y'].map((range, i) => (
-                            <button key={range} className={\`px-4 py-2 text-[13px] font-semibold rounded-[10px] transition-all \${i === 1 ? 'bg-[rgba(255,255,255,0.1)] text-white shadow-md' : 'text-[#8E8E93] hover:text-white'}\`}>
+                            <button key={range} className={`px-4 py-2 text-[13px] font-semibold rounded-[10px] transition-all ${i === 1 ? 'bg-[rgba(255,255,255,0.1)] text-white shadow-md' : 'text-[#8E8E93] hover:text-white'}`}>
                                 {range}
                             </button>
                         ))}
@@ -97,7 +97,7 @@ export default function AnalyticsPage() {
                             <div className="w-12 h-12 rounded-[14px] flex items-center justify-center border border-[rgba(255,255,255,0.1)] shadow-inner" style={{ backgroundColor: stat.color + '15' }}>
                                 <stat.icon className="w-6 h-6" style={{ color: stat.color }} />
                             </div>
-                            <div className={\`flex items-center gap-1.5 px-2 py-1 rounded-md text-[12px] font-bold bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] \${stat.change >= 0 ? 'text-ios-green' : 'text-ios-orange'}\`}>
+                            <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[12px] font-bold bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] ${stat.change >= 0 ? 'text-ios-green' : 'text-ios-orange'}`}>
                                 {stat.change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                                 {Math.abs(stat.change)}%
                             </div>
@@ -134,7 +134,7 @@ export default function AnalyticsPage() {
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
                                 <XAxis dataKey="name" stroke="#8E8E93" fontSize={12} tickLine={false} axisLine={false} dy={10} />
-                                <YAxis stroke="#8E8E93" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => \`$\${val/1000}k\`} />
+                                <YAxis stroke="#8E8E93" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val/1000}k`} />
                                 <Tooltip 
                                     contentStyle={{ backgroundColor: 'rgba(20,20,22,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
                                     itemStyle={{ color: '#fff', fontWeight: 'bold' }}
@@ -195,7 +195,7 @@ export default function AnalyticsPage() {
                                     paddingAngle={3} dataKey="value" stroke="none"
                                 >
                                     {currentCategoryData.map((entry, index) => (
-                                        <Cell key={\`cell-\${index}\`} fill={entry.color} />
+                                        <Cell key={`cell-${index}`} fill={entry.color} />
                                     ))}
                                 </Pie>
                                 <Tooltip contentStyle={{ backgroundColor: 'rgba(20,20,22,0.9)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }} />
@@ -245,12 +245,12 @@ export default function AnalyticsPage() {
                                         <td className="py-4 px-4">
                                             <div className="flex items-center gap-2">
                                                 <div className="w-16 bg-[rgba(255,255,255,0.1)] h-1.5 rounded-full overflow-hidden">
-                                                    <div className="h-full bg-[#AF52DE] rounded-full" style={{ width: \`\${partner.score}%\` }}></div>
+                                                    <div className="h-full bg-[#AF52DE] rounded-full" style={{ width: `${partner.score}%` }}></div>
                                                 </div>
                                                 <span className="text-[12px] text-white">{partner.score}%</span>
                                             </div>
                                         </td>
-                                        <td className={\`py-4 px-4 text-[13px] font-bold text-right \${partner.trend.startsWith('+') ? 'text-ios-green' : 'text-ios-red'}\`}>
+                                        <td className={`py-4 px-4 text-[13px] font-bold text-right ${partner.trend.startsWith('+') ? 'text-ios-green' : 'text-ios-red'}`}>
                                             {partner.trend}
                                         </td>
                                     </tr>
