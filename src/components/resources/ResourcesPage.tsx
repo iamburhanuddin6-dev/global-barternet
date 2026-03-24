@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MotionDiv, MotionButton, MotionTr, AnimatePresence } from '@/lib/motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useBarterStore } from '@/store/barterStore';
 import toast from 'react-hot-toast';
 import {
@@ -92,14 +92,14 @@ export default function ResourcesPage() {
         : resources;
 
     return (
-        <MotionDiv
+        <motion.div
             variants={container}
             initial="hidden"
             animate="show"
             className="space-y-5"
         >
             {/* Hero */}
-            <MotionDiv variants={item} className="liquid-glass-hero p-6 md:p-7">
+            <motion.div variants={item} className="liquid-glass-hero p-6 md:p-7">
                 <div className="flex items-start justify-between">
                     <div>
                         <h1 className="ios-title-1 text-white mb-1.5">
@@ -109,16 +109,16 @@ export default function ResourcesPage() {
                             Manage listed resources, update details, and track exchange status.
                         </p>
                     </div>
-                    <MotionButton
+                    <motion.button
                         whileTap={{ scale: 0.96 }}
                         onClick={() => setShowAddModal(true)}
                         className="flex items-center gap-2 px-5 py-2.5 bg-ios-blue text-white text-[14px] font-semibold rounded-full shadow-ios-md"
                     >
                         <Plus className="w-4 h-4" strokeWidth={2} />
                         List Resource
-                    </MotionButton>
+                    </motion.button>
                 </div>
-            </MotionDiv>
+            </motion.div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -128,15 +128,15 @@ export default function ResourcesPage() {
                     { label: 'In Negotiation', value: resources.filter(r => r.status === 'in-negotiation').length.toString(), color: '#FF9500' },
                     { label: 'Total Value', value: '$' + (resources.reduce((s, r) => s + r.estimatedValue, 0) / 1000).toFixed(1) + 'K', color: '#5AC8FA' },
                 ].map((s, i) => (
-                    <MotionDiv key={i} variants={item} className="ios-card p-4 text-center">
+                    <motion.div key={i} variants={item} className="ios-card p-4 text-center">
                         <p className="text-[22px] font-bold tracking-tight" style={{ color: s.color }}>{s.value}</p>
                         <p className="text-[11px] text-label-tertiary mt-1">{s.label}</p>
-                    </MotionDiv>
+                    </motion.div>
                 ))}
             </div>
 
             {/* Table */}
-            <MotionDiv variants={item} className="ios-card overflow-hidden">
+            <motion.div variants={item} className="ios-card overflow-hidden">
                 <div className="flex items-center justify-between p-4 border-b border-separator">
                     <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
                         <Package className="w-4 h-4 text-ios-blue" strokeWidth={1.8} />
@@ -175,7 +175,7 @@ export default function ResourcesPage() {
                             </thead>
                             <tbody>
                                 {filteredResources.map((resource, i) => (
-                                    <MotionTr
+                                    <motion.tr
                                         key={resource.id}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
@@ -235,25 +235,25 @@ export default function ResourcesPage() {
                                                 </button>
                                             </div>
                                         </td>
-                                    </MotionTr>
+                                    </motion.tr>
                                 ))}
                             </tbody>
                         </table>
                     )}
                 </div>
-            </MotionDiv>
+            </motion.div>
 
             {/* Add Resource Modal — DYNAMIC */}
             <AnimatePresence>
                 {showAddModal && (
-                    <MotionDiv
+                    <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-50 flex items-center justify-center p-4"
                     >
                         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowAddModal(false)} />
-                        <MotionDiv
+                        <motion.div
                             initial={{ scale: 0.95, opacity: 0, y: 12 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: 12 }}
@@ -349,10 +349,10 @@ export default function ResourcesPage() {
                                     List Resource
                                 </button>
                             </div>
-                        </MotionDiv>
-                    </MotionDiv>
+                        </motion.div>
+                    </motion.div>
                 )}
             </AnimatePresence>
-        </MotionDiv>
+        </motion.div>
     );
 }

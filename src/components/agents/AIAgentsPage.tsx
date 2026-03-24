@@ -1,6 +1,6 @@
 'use client';
 
-import { MotionDiv } from '@/lib/motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     Brain,
     Activity,
@@ -25,23 +25,23 @@ const item = {
 };
 
 const agents = [
-    { name: 'NOVA', type: 'Matcher Agent', emoji: '🤖', color: '#007AFF', status: 'Scanning', efficiency: 96, matches: 1247, data: [20, 40, 30, 70, 50, 90, 80] },
-    { name: 'ATLAS', type: 'Negotiator', emoji: '🧠', color: '#AF52DE', status: 'Negotiating', efficiency: 92, matches: 843, data: [40, 30, 50, 40, 60, 50, 70] },
-    { name: 'SENTINEL', type: 'Validator', emoji: '🛡️', color: '#34C759', status: 'Verifying', efficiency: 99, matches: 4521, data: [80, 85, 90, 85, 95, 90, 100] },
-    { name: 'ORACLE', type: 'Market Analyst', emoji: '🔮', color: '#5AC8FA', status: 'Idle', efficiency: 88, matches: 512, data: [50, 40, 60, 70, 50, 80, 60] },
-    { name: 'CIPHER', type: 'Privacy Escrow', emoji: '🔐', color: '#FF9500', status: 'Processing', efficiency: 94, matches: 890, data: [30, 50, 40, 80, 60, 70, 90] },
-    { name: 'NEXUS', type: 'Liquidity Router', emoji: '⚡', color: '#FF2D55', status: 'Routing', efficiency: 97, matches: 2104, data: [60, 70, 50, 90, 80, 100, 90] },
+    { name: 'NOVA', type: 'Matcher Agent', emoji: '', color: '#007AFF', status: 'Scanning', efficiency: 96, matches: 1247, data: [20, 40, 30, 70, 50, 90, 80] },
+    { name: 'ATLAS', type: 'Negotiator', emoji: '', color: '#AF52DE', status: 'Negotiating', efficiency: 92, matches: 843, data: [40, 30, 50, 40, 60, 50, 70] },
+    { name: 'SENTINEL', type: 'Validator', emoji: '', color: '#34C759', status: 'Verifying', efficiency: 99, matches: 4521, data: [80, 85, 90, 85, 95, 90, 100] },
+    { name: 'ORACLE', type: 'Market Analyst', emoji: '', color: '#5AC8FA', status: 'Idle', efficiency: 88, matches: 512, data: [50, 40, 60, 70, 50, 80, 60] },
+    { name: 'CIPHER', type: 'Privacy Escrow', emoji: '', color: '#FF9500', status: 'Processing', efficiency: 94, matches: 890, data: [30, 50, 40, 80, 60, 70, 90] },
+    { name: 'NEXUS', type: 'Liquidity Router', emoji: '', color: '#FF2D55', status: 'Routing', efficiency: 97, matches: 2104, data: [60, 70, 50, 90, 80, 100, 90] },
 ];
 
 export default function AIAgentsPage() {
     return (
-        <MotionDiv variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6">
+        <motion.div variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6">
             
-            {/* ───── LEFT CONTENT (MAIN AGENTS GRID) ───── */}
+            {/*  LEFT CONTENT (MAIN AGENTS GRID)  */}
             <div className="flex-1 space-y-6">
                 
                 {/* Header */}
-                <MotionDiv variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
+                <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
                     <div>
                         <div className="flex items-center gap-2 mb-2">
                             <span className="w-[5px] h-[5px] bg-ios-green rounded-full animate-pulse-soft" />
@@ -52,12 +52,12 @@ export default function AIAgentsPage() {
                             <span className="bg-[#AF52DE]/10 text-[#AF52DE] text-[12px] px-2.5 py-1 rounded-md tracking-widest font-bold uppercase">Pro</span>
                         </h1>
                     </div>
-                </MotionDiv>
+                </motion.div>
 
                 {/* 2x3 Grid of Agents */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {agents.map((agent, i) => (
-                        <MotionDiv
+                        <motion.div
                             key={i}
                             variants={item}
                             className="liquid-glass-card p-6 rounded-[24px] relative group overflow-hidden border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] hover:bg-[rgba(30,30,32,0.6)] hover:border-[rgba(255,255,255,0.15)] transition-all duration-500"
@@ -132,13 +132,13 @@ export default function AIAgentsPage() {
                                     {agent.status === 'Idle' ? <PlayCircle className="w-5 h-5 text-ios-green" /> : <PauseCircle className="w-5 h-5 text-ios-orange" />}
                                 </button>
                             </div>
-                        </MotionDiv>
+                        </motion.div>
                     ))}
                 </div>
             </div>
 
-            {/* ───── RIGHT SIDEBAR (LIVE ACTIVITY FEED) ───── */}
-            <MotionDiv variants={item} className="w-full xl:w-[320px] h-full flex flex-col gap-6">
+            {/*  RIGHT SIDEBAR (LIVE ACTIVITY FEED)  */}
+            <motion.div variants={item} className="w-full xl:w-[320px] h-full flex flex-col gap-6">
                 <div className="liquid-glass-card rounded-[24px] p-6 relative overflow-hidden border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.6)]">
                     <div className="flex items-center gap-2 mb-6">
                         <TerminalSquare className="w-5 h-5 text-ios-blue" />
@@ -167,8 +167,8 @@ export default function AIAgentsPage() {
                         ))}
                     </div>
                 </div>
-            </MotionDiv>
+            </motion.div>
 
-        </MotionDiv>
+        </motion.div>
     );
 }

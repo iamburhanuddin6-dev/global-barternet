@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MotionDiv, AnimatePresence } from '@/lib/motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowLeftRight,
     Clock,
@@ -54,21 +54,21 @@ export default function TradesPage() {
         );
 
     return (
-        <MotionDiv
+        <motion.div
             variants={container}
             initial="hidden"
             animate="show"
             className="space-y-5"
         >
             {/* Hero */}
-            <MotionDiv variants={item} className="liquid-glass-hero p-6 md:p-7">
+            <motion.div variants={item} className="liquid-glass-hero p-6 md:p-7">
                 <h1 className="ios-title-1 text-white mb-1.5">
                     My <span className="text-ios-blue">Trades</span>
                 </h1>
                 <p className="text-label-secondary max-w-lg text-[15px]">
                     Track all your exchanges — from AI matches to blockchain completions.
                 </p>
-            </MotionDiv>
+            </motion.div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -78,18 +78,18 @@ export default function TradesPage() {
                     { label: 'Completed', value: '43', icon: CheckCircle, color: '#34C759' },
                     { label: 'Success Rate', value: '95.7%', icon: Shield, color: '#5AC8FA' },
                 ].map((s, i) => (
-                    <MotionDiv key={i} variants={item} className="ios-card p-4 flex items-center gap-3">
+                    <motion.div key={i} variants={item} className="ios-card p-4 flex items-center gap-3">
                         <s.icon className="w-5 h-5" style={{ color: s.color }} strokeWidth={1.8} />
                         <div>
                             <p className="text-[17px] font-bold text-white">{s.value}</p>
                             <p className="text-[11px] text-label-tertiary">{s.label}</p>
                         </div>
-                    </MotionDiv>
+                    </motion.div>
                 ))}
             </div>
 
             {/* Filter Tabs */}
-            <MotionDiv variants={item} className="flex gap-2">
+            <motion.div variants={item} className="flex gap-2">
                 {tabs.map(tab => (
                     <button
                         key={tab}
@@ -102,7 +102,7 @@ export default function TradesPage() {
                         {tab}
                     </button>
                 ))}
-            </MotionDiv>
+            </motion.div>
 
             {/* Trades */}
             <div className="space-y-2">
@@ -110,7 +110,7 @@ export default function TradesPage() {
                     const config = statusConfig[trade.status];
                     const StatusIcon = config.icon;
                     return (
-                        <MotionDiv
+                        <motion.div
                             key={trade.id}
                             variants={item}
                             className="ios-card overflow-hidden"
@@ -155,7 +155,7 @@ export default function TradesPage() {
 
                             <AnimatePresence>
                                 {expandedTrade === trade.id && (
-                                    <MotionDiv
+                                    <motion.div
                                         initial={{ height: 0, opacity: 0 }}
                                         animate={{ height: 'auto', opacity: 1 }}
                                         exit={{ height: 0, opacity: 0 }}
@@ -229,13 +229,13 @@ export default function TradesPage() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </MotionDiv>
+                                    </motion.div>
                                 )}
                             </AnimatePresence>
-                        </MotionDiv>
+                        </motion.div>
                     );
                 })}
             </div>
-        </MotionDiv>
+        </motion.div>
     );
 }

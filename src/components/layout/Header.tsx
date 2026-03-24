@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MotionDiv, MotionButton, MotionH2, AnimatePresence } from '@/lib/motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useSession, signOut } from 'next-auth/react';
 import { useBarterStore } from '@/store/barterStore';
 import {
@@ -66,7 +66,7 @@ export default function Header() {
         <header className="h-14 liquid-glass-header flex items-center justify-between px-6 sticky top-0 z-40">
             {/* Left Section — Large Title */}
             <div className="flex items-center gap-3">
-                <MotionH2
+                <motion.h2
                     key={activeTab}
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -74,7 +74,7 @@ export default function Header() {
                     className="text-[17px] font-semibold text-white tracking-tight"
                 >
                     {tabTitles[activeTab] || 'BarterNet'}
-                </MotionH2>
+                </motion.h2>
 
                 {/* Live Indicator */}
                 <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-ios-green/10">
@@ -108,7 +108,7 @@ export default function Header() {
 
                 {/* Notifications — REAL DATA */}
                 <div className="relative">
-                    <MotionButton
+                    <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={() => setShowNotifications(!showNotifications)}
                         className="relative w-9 h-9 rounded-full liquid-glass-btn flex items-center justify-center text-label-secondary hover:text-white transition-colors"
@@ -119,11 +119,11 @@ export default function Header() {
                                 {unreadCount}
                             </span>
                         )}
-                    </MotionButton>
+                    </motion.button>
 
                     <AnimatePresence>
                         {showNotifications && (
-                            <MotionDiv
+                            <motion.div
                                 initial={{ opacity: 0, y: 6, scale: 0.96 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 6, scale: 0.96 }}
@@ -171,13 +171,13 @@ export default function Header() {
                                         ))
                                     )}
                                 </div>
-                            </MotionDiv>
+                            </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
 
                 {/* Wallet */}
-                <MotionButton
+                <motion.button
                     whileTap={{ scale: 0.96 }}
                     onClick={() => setWalletConnected(!isWalletConnected)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-full text-[13px] font-semibold transition-all ${isWalletConnected
@@ -191,17 +191,17 @@ export default function Header() {
                     ) : (
                         <span>Connect</span>
                     )}
-                </MotionButton>
+                </motion.button>
 
                 {/* Sign Out */}
-                <MotionButton
+                <motion.button
                     whileTap={{ scale: 0.9 }}
                     onClick={() => signOut({ callbackUrl: '/login' })}
                     className="w-9 h-9 rounded-full liquid-glass-btn flex items-center justify-center text-label-secondary hover:text-ios-red transition-colors"
                     title="Sign out"
                 >
                     <LogOut className="w-[16px] h-[16px]" strokeWidth={1.8} />
-                </MotionButton>
+                </motion.button>
             </div>
         </header>
     );

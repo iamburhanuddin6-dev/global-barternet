@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MotionDiv, MotionButton } from '@/lib/motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { signOut } from 'next-auth/react';
 import { useBarterStore } from '@/store/barterStore';
 import {
@@ -33,18 +33,18 @@ const item = {
 // iOS-style toggle switch
 function IOSToggle({ enabled, onChange }: { enabled: boolean; onChange: () => void }) {
     return (
-        <MotionButton
+        <motion.button
             onClick={onChange}
             className={`relative w-[51px] h-[31px] rounded-full transition-colors duration-200 flex-shrink-0 ${enabled ? 'bg-ios-green' : 'bg-fill-primary'
                 }`}
         >
-            <MotionDiv
+            <motion.div
                 layout
                 transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 className="absolute top-[2px] w-[27px] h-[27px] rounded-full bg-white shadow-ios-md"
                 style={{ left: enabled ? 22 : 2 }}
             />
-        </MotionButton>
+        </motion.button>
     );
 }
 
@@ -81,14 +81,14 @@ export default function SettingsPage() {
     const [agentRisk, setAgentRisk] = useState(65);
 
     return (
-        <MotionDiv
+        <motion.div
             variants={container}
             initial="hidden"
             animate="show"
             className="space-y-5 max-w-2xl"
         >
             {/* Profile Section */}
-            <MotionDiv variants={item} className="liquid-glass-card p-6 rounded-[20px]">
+            <motion.div variants={item} className="liquid-glass-card p-6 rounded-[20px]">
                 <div className="flex items-center gap-4 mb-5">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-ios-blue to-ios-teal flex items-center justify-center text-[24px] font-bold shadow-ios-md">
                         {currentUser?.name.charAt(0) || 'A'}
@@ -102,10 +102,10 @@ export default function SettingsPage() {
                     </div>
                 </div>
                 <button className="w-full ios-btn-secondary text-center">Edit Profile</button>
-            </MotionDiv>
+            </motion.div>
 
             {/* AI Agent Configuration */}
-            <MotionDiv variants={item}>
+            <motion.div variants={item}>
                 <h3 className="ios-footnote text-label-tertiary uppercase tracking-wider px-4 mb-2">AI Agent Configuration</h3>
                 <div className="ios-group">
                     <SettingsRow
@@ -136,10 +136,10 @@ export default function SettingsPage() {
                         </div>
                     </div>
                 </div>
-            </MotionDiv>
+            </motion.div>
 
             {/* Notifications */}
-            <MotionDiv variants={item}>
+            <motion.div variants={item}>
                 <h3 className="ios-footnote text-label-tertiary uppercase tracking-wider px-4 mb-2">Notifications</h3>
                 <div className="ios-group">
                     <SettingsRow
@@ -167,10 +167,10 @@ export default function SettingsPage() {
                         action={<IOSToggle enabled={tradeNotif} onChange={() => setTradeNotif(!tradeNotif)} />}
                     />
                 </div>
-            </MotionDiv>
+            </motion.div>
 
             {/* Appearance */}
-            <MotionDiv variants={item}>
+            <motion.div variants={item}>
                 <h3 className="ios-footnote text-label-tertiary uppercase tracking-wider px-4 mb-2">Appearance</h3>
                 <div className="ios-group">
                     <SettingsRow
@@ -182,10 +182,10 @@ export default function SettingsPage() {
                     <SettingsRow icon={Palette} label="Theme" value="Blue" color="#FF2D55" hasChevron />
                     <SettingsRow icon={Globe} label="Language" value="English" color="#5AC8FA" hasChevron />
                 </div>
-            </MotionDiv>
+            </motion.div>
 
             {/* Security */}
-            <MotionDiv variants={item}>
+            <motion.div variants={item}>
                 <h3 className="ios-footnote text-label-tertiary uppercase tracking-wider px-4 mb-2">Security</h3>
                 <div className="ios-group">
                     <SettingsRow
@@ -203,10 +203,10 @@ export default function SettingsPage() {
                     <SettingsRow icon={Key} label="Change Password" color="#FF9500" hasChevron />
                     <SettingsRow icon={Shield} label="Active Sessions" value="3" color="#AF52DE" hasChevron />
                 </div>
-            </MotionDiv>
+            </motion.div>
 
             {/* Danger */}
-            <MotionDiv variants={item}>
+            <motion.div variants={item}>
                 <div className="ios-group">
                     <div
                         onClick={() => signOut({ callbackUrl: '/login' })}
@@ -218,12 +218,12 @@ export default function SettingsPage() {
                         <span className="text-[15px] text-ios-red font-medium">Sign Out</span>
                     </div>
                 </div>
-            </MotionDiv>
+            </motion.div>
 
-            <MotionDiv variants={item} className="text-center py-4">
+            <motion.div variants={item} className="text-center py-4">
                 <p className="text-[11px] text-label-quaternary">Global BarterNet v2.1.0</p>
                 <p className="text-[11px] text-label-quaternary mt-0.5">© 2024 BarterNet Protocol</p>
-            </MotionDiv>
-        </MotionDiv>
+            </motion.div>
+        </motion.div>
     );
 }
