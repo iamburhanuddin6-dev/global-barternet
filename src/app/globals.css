@@ -673,12 +673,28 @@ body {
     border-radius: 20px;
   }
 
-  /* Ambient Background */
+  /* Deep Animated Aurora Ambient Background */
   .ios-ambient {
     background-image:
-      radial-gradient(at 20% 20%, rgba(0, 122, 255, 0.06) 0px, transparent 50%),
-      radial-gradient(at 80% 20%, rgba(175, 82, 222, 0.04) 0px, transparent 50%),
-      radial-gradient(at 50% 80%, rgba(52, 199, 89, 0.03) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, var(--ios-indigo) 0px, transparent 60%),
+      radial-gradient(at 100% 0%, var(--ios-purple) 0px, transparent 60%),
+      radial-gradient(at 100% 100%, var(--ios-teal) 0px, transparent 60%),
+      radial-gradient(at 0% 100%, var(--ios-blue) 0px, transparent 60%);
+    background-size: 200% 200%;
+    opacity: 0.12;
+    animation: aurora-shift 15s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes aurora-shift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 100%;
   }
 }
 

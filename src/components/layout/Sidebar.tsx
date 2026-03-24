@@ -1,8 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useSession } from 'next-auth/react';
+import { motion } from 'framer-motion';
 import { useBarterStore } from '@/store/barterStore';
 import {
     LayoutDashboard,
@@ -13,222 +11,82 @@ import {
     BarChart3,
     Trophy,
     Shield,
-    Settings,
-    ChevronLeft,
-    ChevronRight,
-    Zap,
+    Settings
 } from 'lucide-react';
 
-const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null },
-    { id: 'exchange', label: 'Exchange', icon: Globe, badge: null },
-    { id: 'resources', label: 'Resources', icon: Package, badge: null },
-    { id: 'trades', label: 'My Trades', icon: ArrowLeftRight, badge: null },
-    { id: 'ai-agents', label: 'AI Agents', icon: Bot, badge: null },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3, badge: null },
-    { id: 'reputation', label: 'Reputation', icon: Trophy, badge: null },
-    { id: 'blockchain', label: 'Blockchain', icon: Shield, badge: null },
-];
-
-const bottomItems = [
+const dockItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'exchange', label: 'Exchange', icon: Globe },
+    { id: 'resources', label: 'Resources', icon: Package },
+    { id: 'trades', label: 'My Trades', icon: ArrowLeftRight },
+    { id: 'ai-agents', label: 'Agents', icon: Bot },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+    { id: 'reputation', label: 'Reputation', icon: Trophy },
+    { id: 'blockchain', label: 'Web3', icon: Shield },
     { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
 export default function Sidebar() {
-    const { activeTab, setActiveTab, sidebarOpen, setSidebarOpen, currentUser, fetchProfile, unreadCount } = useBarterStore();
-    const { data: session } = useSession();
-    const [walletConnected, setWalletConnected] = useState(false);
-    const [walletAddress, setWalletAddress] = useState('');
-
-    // Fetch profile when session is available
-    useEffect(() => {
-        if (session?.user) {
-            fetchProfile();
-        }
-    }, [session, fetchProfile]);
+    const { activeTab, setActiveTab } = useBarterStore();
 
     return (
-        <motion.aside
-            initial={false}
-            animate={{ width: sidebarOpen ? 260 : 72 }}
-            transition={{ duration: 0.35, ease: [0.28, 0.84, 0.42, 1] }}
-            className="fixed left-0 top-0 h-screen z-50 liquid-glass-sidebar flex flex-col"
-        >
-            {/* Logo */}
-            <div className="flex items-center h-16 px-4 border-b border-separator">
-                <motion.div
-                    className="flex items-center gap-3 cursor-pointer"
-                    whileTap={{ scale: 0.96 }}
-                    onClick={() => setActiveTab('dashboard')}
-                >
-                    <div className="w-9 h-9 rounded-[10px] bg-ios-blue flex items-center justify-center shadow-ios-md">
-                        <Zap className="w-5 h-5 text-label-primary" />
-                    </div>
-                    <AnimatePresence>
-                        {sidebarOpen && (
-                            <motion.div
-                                initial={{ opacity: 0, x: -8 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -8 }}
-                                transition={{ duration: 0.2 }}
-                            >
-                                <h1 className="font-display font-bold text-[15px] text-label-primary whitespace-nowrap tracking-tight">
-                                    BarterNet
-                                </h1>
-                                <p className="text-[11px] text-label-tertiary whitespace-nowrap">AI · Blockchain</p>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </motion.div>
-            </div>
+        <div className="fixed bottom-6 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4">
+            <motion.div 
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                className="flex items-center gap-2 p-2 rounded-[24px] pointer-events-auto bg-[var(--liquid-glass-bg)] border border-[var(--liquid-glass-border)] backdrop-blur-3xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] relative overflow-hidden"
+            >
+                {/* Ethereal Glow inside the dock */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[var(--ios-purple)]/10 via-[var(--ios-teal)]/10 to-[var(--ios-blue)]/10 opacity-50 pointer-events-none mix-blend-screen mix-blend-overlay blur-md" />
 
-            {/* Nav Items */}
-            <nav className="flex-1 py-3 px-2 space-y-0.5 overflow-y-auto">
-                {navItems.map((item) => {
+                {dockItems.map((item) => {
                     const isActive = activeTab === item.id;
-                    const Icon = item.icon;
+                    
                     return (
-                        <motion.button
+                        <button
                             key={item.id}
                             onClick={() => setActiveTab(item.id)}
-                            whileTap={{ scale: 0.96 }}
-                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[12px] transition-all duration-200 group relative ${isActive
-                                    ? 'bg-fill-tertiary text-label-primary'
-                                    : 'text-label-secondary hover:text-label-primary hover:bg-fill-quaternary'
-                                }`}
+                            className="relative group flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-[16px] transition-all duration-300"
                         >
+                            {/* Active background indicator */}
                             {isActive && (
-                                <motion.div
-                                    layoutId="activeNavIndicator"
-                                    className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-ios-blue rounded-r-full"
-                                    transition={{ type: 'spring', stiffness: 400, damping: 32 }}
+                                <motion.div 
+                                    layoutId="dock-indicator"
+                                    className="absolute inset-0 rounded-[16px] bg-gradient-to-b from-[var(--liquid-glass-highlight)] to-[rgba(255,255,255,0.01)] border border-[rgba(255,255,255,0.08)] shadow-[0_4px_16px_rgba(0,0,0,0.2)]"
+                                    initial={false}
+                                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                                 />
                             )}
-                            <Icon className={`w-[20px] h-[20px] flex-shrink-0 ${isActive ? 'text-ios-blue' : ''}`} strokeWidth={isActive ? 2.2 : 1.8} />
-                            <AnimatePresence>
-                                {sidebarOpen && (
-                                    <motion.span
-                                        initial={{ opacity: 0, x: -8 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -8 }}
-                                        className="text-[14px] font-medium whitespace-nowrap"
-                                    >
-                                        {item.label}
-                                    </motion.span>
-                                )}
-                            </AnimatePresence>
-                            {item.badge && sidebarOpen && (
-                                <motion.span
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    className="ml-auto bg-ios-red text-label-primary text-[11px] font-semibold min-w-[20px] h-5 flex items-center justify-center rounded-full px-1.5"
-                                >
-                                    {item.badge}
-                                </motion.span>
+                            
+                            {/* Icon */}
+                            <item.icon 
+                                className={`w-[22px] h-[22px] md:w-[24px] md:h-[24px] relative z-10 transition-all duration-300 ${
+                                    isActive 
+                                    ? 'text-label-primary filter drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] scale-110' 
+                                    : 'text-label-tertiary group-hover:text-label-primary group-hover:scale-110'
+                                }`} 
+                                strokeWidth={isActive ? 2.5 : 2}
+                            />
+                            
+                            {/* Active Dot */}
+                            {isActive && (
+                                <motion.div 
+                                    layoutId="active-dot"
+                                    className="absolute -bottom-1 w-[4px] h-[4px] bg-label-primary rounded-full shadow-[0_0_8px_#fff]" 
+                                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                                />
                             )}
-                        </motion.button>
+                            
+                            {/* Hover Tooltip (Mac OS Style) */}
+                            <div className="absolute -top-12 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300 pointer-events-none flex items-center justify-center backdrop-blur-xl bg-[var(--background-elevated)] border border-[var(--liquid-glass-border)] text-label-primary text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg whitespace-nowrap z-50">
+                                {item.label}
+                                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-[var(--background-elevated)]" />
+                            </div>
+                        </button>
                     );
                 })}
-            </nav>
-
-            {/* Bottom Section */}
-            <div className="px-2 pb-2 space-y-0.5 border-t border-separator pt-2">
-                {bottomItems.map((item) => {
-                    const Icon = item.icon;
-                    const isActive = activeTab === item.id;
-                    return (
-                        <motion.button
-                            key={item.id}
-                            onClick={() => setActiveTab(item.id)}
-                            whileTap={{ scale: 0.96 }}
-                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[12px] transition-all duration-200 ${isActive
-                                ? 'bg-fill-tertiary text-label-primary'
-                                : 'text-label-secondary hover:text-label-primary hover:bg-fill-quaternary'
-                            }`}
-                        >
-                            <Icon className={`w-[20px] h-[20px] flex-shrink-0 ${isActive ? 'text-ios-blue' : ''}`} strokeWidth={1.8} />
-                            <AnimatePresence>
-                                {sidebarOpen && (
-                                    <motion.span
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        className="text-[14px] font-medium whitespace-nowrap"
-                                    >
-                                        {item.label}
-                                    </motion.span>
-                                )}
-                            </AnimatePresence>
-                        </motion.button>
-                    );
-                })}
-
-                {/* Web3 Connect Wallet Button */}
-                <motion.button
-                    onClick={async () => {
-                        if (typeof window !== 'undefined' && (window as any).ethereum) {
-                            try {
-                                const accounts = await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
-                                if (accounts[0]) {
-                                    setWalletAddress(accounts[0]);
-                                    setWalletConnected(true);
-                                }
-                            } catch (e) {
-                                console.warn('Wallet connection rejected');
-                            }
-                        } else {
-                            alert('MetaMask not detected. Please install MetaMask to use blockchain features.');
-                        }
-                    }}
-                    whileTap={{ scale: 0.96 }}
-                    title={walletConnected ? walletAddress : 'Connect MetaMask Wallet'}
-                    className={`w-full mt-2 flex items-center justify-center gap-2 px-3 py-2.5 rounded-[12px] transition-all font-medium text-[13px] border ${
-                        walletConnected
-                            ? 'bg-ios-green/10 text-ios-green border-ios-green/20'
-                            : 'bg-ios-blue/10 text-ios-blue hover:bg-ios-blue/20 border-ios-blue/20'
-                    }`}
-                >
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" className="w-4 h-4 flex-shrink-0" />
-                    {sidebarOpen && (
-                        <span>
-                            {walletConnected
-                                ? `${walletAddress.substring(0, 6)}...${walletAddress.substring(walletAddress.length - 4)}`
-                                : 'Connect Wallet'}
-                        </span>
-                    )}
-                </motion.button>
-
-                {/* User Profile — iOS-style avatar row */}
-                {currentUser && (
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-[12px] bg-fill-quaternary mt-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ios-blue to-ios-teal flex items-center justify-center text-[13px] font-semibold flex-shrink-0">
-                            {currentUser.name.charAt(0)}
-                        </div>
-                        <AnimatePresence>
-                            {sidebarOpen && (
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="flex-1 min-w-0"
-                                >
-                                    <p className="text-[13px] font-semibold text-label-primary truncate">{currentUser.name}</p>
-                                    <p className="text-[11px] text-label-tertiary">Lv.{currentUser.level} · ⭐ {currentUser.reputation}</p>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-                )}
-
-                {/* Collapse Toggle */}
-                <motion.button
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
-                    whileTap={{ scale: 0.92 }}
-                    className="w-full flex items-center justify-center py-2 rounded-[10px] text-label-quaternary hover:text-label-secondary hover:bg-fill-quaternary transition-all mt-1"
-                >
-                    {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-                </motion.button>
-            </div>
-        </motion.aside>
+            </motion.div>
+        </div>
     );
 }

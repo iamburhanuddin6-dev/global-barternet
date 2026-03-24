@@ -86,17 +86,18 @@ export default function Home() {
       <div className="fixed inset-0 ios-ambient pointer-events-none z-[1]" />
 
       {/* Layout */}
-      <div className="relative z-10 flex">
-        <Sidebar />
-        <main
-          className="flex-1 transition-all duration-300 ease-[cubic-bezier(0.28,0.84,0.42,1)]"
-          style={{ marginLeft: sidebarOpen ? 260 : 72 }}
-        >
-          <Header />
-          <div className="px-6 py-5 max-w-[1600px] mx-auto">
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Header />
+        
+        {/* Main Content Area filling the screen */}
+        <main className="flex-1 w-full pb-32">
+          <div className="px-4 py-8 md:px-8 max-w-[1600px] mx-auto w-full">
             <PageContent />
           </div>
         </main>
+        
+        {/* Floating Navigation Dock (Replaces the clunky Sidebar) */}
+        <Sidebar />
       </div>
     </div>
   );
