@@ -4,101 +4,52 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-:root, [data-theme='liquid-dark'] {
-  /* iOS-Inspired Color Palette */
-  --background: #000000;
-  --background-secondary: #0a0a0c;
-  --background-tertiary: #141416;
-  --background-elevated: #161618;
+:root, [data-theme='liquid-dark'], [data-theme='stitch-light'] {
+  /* Premium Espresso & Mocha Palette */
+  --background: #1C1614;         /* Deep rich espresso */
+  --background-secondary: #2C2421;
+  --background-tertiary: #392A25;
+  --background-elevated: #281D1A;
 
-  /* Text */
-  --text-primary: #FFFFFF;
-  --text-secondary: #8E8E93;
-  --text-tertiary: #636366;
-  --text-quaternary: #48484A;
+  /* Text - Warm Creams & Tan */
+  --text-primary: #FCF4EB;       /* Crema */
+  --text-secondary: #D4BBA5;     /* Warm tan */
+  --text-tertiary: #A68A73;      /* Muted mocha */
+  --text-quaternary: #7A6251;    /* Deep taupe */
 
-  /* Premium Liquid Dark System Colors */
-  --ios-blue: #007AFF;
-  --ios-green: #34C759;
-  --ios-orange: #FF9500;
-  --ios-red: #FF3B30;
-  --ios-purple: #AF52DE;
-  --ios-teal: #5AC8FA;
-  --ios-indigo: #007AFF;
-  --ios-pink: #FF2D55;
-  --ios-yellow: #FFD60A;
-  --ios-mint: #00C7BE;
-
-  /* Separators */
-  --separator: rgba(84, 84, 88, 0.36);
-  --separator-opaque: #38383A;
-
-  /* Fill */
-  --fill-primary: rgba(120, 120, 128, 0.36);
-  --fill-secondary: rgba(120, 120, 128, 0.24);
-  --fill-tertiary: rgba(120, 120, 128, 0.18);
-  --fill-quaternary: rgba(120, 120, 128, 0.12);
-
-  /* Liquid Glass */
-  --liquid-glass-bg: rgba(255, 255, 255, 0.04);
-  --liquid-glass-border: rgba(255, 255, 255, 0.12);
-  --liquid-glass-highlight: rgba(255, 255, 255, 0.18);
-  --liquid-glass-sheen: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.02) 40%,
-    rgba(255, 255, 255, 0.0) 50%,
-    rgba(255, 255, 255, 0.03) 60%,
-    rgba(255, 255, 255, 0.08) 100%
-  );
-}
-
-[data-theme='stitch-light'] {
-  /* Bright Ethereal Stitch Theme */
-  --background: #FFFFFF;
-  --background-secondary: #F7F7F9;
-  --background-tertiary: #F2F2F7;
-  --background-elevated: #FFFFFF;
-
-  /* Text */
-  --text-primary: #000000;
-  --text-secondary: #3A3A3C;
-  --text-tertiary: #8E8E93;
-  --text-quaternary: #C7C7CC;
-
-  /* Modern Stitch Corporate Colors */
-  --ios-blue: #0056D6;      /* Deeper blue for contrast on white */
-  --ios-green: #248A3D;     /* Darker green */
-  --ios-orange: #CC7700;
-  --ios-red: #D70015;
-  --ios-purple: #8944AB;
-  --ios-teal: #008299;
-  --ios-indigo: #0056D6;
-  --ios-pink: #D30F45;
-  --ios-yellow: #B28200;
-  --ios-mint: #007A75;
+  /* Thematic System Colors (Replacing standard bright iOS neons with luxury tones) */
+  --ios-blue: #C88A54;           /* Warm Copper accent replacing Blue */
+  --ios-green: #90A959;          /* Sage / Moss green */
+  --ios-orange: #E27D60;         /* Terracotta */
+  --ios-red: #D36A62;            /* Muted brick red */
+  --ios-purple: #866A8A;         /* Dusty plum */
+  --ios-teal: #639A94;           /* Muted teal */
+  --ios-indigo: #C88A54;         /* Copper (Primary action) */
+  --ios-pink: #D1898A;           /* Dusty rose */
+  --ios-yellow: #E6B573;         /* Warm Gold */
+  --ios-mint: #74A593;           /* Muted mint */
 
   /* Separators */
-  --separator: rgba(60, 60, 67, 0.29);   /* standard iOS light separator */
-  --separator-opaque: #C6C6C8;
+  --separator: rgba(212, 187, 165, 0.15); /* Soft tan line */
+  --separator-opaque: #4A3A32;
 
   /* Fill */
-  --fill-primary: rgba(120, 120, 128, 0.2);
-  --fill-secondary: rgba(120, 120, 128, 0.16);
-  --fill-tertiary: rgba(120, 120, 128, 0.12);
-  --fill-quaternary: rgba(120, 120, 128, 0.08);
+  --fill-primary: rgba(200, 138, 84, 0.16);   /* Copper tint */
+  --fill-secondary: rgba(200, 138, 84, 0.10);
+  --fill-tertiary: rgba(200, 138, 84, 0.06);
+  --fill-quaternary: rgba(200, 138, 84, 0.03);
 
-  /* Light Liquid Glass */
-  --liquid-glass-bg: rgba(255, 255, 255, 0.7);
-  --liquid-glass-border: rgba(0, 0, 0, 0.1);
-  --liquid-glass-highlight: rgba(0, 0, 0, 0.05);
+  /* Mocha Glass System */
+  --liquid-glass-bg: rgba(60, 45, 38, 0.35);
+  --liquid-glass-border: rgba(212, 187, 165, 0.12);
+  --liquid-glass-highlight: rgba(212, 187, 165, 0.18);
   --liquid-glass-sheen: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 255, 255, 0.4) 40%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.3) 60%,
-    rgba(255, 255, 255, 0.8) 100%
+    rgba(212, 187, 165, 0.12) 0%,
+    rgba(212, 187, 165, 0.02) 40%,
+    rgba(212, 187, 165, 0.0) 50%,
+    rgba(212, 187, 165, 0.03) 60%,
+    rgba(212, 187, 165, 0.08) 100%
   );
 }
 
