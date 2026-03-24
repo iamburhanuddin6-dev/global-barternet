@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { MotionDiv, MotionTr } from '@/lib/motion';
 import {
     Shield,
     Clock,
@@ -50,7 +50,7 @@ const typeColors: Record<string, string> = {
 
 function HexBlock({ number, time, delay }: { number: number, time: string, delay: number }) {
     return (
-        <motion.div 
+        <MotionDiv 
             initial={{ opacity: 0, scale: 0.8 }} 
             animate={{ opacity: 1, scale: 1 }} 
             transition={{ delay, duration: 0.5 }}
@@ -72,33 +72,33 @@ function HexBlock({ number, time, delay }: { number: number, time: string, delay
                 </div>
             </div>
             <span className="text-[11px] text-[#8E8E93] font-mono">{time}</span>
-        </motion.div>
+        </MotionDiv>
     );
 }
 
 function GlowLine({ delay }: { delay: number }) {
     return (
-        <motion.div 
+        <MotionDiv 
             initial={{ opacity: 0, width: 0 }} 
             animate={{ opacity: 1, width: 40 }} 
             transition={{ delay, duration: 0.5 }}
             className="h-[2px] w-10 bg-gradient-to-r from-ios-blue to-ios-indigo shadow-[0_0_10px_rgba(0,122,255,0.8)] relative -mt-6"
         >
-            <motion.div 
+            <MotionDiv 
                 animate={{ x: [0, 40, 0] }} 
                 transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                 className="w-2 h-2 rounded-full bg-white absolute -top-[3px] shadow-[0_0_10px_white]"
             />
-        </motion.div>
+        </MotionDiv>
     );
 }
 
 export default function BlockchainPage() {
     return (
-        <motion.div variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto space-y-6">
+        <MotionDiv variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto space-y-6">
             
             {/* ───── HEADER ───── */}
-            <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6 relative">
+            <MotionDiv variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6 relative">
                 <div className="absolute top-0 right-1/4 w-[300px] h-[300px] bg-ios-blue/10 blur-[120px] rounded-full pointer-events-none -mt-40"></div>
                 <div>
                     <h1 className="text-[28px] font-bold text-white tracking-tight flex items-center gap-3">
@@ -124,10 +124,10 @@ export default function BlockchainPage() {
                         />
                     </div>
                 </div>
-            </motion.div>
+            </MotionDiv>
 
             {/* ───── HEX BLOCKCHAIN VISUALIZATION ───── */}
-            <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-8 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden flex items-center justify-center min-h-[200px]">
+            <MotionDiv variants={item} className="liquid-glass-card rounded-[24px] p-8 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden flex items-center justify-center min-h-[200px]">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[40px] bg-ios-indigo/20 blur-[50px] rounded-full"></div>
                 <div className="flex items-center justify-center flex-wrap z-10">
                     <HexBlock number={48392842} time="15:32:01" delay={0.1} />
@@ -140,7 +140,7 @@ export default function BlockchainPage() {
                     <GlowLine delay={1.5} />
                     <HexBlock number={48392846} time="15:32:53" delay={1.7} />
                 </div>
-            </motion.div>
+            </MotionDiv>
 
             {/* ───── STATS GRID ───── */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -150,7 +150,7 @@ export default function BlockchainPage() {
                     { label: 'Gas Efficiency', value: 'Max (Batched)', icon: Cpu, color: '#FF9500' },
                     { label: 'Total Value Locked', value: '$24.5M', icon: Activity, color: '#AF52DE' },
                 ].map((stat, i) => (
-                    <motion.div key={i} variants={item} className="liquid-glass-card p-5 rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative group flex items-start justify-between">
+                    <MotionDiv key={i} variants={item} className="liquid-glass-card p-5 rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative group flex items-start justify-between">
                          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                         <div>
                             <p className="text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider mb-1">{stat.label}</p>
@@ -159,14 +159,14 @@ export default function BlockchainPage() {
                         <div className="w-10 h-10 rounded-[12px] flex items-center justify-center border border-[rgba(255,255,255,0.1)] shadow-inner" style={{ backgroundColor: stat.color + '15' }}>
                             <stat.icon className="w-5 h-5" style={{ color: stat.color }} strokeWidth={1.8} />
                         </div>
-                    </motion.div>
+                    </MotionDiv>
                 ))}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {/* ───── TRANSACTIONS TABLE ───── */}
-                <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative">
+                <MotionDiv variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative">
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-2">
                             <Activity className="w-5 h-5 text-ios-teal" strokeWidth={1.8} />
@@ -190,7 +190,7 @@ export default function BlockchainPage() {
                             </thead>
                             <tbody>
                                 {recentTransactions.map((tx, i) => (
-                                    <motion.tr
+                                    <MotionTr
                                         key={i}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
@@ -224,15 +224,15 @@ export default function BlockchainPage() {
                                         <td className="py-4 px-4 text-right text-[12px] text-[#8E8E93]">
                                             {tx.time}
                                         </td>
-                                    </motion.tr>
+                                    </MotionTr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                </motion.div>
+                </MotionDiv>
 
                 {/* ───── SMART CONTRACTS INFO ───── */}
-                <motion.div variants={item} className="w-full flex flex-col gap-6">
+                <MotionDiv variants={item} className="w-full flex flex-col gap-6">
                     <div className="liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-ios-indigo/10 blur-[50px] rounded-full pointer-events-none"></div>
                         
@@ -275,9 +275,9 @@ export default function BlockchainPage() {
                             ))}
                         </div>
                     </div>
-                </motion.div>
+                </MotionDiv>
 
             </div>
-        </motion.div>
+        </MotionDiv>
     );
 }

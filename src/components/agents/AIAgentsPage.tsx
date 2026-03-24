@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { MotionDiv } from '@/lib/motion';
 import {
     Brain,
     Activity,
@@ -35,13 +35,13 @@ const agents = [
 
 export default function AIAgentsPage() {
     return (
-        <motion.div variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6">
+        <MotionDiv variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6">
             
             {/* ───── LEFT CONTENT (MAIN AGENTS GRID) ───── */}
             <div className="flex-1 space-y-6">
                 
                 {/* Header */}
-                <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
+                <MotionDiv variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
                     <div>
                         <div className="flex items-center gap-2 mb-2">
                             <span className="w-[5px] h-[5px] bg-ios-green rounded-full animate-pulse-soft" />
@@ -52,12 +52,12 @@ export default function AIAgentsPage() {
                             <span className="bg-[#AF52DE]/10 text-[#AF52DE] text-[12px] px-2.5 py-1 rounded-md tracking-widest font-bold uppercase">Pro</span>
                         </h1>
                     </div>
-                </motion.div>
+                </MotionDiv>
 
                 {/* 2x3 Grid of Agents */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {agents.map((agent, i) => (
-                        <motion.div
+                        <MotionDiv
                             key={i}
                             variants={item}
                             className="liquid-glass-card p-6 rounded-[24px] relative group overflow-hidden border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] hover:bg-[rgba(30,30,32,0.6)] hover:border-[rgba(255,255,255,0.15)] transition-all duration-500"
@@ -132,13 +132,13 @@ export default function AIAgentsPage() {
                                     {agent.status === 'Idle' ? <PlayCircle className="w-5 h-5 text-ios-green" /> : <PauseCircle className="w-5 h-5 text-ios-orange" />}
                                 </button>
                             </div>
-                        </motion.div>
+                        </MotionDiv>
                     ))}
                 </div>
             </div>
 
             {/* ───── RIGHT SIDEBAR (LIVE ACTIVITY FEED) ───── */}
-            <motion.div variants={item} className="w-full xl:w-[320px] h-full flex flex-col gap-6">
+            <MotionDiv variants={item} className="w-full xl:w-[320px] h-full flex flex-col gap-6">
                 <div className="liquid-glass-card rounded-[24px] p-6 relative overflow-hidden border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.6)]">
                     <div className="flex items-center gap-2 mb-6">
                         <TerminalSquare className="w-5 h-5 text-ios-blue" />
@@ -167,8 +167,8 @@ export default function AIAgentsPage() {
                         ))}
                     </div>
                 </div>
-            </motion.div>
+            </MotionDiv>
 
-        </motion.div>
+        </MotionDiv>
     );
 }

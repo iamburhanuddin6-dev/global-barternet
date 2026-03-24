@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { motion } from 'framer-motion';
+import { MotionDiv, MotionButton } from '@/lib/motion';
 import { Zap, Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -43,7 +43,7 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-screen bg-black flex items-center justify-center p-4 ios-ambient">
-            <motion.div
+            <MotionDiv
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.5, ease: [0.28, 0.84, 0.42, 1] }}
@@ -51,14 +51,14 @@ export default function LoginPage() {
             >
                 {/* Logo */}
                 <div className="text-center mb-8">
-                    <motion.div
+                    <MotionDiv
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
                         className="w-16 h-16 rounded-[18px] bg-ios-blue mx-auto flex items-center justify-center shadow-lg mb-4"
                     >
                         <Zap className="w-8 h-8 text-white" />
-                    </motion.div>
+                    </MotionDiv>
                     <h1 className="text-[28px] font-bold text-white tracking-tight">Welcome back</h1>
                     <p className="text-[#8E8E93] mt-1 text-[15px]">Sign in to Global BarterNet</p>
                 </div>
@@ -66,13 +66,13 @@ export default function LoginPage() {
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="liquid-glass-hero p-6 rounded-[24px]">
                     {error && (
-                        <motion.div
+                        <MotionDiv
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             className="bg-[#FF3B30]/10 border border-[#FF3B30]/20 rounded-[12px] p-3 mb-4"
                         >
                             <p className="text-[#FF3B30] text-[13px] font-medium">{error}</p>
-                        </motion.div>
+                        </MotionDiv>
                     )}
 
                     {/* Email */}
@@ -119,7 +119,7 @@ export default function LoginPage() {
                     </div>
 
                     {/* Submit */}
-                    <motion.button
+                    <MotionButton
                         whileTap={{ scale: 0.97 }}
                         type="submit"
                         disabled={loading}
@@ -133,7 +133,7 @@ export default function LoginPage() {
                                 <ArrowRight className="w-4 h-4" />
                             </>
                         )}
-                    </motion.button>
+                    </MotionButton>
 
                     {/* Register link */}
                     <p className="text-center mt-5 text-[13px] text-[#8E8E93]">
@@ -143,7 +143,7 @@ export default function LoginPage() {
                         </Link>
                     </p>
                 </form>
-            </motion.div>
+            </MotionDiv>
         </div>
     );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { MotionDiv, MotionButton, MotionTr, AnimatePresence } from '@/lib/motion';
 import { useSession } from 'next-auth/react';
 import { useBarterStore } from '@/store/barterStore';
 import {
@@ -149,10 +149,10 @@ export default function DashboardPage() {
   ];
 
   return (
-    <motion.div variants={container} initial="hidden" animate="show" className="space-y-6 max-w-[1400px] mx-auto">
+    <MotionDiv variants={container} initial="hidden" animate="show" className="space-y-6 max-w-[1400px] mx-auto">
       
       {/* ═══ WELCOME HERO SECTION ═══ */}
-      <motion.div variants={item} className="relative overflow-hidden rounded-[28px] liquid-glass-hero p-8 md:p-10">
+      <MotionDiv variants={item} className="relative overflow-hidden rounded-[28px] liquid-glass-hero p-8 md:p-10">
         {/* Animated gradient orbs */}
         <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-ios-blue/[0.08] rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3" />
         <div className="absolute bottom-0 left-1/4 w-[200px] h-[200px] bg-ios-purple/[0.06] rounded-full blur-[60px] translate-y-1/2" />
@@ -160,7 +160,7 @@ export default function DashboardPage() {
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <motion.div 
+            <MotionDiv 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
@@ -168,7 +168,7 @@ export default function DashboardPage() {
             >
               <PulseDot color="#34C759" />
               <span className="text-[12px] font-medium text-ios-green uppercase tracking-wider">Network Active</span>
-            </motion.div>
+            </MotionDiv>
             <h1 className="text-[32px] md:text-[38px] font-extrabold text-white tracking-tight leading-tight">
               {greeting}, <span className="bg-gradient-to-r from-ios-blue via-ios-purple to-ios-teal bg-clip-text text-transparent">{userName}</span>
             </h1>
@@ -176,22 +176,22 @@ export default function DashboardPage() {
               Your trading network is thriving. <span className="text-ios-green font-medium">+247 new trades</span> since your last visit.
             </p>
             <div className="flex flex-wrap items-center gap-3 mt-5">
-              <motion.button 
+              <MotionButton 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="bg-ios-blue text-white text-[14px] font-semibold px-6 py-2.5 rounded-[14px] flex items-center gap-2 shadow-[0_4px_20px_rgba(0,122,255,0.3)] hover:shadow-[0_6px_30px_rgba(0,122,255,0.4)] transition-shadow"
               >
                 <Sparkles className="w-4 h-4" />
                 Find Matches
-              </motion.button>
-              <motion.button 
+              </MotionButton>
+              <MotionButton 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="liquid-glass-btn text-white text-[14px] font-medium px-6 py-2.5 rounded-[14px] flex items-center gap-2"
               >
                 <Globe className="w-4 h-4 text-ios-teal" />
                 Explore Market
-              </motion.button>
+              </MotionButton>
             </div>
           </div>
 
@@ -202,7 +202,7 @@ export default function DashboardPage() {
               { label: 'Trust Score', value: '94%', icon: Shield, change: '+2.1', color: '#34C759' },
               { label: 'AI Matches', value: '156', icon: Bot, change: '+23', color: '#AF52DE' },
             ].map((stat, i) => (
-              <motion.div
+              <MotionDiv
                 key={i}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -215,16 +215,16 @@ export default function DashboardPage() {
                   <p className="text-[11px] text-[#8E8E93]">{stat.label}</p>
                   <span className="text-[10px] text-ios-green font-medium">{stat.change}</span>
                 </div>
-              </motion.div>
+              </MotionDiv>
             ))}
           </div>
         </div>
-      </motion.div>
+      </MotionDiv>
 
       {/* ═══ KPI METRIC CARDS ═══ */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {kpiCards.map((kpi, i) => (
-          <motion.div key={i} variants={item} className="liquid-glass-card p-5 rounded-[20px] relative overflow-hidden group cursor-pointer">
+          <MotionDiv key={i} variants={item} className="liquid-glass-card p-5 rounded-[20px] relative overflow-hidden group cursor-pointer">
             {/* Gradient background accent */}
             <div className={`absolute inset-0 bg-gradient-to-br ${kpi.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
             
@@ -241,7 +241,7 @@ export default function DashboardPage() {
               <p className="text-[24px] font-bold text-white tracking-tight">{kpi.value}</p>
               <p className="text-[13px] text-[#8E8E93] font-medium mt-0.5">{kpi.title}</p>
             </div>
-          </motion.div>
+          </MotionDiv>
         ))}
       </div>
 
@@ -249,7 +249,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Network Activity Chart */}
-        <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
+        <MotionDiv variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -296,10 +296,10 @@ export default function DashboardPage() {
               </AreaChart>
             </ResponsiveContainer>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Resource Distribution */}
-        <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
+        <MotionDiv variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           <h3 className="text-[16px] font-semibold text-white flex items-center gap-2">
             <BarChart3 className="w-4 h-4 text-ios-purple" />
@@ -334,14 +334,14 @@ export default function DashboardPage() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
 
       {/* ═══ SECOND ROW: AI Feed + Weekly + Achievements ═══ */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Live AI Agent Feed */}
-        <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
+        <MotionDiv variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           <div className="flex items-center justify-between mb-5">
             <h3 className="text-[16px] font-semibold text-white flex items-center gap-2">
@@ -352,7 +352,7 @@ export default function DashboardPage() {
           </div>
           <div className="space-y-3">
             {liveAgentFeed.map((log, i) => (
-              <motion.div
+              <MotionDiv
                 key={i}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -367,13 +367,13 @@ export default function DashboardPage() {
                   </p>
                   <p className="text-[11px] text-[#48484A] mt-0.5">{log.time}</p>
                 </div>
-              </motion.div>
+              </MotionDiv>
             ))}
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Weekly Performance Bar Chart */}
-        <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
+        <MotionDiv variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           <h3 className="text-[16px] font-semibold text-white flex items-center gap-2 mb-1">
             <Flame className="w-4 h-4 text-ios-orange" />
@@ -406,10 +406,10 @@ export default function DashboardPage() {
               +18.7%
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Achievements */}
-        <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
+        <MotionDiv variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           <h3 className="text-[16px] font-semibold text-white flex items-center gap-2 mb-1">
             <Award className="w-4 h-4 text-ios-yellow" />
@@ -444,7 +444,7 @@ export default function DashboardPage() {
               <span className="text-[13px] text-white font-semibold">3/5</span>
             </div>
             <div className="mt-2 w-full h-2 bg-[rgba(255,255,255,0.06)] rounded-full overflow-hidden">
-              <motion.div 
+              <MotionDiv 
                 initial={{ width: 0 }}
                 animate={{ width: '60%' }}
                 transition={{ delay: 1, duration: 0.8, ease: 'easeOut' }}
@@ -452,11 +452,11 @@ export default function DashboardPage() {
               />
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
 
       {/* ═══ RECENT TRADES TABLE ═══ */}
-      <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
+      <MotionDiv variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-[16px] font-semibold text-white flex items-center gap-2">
@@ -482,7 +482,7 @@ export default function DashboardPage() {
             </thead>
             <tbody>
               {recentTrades.map((trade, i) => (
-                <motion.tr 
+                <MotionTr 
                   key={i} 
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -530,13 +530,13 @@ export default function DashboardPage() {
                       <MoreHorizontal className="w-5 h-5" />
                     </button>
                   </td>
-                </motion.tr>
+                </MotionTr>
               ))}
             </tbody>
           </table>
         </div>
-      </motion.div>
+      </MotionDiv>
 
-    </motion.div>
+    </MotionDiv>
   );
 }

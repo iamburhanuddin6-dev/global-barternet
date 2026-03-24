@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { MotionDiv } from '@/lib/motion';
 import { useBarterStore } from '@/store/barterStore';
 import {
     Trophy,
@@ -56,26 +56,26 @@ export default function ReputationPage() {
     const xpProgress = nextLevel ? ((currentXP - currentLevel.minXP) / (nextLevel.minXP - currentLevel.minXP)) * 100 : 100;
 
     return (
-        <motion.div
+        <MotionDiv
             variants={container}
             initial="hidden"
             animate="show"
             className="space-y-5"
         >
             {/* Hero */}
-            <motion.div variants={item} className="liquid-glass-hero p-6 md:p-7">
+            <MotionDiv variants={item} className="liquid-glass-hero p-6 md:p-7">
                 <h1 className="ios-title-1 text-white mb-1.5">
                     Reputation & <span className="text-ios-orange">Achievements</span>
                 </h1>
                 <p className="text-label-secondary max-w-lg text-[15px]">
                     Your trading reputation is built on blockchain — verifiable and tamper-proof.
                 </p>
-            </motion.div>
+            </MotionDiv>
 
             {/* Profile + Achievements */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 {/* Profile Card */}
-                <motion.div variants={item} className="ios-card p-5 lg:col-span-1">
+                <MotionDiv variants={item} className="ios-card p-5 lg:col-span-1">
                     <div className="text-center">
                         <div className="w-[72px] h-[72px] rounded-full bg-gradient-to-br from-ios-blue to-ios-teal flex items-center justify-center text-[28px] font-bold mx-auto mb-3 shadow-ios-md">
                             {currentUser?.name.charAt(0) || 'A'}
@@ -99,7 +99,7 @@ export default function ReputationPage() {
                                 <span className="text-[11px] text-label-tertiary">{currentXP} / {nextLevel?.minXP || 'MAX'}</span>
                             </div>
                             <div className="h-[5px] bg-fill-quaternary rounded-full overflow-hidden">
-                                <motion.div
+                                <MotionDiv
                                     initial={{ width: 0 }}
                                     animate={{ width: `${xpProgress}%` }}
                                     transition={{ duration: 1.5, ease: "easeOut" }}
@@ -124,10 +124,10 @@ export default function ReputationPage() {
                             </div>
                         </div>
                     </div>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Achievements */}
-                <motion.div variants={item} className="ios-card p-5 lg:col-span-2">
+                <MotionDiv variants={item} className="ios-card p-5 lg:col-span-2">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
                             <Award className="w-4 h-4 text-ios-orange" strokeWidth={1.8} />
@@ -139,7 +139,7 @@ export default function ReputationPage() {
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
                         {achievements.map((ach, i) => (
-                            <motion.div
+                            <MotionDiv
                                 key={ach.id}
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
@@ -159,21 +159,21 @@ export default function ReputationPage() {
                                 }}>
                                     {ach.rarity}
                                 </span>
-                            </motion.div>
+                            </MotionDiv>
                         ))}
                     </div>
-                </motion.div>
+                </MotionDiv>
             </div>
 
             {/* Level Progression */}
-            <motion.div variants={item} className="ios-card p-5">
+            <MotionDiv variants={item} className="ios-card p-5">
                 <h3 className="text-[15px] font-semibold text-white flex items-center gap-2 mb-5">
                     <Flame className="w-4 h-4 text-ios-orange" strokeWidth={1.8} />
                     Level Progression
                 </h3>
                 <div className="flex items-center justify-between relative">
                     <div className="absolute top-5 left-0 right-0 h-[2px] bg-fill-quaternary" />
-                    <motion.div
+                    <MotionDiv
                         initial={{ width: 0 }}
                         animate={{ width: `${((currentLevel.level - 1) / (levels.length - 1)) * 100}%` }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
@@ -183,7 +183,7 @@ export default function ReputationPage() {
                         const isReached = (currentUser?.level || 1) >= level.level;
                         const isCurrent = (currentUser?.level || 1) === level.level;
                         return (
-                            <motion.div
+                            <MotionDiv
                                 key={level.level}
                                 initial={{ opacity: 0, y: 12 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -201,14 +201,14 @@ export default function ReputationPage() {
                                     {level.name}
                                 </p>
                                 <p className="text-[10px] text-label-quaternary mt-0.5">{level.minXP} XP</p>
-                            </motion.div>
+                            </MotionDiv>
                         );
                     })}
                 </div>
-            </motion.div>
+            </MotionDiv>
 
             {/* Leaderboard */}
-            <motion.div variants={item} className="ios-card p-5">
+            <MotionDiv variants={item} className="ios-card p-5">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-[15px] font-semibold text-white flex items-center gap-2">
                         <Crown className="w-4 h-4 text-ios-orange" strokeWidth={1.8} />
@@ -229,7 +229,7 @@ export default function ReputationPage() {
                     {leaderboard.map((user, i) => {
                         const isCurrentUser = user.name === currentUser?.name;
                         return (
-                            <motion.div
+                            <MotionDiv
                                 key={i}
                                 initial={{ opacity: 0, x: -12 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -261,11 +261,11 @@ export default function ReputationPage() {
                                         {user.change > 0 ? `↑${user.change}` : user.change < 0 ? `↓${Math.abs(user.change)}` : '—'}
                                     </span>
                                 </div>
-                            </motion.div>
+                            </MotionDiv>
                         );
                     })}
                 </div>
-            </motion.div>
-        </motion.div>
+            </MotionDiv>
+        </MotionDiv>
     );
 }

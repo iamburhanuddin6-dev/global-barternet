@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { MotionDiv, MotionSpan, MotionButton, MotionA, AnimatePresence } from '@/lib/motion';
 import { useSession } from 'next-auth/react';
 import { useBarterStore } from '@/store/barterStore';
 import {
@@ -48,7 +48,7 @@ export default function Sidebar() {
     }, [session, fetchProfile]);
 
     return (
-        <motion.aside
+        <MotionAside
             initial={false}
             animate={{ width: sidebarOpen ? 260 : 72 }}
             transition={{ duration: 0.35, ease: [0.28, 0.84, 0.42, 1] }}
@@ -56,7 +56,7 @@ export default function Sidebar() {
         >
             {/* Logo */}
             <div className="flex items-center h-16 px-4 border-b border-separator">
-                <motion.div
+                <MotionDiv
                     className="flex items-center gap-3 cursor-pointer"
                     whileTap={{ scale: 0.96 }}
                     onClick={() => setActiveTab('dashboard')}
@@ -66,7 +66,7 @@ export default function Sidebar() {
                     </div>
                     <AnimatePresence>
                         {sidebarOpen && (
-                            <motion.div
+                            <MotionDiv
                                 initial={{ opacity: 0, x: -8 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -8 }}
@@ -76,10 +76,10 @@ export default function Sidebar() {
                                     BarterNet
                                 </h1>
                                 <p className="text-[11px] text-label-tertiary whitespace-nowrap">AI · Blockchain</p>
-                            </motion.div>
+                            </MotionDiv>
                         )}
                     </AnimatePresence>
-                </motion.div>
+                </MotionDiv>
             </div>
 
             {/* Nav Items */}
@@ -88,7 +88,7 @@ export default function Sidebar() {
                     const isActive = activeTab === item.id;
                     const Icon = item.icon;
                     return (
-                        <motion.button
+                        <MotionButton
                             key={item.id}
                             onClick={() => setActiveTab(item.id)}
                             whileTap={{ scale: 0.96 }}
@@ -98,7 +98,7 @@ export default function Sidebar() {
                                 }`}
                         >
                             {isActive && (
-                                <motion.div
+                                <MotionDiv
                                     layoutId="activeNavIndicator"
                                     className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-ios-blue rounded-r-full"
                                     transition={{ type: 'spring', stiffness: 400, damping: 32 }}
@@ -107,26 +107,26 @@ export default function Sidebar() {
                             <Icon className={`w-[20px] h-[20px] flex-shrink-0 ${isActive ? 'text-ios-blue' : ''}`} strokeWidth={isActive ? 2.2 : 1.8} />
                             <AnimatePresence>
                                 {sidebarOpen && (
-                                    <motion.span
+                                    <MotionSpan
                                         initial={{ opacity: 0, x: -8 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, x: -8 }}
                                         className="text-[14px] font-medium whitespace-nowrap"
                                     >
                                         {item.label}
-                                    </motion.span>
+                                    </MotionSpan>
                                 )}
                             </AnimatePresence>
                             {item.badge && sidebarOpen && (
-                                <motion.span
+                                <MotionSpan
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     className="ml-auto bg-ios-red text-white text-[11px] font-semibold min-w-[20px] h-5 flex items-center justify-center rounded-full px-1.5"
                                 >
                                     {item.badge}
-                                </motion.span>
+                                </MotionSpan>
                             )}
-                        </motion.button>
+                        </MotionButton>
                     );
                 })}
             </nav>
@@ -137,7 +137,7 @@ export default function Sidebar() {
                     const Icon = item.icon;
                     const isActive = activeTab === item.id;
                     return (
-                        <motion.button
+                        <MotionButton
                             key={item.id}
                             onClick={() => setActiveTab(item.id)}
                             whileTap={{ scale: 0.96 }}
@@ -149,22 +149,22 @@ export default function Sidebar() {
                             <Icon className={`w-[20px] h-[20px] flex-shrink-0 ${isActive ? 'text-ios-blue' : ''}`} strokeWidth={1.8} />
                             <AnimatePresence>
                                 {sidebarOpen && (
-                                    <motion.span
+                                    <MotionSpan
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
                                         className="text-[14px] font-medium whitespace-nowrap"
                                     >
                                         {item.label}
-                                    </motion.span>
+                                    </MotionSpan>
                                 )}
                             </AnimatePresence>
-                        </motion.button>
+                        </MotionButton>
                     );
                 })}
 
                 {/* Web3 Connect Wallet Button */}
-                <motion.button
+                <MotionButton
                     onClick={async () => {
                         if (typeof window !== 'undefined' && (window as any).ethereum) {
                             try {
@@ -196,7 +196,7 @@ export default function Sidebar() {
                                 : 'Connect Wallet'}
                         </span>
                     )}
-                </motion.button>
+                </MotionButton>
 
                 {/* User Profile — iOS-style avatar row */}
                 {currentUser && (
@@ -206,7 +206,7 @@ export default function Sidebar() {
                         </div>
                         <AnimatePresence>
                             {sidebarOpen && (
-                                <motion.div
+                                <MotionDiv
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
@@ -214,20 +214,20 @@ export default function Sidebar() {
                                 >
                                     <p className="text-[13px] font-semibold text-white truncate">{currentUser.name}</p>
                                     <p className="text-[11px] text-label-tertiary">Lv.{currentUser.level} · ⭐ {currentUser.reputation}</p>
-                                </motion.div>
+                                </MotionDiv>
                             )}
                         </AnimatePresence>
                     </div>
                 )}
 
                 {/* Collapse Toggle */}
-                <motion.button
+                <MotionButton
                     onClick={() => setSidebarOpen(!sidebarOpen)}
                     whileTap={{ scale: 0.92 }}
                     className="w-full flex items-center justify-center py-2 rounded-[10px] text-label-quaternary hover:text-label-secondary hover:bg-fill-quaternary transition-all mt-1"
                 >
                     {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-                </motion.button>
+                </MotionButton>
             </div>
         </motion.aside>
     );

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { MotionDiv, MotionNav, MotionH1, MotionP, useScroll, useTransform } from '@/lib/motion';
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
@@ -162,7 +162,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* ═══ NAVBAR ═══ */}
-      <motion.nav
+      <MotionNav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.28, 0.84, 0.42, 1] }}
@@ -198,7 +198,7 @@ export default function LandingPage() {
             </Link>
           </div>
         </div>
-      </motion.nav>
+      </MotionNav>
 
       {/* ═══ HERO ═══ */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-16">
@@ -210,8 +210,8 @@ export default function LandingPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-ios-green/[0.03] rounded-full blur-[100px]" />
         </div>
 
-        <motion.div style={{ opacity: heroOpacity, y: heroY }} className="relative z-10 text-center max-w-4xl mx-auto px-6">
-          <motion.div
+        <MotionDiv style={{ opacity: heroOpacity, y: heroY }} className="relative z-10 text-center max-w-4xl mx-auto px-6">
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
@@ -219,9 +219,9 @@ export default function LandingPage() {
           >
             <Sparkles className="w-3.5 h-3.5 text-ios-blue" />
             <span className="text-[12px] font-medium text-label-secondary">Powered by AI × Blockchain</span>
-          </motion.div>
+          </MotionDiv>
 
-          <motion.h1
+          <MotionH1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.7 }}
@@ -230,9 +230,9 @@ export default function LandingPage() {
             <span className="bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">The Future</span>
             <br />
             <span className="bg-gradient-to-r from-ios-blue via-ios-purple to-ios-teal bg-clip-text text-transparent">of Exchange</span>
-          </motion.h1>
+          </MotionH1>
 
-          <motion.p
+          <MotionP
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
@@ -241,9 +241,9 @@ export default function LandingPage() {
             Where AI Meets Blockchain to Create a Post-Currency Economy.
             <br className="hidden md:block" />
             Trade resources, knowledge, and services — without money.
-          </motion.p>
+          </MotionP>
 
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.5 }}
@@ -260,10 +260,10 @@ export default function LandingPage() {
               <Play className="w-4 h-4 text-ios-blue" />
               Watch Demo
             </button>
-          </motion.div>
+          </MotionDiv>
 
           {/* Floating glass cards */}
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.8 }}
@@ -274,7 +274,7 @@ export default function LandingPage() {
               { icon: '⛓️', label: 'Block #4,521,890', sub: 'Confirmed ✓' },
               { icon: '🔥', label: '+247 trades today', sub: 'Network growing' },
             ].map((card, i) => (
-              <motion.div
+              <MotionDiv
                 key={i}
                 animate={{ y: [0, -6, 0] }}
                 transition={{ delay: i * 0.3, duration: 4, repeat: Infinity, ease: 'easeInOut' }}
@@ -285,40 +285,40 @@ export default function LandingPage() {
                   <p className="text-[13px] font-medium text-white">{card.label}</p>
                   <p className="text-[11px] text-label-tertiary">{card.sub}</p>
                 </div>
-              </motion.div>
+              </MotionDiv>
             ))}
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
 
         {/* Scroll indicator */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
           <span className="text-[11px] text-label-quaternary font-medium tracking-wider uppercase">Scroll</span>
-          <motion.div
+          <MotionDiv
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
             className="w-5 h-8 rounded-full border border-label-quaternary flex items-start justify-center pt-1.5"
           >
             <div className="w-1 h-1.5 bg-label-tertiary rounded-full" />
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
       </section>
 
       {/* ═══ STATS BAR ═══ */}
       <section className="relative border-y border-separator">
         <div className="max-w-7xl mx-auto px-6 py-14">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4"
           >
             {stats.map((stat, i) => (
-              <motion.div
+              <MotionDiv
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -330,9 +330,9 @@ export default function LandingPage() {
                   <AnimatedCounter target={stat.value} suffix={stat.suffix} prefix={stat.prefix || ''} />
                 </p>
                 <p className="text-[13px] text-label-secondary mt-1 font-medium">{stat.label}</p>
-              </motion.div>
+              </MotionDiv>
             ))}
-          </motion.div>
+          </MotionDiv>
         </div>
       </section>
 
@@ -342,7 +342,7 @@ export default function LandingPage() {
           <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-ios-purple/[0.04] rounded-full blur-[120px]" />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -355,11 +355,11 @@ export default function LandingPage() {
             <p className="text-label-secondary text-[17px] mt-3 max-w-2xl mx-auto">
               Six pillars of innovation that make Global BarterNet the most advanced trading platform on the planet.
             </p>
-          </motion.div>
+          </MotionDiv>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {features.map((f, i) => (
-              <motion.div
+              <MotionDiv
                 key={i}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -375,7 +375,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-[18px] font-semibold text-white mb-2">{f.title}</h3>
                 <p className="text-[14px] text-label-secondary leading-relaxed">{f.desc}</p>
-              </motion.div>
+              </MotionDiv>
             ))}
           </div>
         </div>
@@ -387,7 +387,7 @@ export default function LandingPage() {
           <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-ios-green/[0.03] rounded-full blur-[100px]" />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -400,11 +400,11 @@ export default function LandingPage() {
             <p className="text-label-secondary text-[17px] mt-3 max-w-xl mx-auto">
               From listing to completion — everything is automated, secure, and instant.
             </p>
-          </motion.div>
+          </MotionDiv>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {steps.map((step, i) => (
-              <motion.div
+              <MotionDiv
                 key={i}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -423,7 +423,7 @@ export default function LandingPage() {
                     <ChevronRight className="w-5 h-5 text-label-quaternary" />
                   </div>
                 )}
-              </motion.div>
+              </MotionDiv>
             ))}
           </div>
         </div>
@@ -436,7 +436,7 @@ export default function LandingPage() {
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
+            <MotionDiv
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -464,9 +464,9 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </MotionDiv>
 
-            <motion.div
+            <MotionDiv
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -481,7 +481,7 @@ export default function LandingPage() {
                     { agent: 'ORACLE', action: 'Market report: Tech resources trending +23%', time: '5m ago', color: '#5AC8FA' },
                     { agent: 'NOVA', action: 'Scanning 24,891 active listings...', time: 'now', color: '#007AFF' },
                   ].map((log, i) => (
-                    <motion.div
+                    <MotionDiv
                       key={i}
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -497,11 +497,11 @@ export default function LandingPage() {
                         </p>
                         <p className="text-[11px] text-label-quaternary mt-0.5">{log.time}</p>
                       </div>
-                    </motion.div>
+                    </MotionDiv>
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           </div>
         </div>
       </section>
@@ -509,7 +509,7 @@ export default function LandingPage() {
       {/* ═══ BLOCKCHAIN ═══ */}
       <section id="blockchain" className="py-24 relative border-t border-separator">
         <div className="max-w-7xl mx-auto px-6">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -522,7 +522,7 @@ export default function LandingPage() {
             <p className="text-label-secondary text-[17px] mt-3 max-w-2xl mx-auto">
               Every trade is immutably recorded. Every reputation score is verifiable. Zero trust assumptions.
             </p>
-          </motion.div>
+          </MotionDiv>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
@@ -530,7 +530,7 @@ export default function LandingPage() {
               { icon: Users, title: 'Decentralized Trust', desc: 'No central authority. Reputation scores computed from on-chain data.', value: '99.99%', label: 'Uptime', color: '#34C759' },
               { icon: TrendingUp, title: 'Gas Optimized', desc: 'Batched transactions save up to 80% on gas fees via smart contracts.', value: '80%', label: 'Gas Saved', color: '#FF9500' },
             ].map((card, i) => (
-              <motion.div
+              <MotionDiv
                 key={i}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -545,7 +545,7 @@ export default function LandingPage() {
                   <p className="text-[28px] font-bold text-white">{card.value}</p>
                   <p className="text-[12px] text-label-tertiary mt-0.5">{card.label}</p>
                 </div>
-              </motion.div>
+              </MotionDiv>
             ))}
           </div>
         </div>
@@ -557,7 +557,7 @@ export default function LandingPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-ios-blue/[0.06] rounded-full blur-[150px]" />
         </div>
         <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -579,7 +579,7 @@ export default function LandingPage() {
                 <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
-          </motion.div>
+          </MotionDiv>
         </div>
       </section>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { MotionDiv } from '@/lib/motion';
 import { useBarterStore } from '@/store/barterStore';
 import {
     Search,
@@ -51,13 +51,13 @@ export default function ExchangePage() {
         : mockExchangeItems.filter(item => item.category === selectedCategory);
 
     return (
-        <motion.div variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6">
+        <MotionDiv variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto flex flex-col xl:flex-row gap-6">
             
             {/* ───── LEFT CONTENT (MAIN AREA) ───── */}
             <div className="flex-1 space-y-6">
                 
                 {/* Header & Filter Bar */}
-                <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
+                <MotionDiv variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
                     <div>
                         <h1 className="text-[28px] font-bold text-white tracking-tight">Exchange Marketplace</h1>
                         <p className="text-[#8E8E93] text-[15px] mt-1">Discover resources to barter or let AI find your perfect match.</p>
@@ -76,10 +76,10 @@ export default function ExchangePage() {
                             Filters
                         </button>
                     </div>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Category Pills */}
-                <motion.div variants={item} className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+                <MotionDiv variants={item} className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
                     {categories.map(cat => (
                         <button
                             key={cat}
@@ -93,12 +93,12 @@ export default function ExchangePage() {
                             {cat}
                         </button>
                     ))}
-                </motion.div>
+                </MotionDiv>
 
                 {/* 3-Column Grid of Trading Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {filteredItems.map((resource, i) => (
-                        <motion.div
+                        <MotionDiv
                             key={i}
                             variants={item}
                             layout
@@ -172,13 +172,13 @@ export default function ExchangePage() {
                                     Propose Trade
                                 </button>
                             </div>
-                        </motion.div>
+                        </MotionDiv>
                     ))}
                 </div>
             </div>
 
             {/* ───── RIGHT SIDEBAR (AI MATCHES) ───── */}
-            <motion.div variants={item} className="w-full xl:w-[320px] flex flex-col gap-6">
+            <MotionDiv variants={item} className="w-full xl:w-[320px] flex flex-col gap-6">
                 <div className="liquid-glass-card rounded-[24px] p-6 relative overflow-hidden border border-[rgba(255,255,255,0.08)]">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-ios-purple/20 blur-[50px] rounded-full pointer-events-none"></div>
                     
@@ -211,8 +211,8 @@ export default function ExchangePage() {
                         View All Matches
                     </button>
                 </div>
-            </motion.div>
+            </MotionDiv>
 
-        </motion.div>
+        </MotionDiv>
     );
 }

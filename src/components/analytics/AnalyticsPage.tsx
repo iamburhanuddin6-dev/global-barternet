@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { MotionDiv } from '@/lib/motion';
 import {
     BarChart3,
     TrendingUp,
@@ -56,10 +56,10 @@ const partnersData = [
 
 export default function AnalyticsPage() {
     return (
-        <motion.div variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto space-y-6">
+        <MotionDiv variants={container} initial="hidden" animate="show" className="max-w-[1400px] mx-auto space-y-6">
             
             {/* ───── HEADER & CONTROLS ───── */}
-            <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
+            <MotionDiv variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.06)] pb-6">
                 <div>
                     <h1 className="text-[28px] font-bold text-white tracking-tight flex items-center gap-3">
                         <BarChart3 className="w-6 h-6 text-ios-teal" /> 
@@ -79,7 +79,7 @@ export default function AnalyticsPage() {
                         <Download className="w-4 h-4" />
                     </button>
                 </div>
-            </motion.div>
+            </MotionDiv>
 
             {/* ───── KPI CARDS ───── */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -89,7 +89,7 @@ export default function AnalyticsPage() {
                     { title: 'Avg Match Score', value: '94.2%', change: 1.2, period: 'vs last 30d', icon: Users, color: '#AF52DE' },
                     { title: 'Network Reach', value: '156', change: -2.4, period: 'countries', icon: Globe, color: '#FF9500' },
                 ].map((stat, i) => (
-                    <motion.div key={i} variants={item} className="liquid-glass-card rounded-[20px] p-5 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative group overflow-hidden">
+                    <MotionDiv key={i} variants={item} className="liquid-glass-card rounded-[20px] p-5 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative group overflow-hidden">
                         <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: stat.color }}></div>
                         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                         
@@ -109,7 +109,7 @@ export default function AnalyticsPage() {
                                 <p className="text-[11px] text-[#8E8E93] uppercase">{stat.period}</p>
                             </div>
                         </div>
-                    </motion.div>
+                    </MotionDiv>
                 ))}
             </div>
 
@@ -117,7 +117,7 @@ export default function AnalyticsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Volume Area Chart */}
-                <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden group">
+                <MotionDiv variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-ios-blue/10 blur-[100px] rounded-full pointer-events-none -mt-40 -mr-40 group-hover:bg-ios-blue/20 transition-colors duration-1000"></div>
                     <div className="mb-6 z-10 relative">
                         <h3 className="text-[18px] font-bold text-white tracking-tight">Trade Volume Over Time</h3>
@@ -144,10 +144,10 @@ export default function AnalyticsPage() {
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Match Score Distribution Histogram */}
-                <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative">
+                <MotionDiv variants={item} className="liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative">
                     <div className="mb-6">
                         <h3 className="text-[18px] font-bold text-white tracking-tight">Match Score Distribution</h3>
                         <p className="text-[13px] text-[#8E8E93]">AI accuracy histogram</p>
@@ -172,7 +172,7 @@ export default function AnalyticsPage() {
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
-                </motion.div>
+                </MotionDiv>
 
             </div>
 
@@ -180,7 +180,7 @@ export default function AnalyticsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Donut Chart */}
-                <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden">
+                <MotionDiv variants={item} className="liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative overflow-hidden">
                      <div className="mb-6">
                         <h3 className="text-[18px] font-bold text-white tracking-tight">Category Distribution</h3>
                         <p className="text-[13px] text-[#8E8E93]">Top traded resources by volume</p>
@@ -206,10 +206,10 @@ export default function AnalyticsPage() {
                             <span className="text-[11px] text-[#8E8E93] font-semibold uppercase tracking-widest mt-0.5">Total Share</span>
                         </div>
                     </div>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Top Trading Partners */}
-                <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative">
+                <MotionDiv variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 border border-[rgba(255,255,255,0.08)] bg-[rgba(20,20,22,0.4)] relative">
                     <div className="mb-6 flex items-center justify-between">
                         <div>
                             <h3 className="text-[18px] font-bold text-white tracking-tight">Top Trading Partners</h3>
@@ -258,10 +258,10 @@ export default function AnalyticsPage() {
                             </tbody>
                         </table>
                     </div>
-                </motion.div>
+                </MotionDiv>
 
             </div>
 
-        </motion.div>
+        </MotionDiv>
     );
 }
