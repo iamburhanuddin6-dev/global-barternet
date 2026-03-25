@@ -63,28 +63,28 @@ export default function Header() {
     };
 
     return (
-        <header className="h-14 liquid-glass-header flex items-center justify-between px-6 sticky top-0 z-40">
+        <header className="h-14 liquid-glass-header flex items-center justify-between px-3 md:px-6 sticky top-0 z-40 w-full">
             {/* Left Section — Large Title */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3 shrink-0">
                 <motion.h2
                     key={activeTab}
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, ease: [0.28, 0.84, 0.42, 1] }}
-                    className="text-[17px] font-semibold text-label-primary tracking-tight"
+                    className="text-[15px] md:text-[17px] font-semibold text-label-primary tracking-tight"
                 >
                     {tabTitles[activeTab] || 'BarterNet'}
                 </motion.h2>
 
                 {/* Live Indicator */}
-                <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-ios-green/10">
+                <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-ios-green/10">
                     <span className="w-[5px] h-[5px] bg-ios-green rounded-full animate-pulse-soft" />
                     <span className="text-[11px] font-medium text-ios-green">Live</span>
                 </div>
             </div>
 
-            {/* Center: Search */}
-            <div className="flex-1 max-w-md mx-8">
+            {/* Center: Search (Hidden on Mobile) */}
+            <div className="hidden md:block flex-1 max-w-md mx-4 lg:mx-8">
                 <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-label-tertiary" />
                     <input
@@ -92,15 +92,15 @@ export default function Header() {
                         placeholder="Search"
                         onFocus={() => setSearchFocused(true)}
                         onBlur={() => setSearchFocused(false)}
-                        className="ios-search"
+                        className="ios-search w-full bg-[var(--background-elevated)] border border-[var(--separator)] text-label-primary rounded-full pl-9 pr-4 py-1.5 text-[14px] outline-none focus:ring-1 focus:ring-ios-blue transition-all"
                     />
                 </div>
             </div>
 
             {/* Right Section */}
-            <div className="flex items-center gap-2.5">
-                {/* AI Status */}
-                <div className="liquid-glass-pill flex items-center gap-1.5 px-3 py-1.5 rounded-full">
+            <div className="flex items-center gap-2 md:gap-2.5 shrink-0">
+                {/* AI Status (Hidden on Mobile) */}
+                <div className="hidden md:flex liquid-glass-pill items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--fill-tertiary)] border border-[var(--separator)]">
                     <Sparkles className="w-3.5 h-3.5 text-ios-purple" />
                     <span className="text-[11px] font-medium text-ios-purple">AI Active</span>
                     <span className="w-[5px] h-[5px] bg-ios-purple rounded-full animate-pulse-soft" />

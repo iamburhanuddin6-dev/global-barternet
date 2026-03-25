@@ -98,7 +98,7 @@ export default function LoginPage() {
             </div>
 
             {/* RIGHT SIDE: Application Login Panel */}
-            <div className="w-full lg:w-[45%] flex flex-col justify-center px-8 sm:px-16 lg:px-24 xl:px-32 bg-[var(--background-secondary)] shadow-[-20px_0_50px_rgba(0,0,0,0.2)] z-10">
+            <div className="w-full lg:w-[45%] flex flex-col justify-center py-12 lg:py-0 px-6 sm:px-16 lg:px-24 xl:px-32 bg-[var(--background-secondary)] shadow-[-20px_0_50px_rgba(0,0,0,0.2)] z-10 overflow-y-auto">
                 <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}

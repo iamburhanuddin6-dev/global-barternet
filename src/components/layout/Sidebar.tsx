@@ -30,12 +30,12 @@ export default function Sidebar() {
     const { activeTab, setActiveTab } = useBarterStore();
 
     return (
-        <div className="fixed bottom-6 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4">
+        <div className="fixed bottom-6 left-0 right-0 z-[100] flex justify-center pointer-events-none px-4 w-full">
             <motion.div 
                 initial={{ y: 100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                className="flex items-center gap-2 p-2 rounded-[24px] pointer-events-auto bg-[var(--liquid-glass-bg)] border border-[var(--liquid-glass-border)] backdrop-blur-3xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] relative overflow-hidden"
+                className="flex items-center gap-1.5 md:gap-2 p-2 rounded-[24px] pointer-events-auto bg-[var(--liquid-glass-bg)] border border-[var(--liquid-glass-border)] backdrop-blur-3xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] relative overflow-x-auto overflow-y-hidden max-w-full scrollbar-none snap-x"
             >
                 {/* Ethereal Glow inside the dock */}
                 <div className="absolute inset-0 bg-gradient-to-r from-[var(--ios-purple)]/10 via-[var(--ios-teal)]/10 to-[var(--ios-blue)]/10 opacity-50 pointer-events-none mix-blend-screen mix-blend-overlay blur-md" />
@@ -47,7 +47,7 @@ export default function Sidebar() {
                         <button
                             key={item.id}
                             onClick={() => setActiveTab(item.id)}
-                            className="relative group flex flex-col items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-[16px] transition-all duration-300"
+                            className="relative group flex flex-col items-center justify-center min-w-[44px] h-[44px] md:min-w-[56px] md:h-[56px] rounded-[16px] transition-all duration-300 snap-center shrink-0"
                         >
                             {/* Active background indicator */}
                             {isActive && (
