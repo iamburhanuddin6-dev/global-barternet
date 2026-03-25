@@ -193,124 +193,190 @@ export default function DashboardPage() {
   }));
 
   return (
-    <motion.div variants={container} initial="hidden" animate="show" className="space-y-6 max-w-[1400px] mx-auto">
+    <motion.div variants={container} initial="hidden" animate="show" className="space-y-8 max-w-[1500px] mx-auto pb-20">
       
-      {/* ═══ WELCOME HERO SECTION ═══ */}
-      <motion.div variants={item} className="relative overflow-hidden rounded-[28px] liquid-glass-hero p-8 md:p-10">
-        {/* Animated gradient orbs */}
-        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-ios-blue/[0.08] rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-1/4 w-[200px] h-[200px] bg-ios-purple/[0.06] rounded-full blur-[60px] translate-y-1/2" />
-        <div className="absolute top-1/2 right-1/4 w-[150px] h-[150px] bg-ios-green/[0.04] rounded-full blur-[50px]" />
+      {/* ═══ UNIQUE BENTO ISLAND HERO ═══ */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
+        {/* Left: Interactive Welcome Island (Large) */}
+        <motion.div variants={item} className="lg:col-span-3 relative overflow-hidden rounded-[32px] liquid-glass-hero p-8 md:p-12 min-h-[300px] flex flex-col justify-center">
+          {/* Holographic Background Orbs */}
+          <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-ios-blue/[0.12] rounded-full blur-[100px] animate-pulse-soft" />
+          <div className="absolute bottom-[-20%] left-[10%] w-[300px] h-[300px] bg-ios-purple/[0.1] rounded-full blur-[80px]" />
+          <div className="absolute top-[20%] left-[40%] w-[200px] h-[200px] bg-ios-teal/[0.08] rounded-full blur-[60px]" />
+          
+          <div className="relative z-10">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="flex items-center gap-2 mb-3"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-ios-green/10 border border-ios-green/20 mb-6"
             >
-              <PulseDot color="#34C759" />
-              <span className="text-[12px] font-medium text-ios-green uppercase tracking-wider">Network Active</span>
+              <PulseDot color="var(--ios-green)" />
+              <span className="text-[11px] font-bold text-ios-green uppercase tracking-[0.15em]">Neural Link: Active</span>
             </motion.div>
-            <h1 className="text-[32px] md:text-[38px] font-extrabold text-label-primary tracking-tight leading-tight">
-              {greeting}, <span className="bg-gradient-to-r from-ios-blue via-ios-purple to-ios-teal bg-clip-text text-transparent">{userName}</span>
-            </h1>
-            <p className="text-[#8E8E93] text-[16px] mt-2 max-w-md leading-relaxed">
-              Your trading network is thriving. <span className="text-ios-green font-medium">+247 new trades</span> since your last visit.
-            </p>
-            <div className="flex flex-wrap items-center gap-3 mt-5">
-              <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-ios-blue text-label-primary text-[14px] font-semibold px-6 py-2.5 rounded-[14px] flex items-center gap-2 shadow-[0_4px_20px_rgba(0,122,255,0.3)] hover:shadow-[0_6px_30px_rgba(0,122,255,0.4)] transition-shadow"
-              >
-                <Sparkles className="w-4 h-4" />
-                Find Matches
-              </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="liquid-glass-btn text-label-primary text-[14px] font-medium px-6 py-2.5 rounded-[14px] flex items-center gap-2"
-              >
-                <Globe className="w-4 h-4 text-ios-teal" />
-                Explore Market
-              </motion.button>
-            </div>
-          </div>
-
-          {/* Quick Stats mini-cards in hero */}
-          <div className="flex gap-3 flex-wrap md:flex-nowrap">
-            {[
-              { label: 'Your Trades', value: '42', icon: ArrowLeftRight, change: '+8', color: '#007AFF' },
-              { label: 'Trust Score', value: '94%', icon: Shield, change: '+2.1', color: '#34C759' },
-              { label: 'AI Matches', value: '156', icon: Bot, change: '+23', color: '#AF52DE' },
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + i * 0.1 }}
-                className="liquid-glass-card px-5 py-4 rounded-[18px] min-w-[130px]"
-              >
-                <stat.icon className="w-4 h-4 mb-2" style={{ color: stat.color }} />
-                <p className="text-[22px] font-bold text-label-primary tracking-tight">{stat.value}</p>
-                <div className="flex items-center justify-between mt-1">
-                  <p className="text-[11px] text-[#8E8E93]">{stat.label}</p>
-                  <span className="text-[10px] text-ios-green font-medium">{stat.change}</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-
-      {/* ═══ KPI METRIC CARDS ═══ */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        {kpiCards.map((kpi, i) => (
-          <motion.div key={i} variants={item} className="liquid-glass-card p-5 rounded-[20px] relative overflow-hidden group cursor-pointer">
-            {/* Gradient background accent */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${kpi.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
             
-            <div className="relative z-10">
-              <div className="flex items-start justify-between mb-3">
-                <div className="w-10 h-10 rounded-[12px] flex items-center justify-center" style={{ backgroundColor: kpi.color + '15' }}>
-                  <kpi.icon className="w-5 h-5" style={{ color: kpi.color }} strokeWidth={1.8} />
-                </div>
-                <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[12px] font-medium bg-[var(--liquid-glass-bg)] border border-[var(--liquid-glass-border)] ${kpi.change >= 0 ? 'text-ios-green' : 'text-ios-red'}`}>
-                  {kpi.change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                  {Math.abs(kpi.change)}%
-                </div>
-              </div>
-              <p className="text-[24px] font-bold text-label-primary tracking-tight">{kpi.value}</p>
-              <p className="text-[13px] text-[#8E8E93] font-medium mt-0.5">{kpi.title}</p>
+            <h1 className="text-[36px] md:text-[48px] font-black text-label-primary tracking-tighter leading-[1.1] mb-4">
+              {greeting}, <br/>
+              <span className="bg-gradient-to-r from-ios-blue via-ios-purple to-ios-orange bg-clip-text text-transparent italic">
+                {userName}.
+              </span>
+            </h1>
+            
+            <p className="text-[#8E8E93] text-[17px] max-w-lg leading-relaxed font-medium">
+              The aggregate network liquidity has grown by <span className="text-ios-blue">₿ 12.4M</span> today. Our AI matched <span className="text-label-primary">42 high-value trades</span> for your assets.
+            </p>
+            
+            <div className="flex flex-wrap items-center gap-4 mt-10">
+              <motion.button 
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-ios-blue text-label-primary text-[15px] font-bold px-8 py-4 rounded-[20px] flex items-center gap-3 shadow-[0_12px_40px_rgba(0,122,255,0.3)] hover:shadow-[0_15px_45px_rgba(0,122,255,0.4)] transition-all"
+              >
+                <Sparkles className="w-5 h-5" />
+                Start Trading
+              </motion.button>
+              <motion.button 
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="liquid-glass-btn text-label-primary text-[15px] font-bold px-8 py-4 rounded-[20px] border border-white/10 flex items-center gap-3"
+              >
+                <Bot className="w-5 h-5 text-ios-purple" />
+                Watch AI Demo
+              </motion.button>
             </div>
-          </motion.div>
-        ))}
+          </div>
+        </motion.div>
+
+        {/* Right: Trade Coordination Stack (Vertical) */}
+        <motion.div variants={item} className="lg:col-span-1 liquid-glass-card rounded-[32px] p-6 flex flex-col group overflow-hidden border border-white/10">
+          <div className="absolute inset-0 bg-gradient-to-br from-ios-purple/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+          
+          <div className="relative z-10 flex flex-col h-full">
+            <div className="flex items-center justify-between mb-6">
+               <h3 className="text-[17px] font-bold text-label-primary">Coordination</h3>
+               <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-ios-blue/10 border border-ios-blue/20">
+                  <Activity className="w-3 h-3 text-ios-blue animate-pulse" />
+                  <span className="text-[10px] font-black text-ios-blue uppercase tracking-widest">Active</span>
+               </div>
+            </div>
+            
+            <div className="space-y-3 flex-1">
+               {[
+                 { label: 'Neural Matching', val: 84, color: 'var(--ios-blue)' },
+                 { label: 'Liquidity Bridge', val: 62, color: 'var(--ios-purple)' },
+                 { label: 'Protocol Health', val: 99, color: 'var(--ios-green)' }
+               ].map((task, idx) => (
+                 <div key={idx} className="p-3 rounded-2xl bg-white/[0.03] border border-white/5">
+                    <div className="flex justify-between items-center mb-2">
+                       <span className="text-[11px] font-bold uppercase tracking-wider text-[#8E8E93]">{task.label}</span>
+                       <span className="text-[11px] font-black italic" style={{ color: task.color }}>{task.val}%</span>
+                    </div>
+                    <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                       <motion.div 
+                          initial={{ width: 0 }} 
+                          animate={{ width: `${task.val}%` }} 
+                          transition={{ duration: 1, delay: idx * 0.1 }}
+                          className="h-full rounded-full"
+                          style={{ backgroundColor: task.color }}
+                       />
+                    </div>
+                 </div>
+               ))}
+            </div>
+
+            <div className="pt-4 mt-6 border-t border-white/5 flex items-center justify-between">
+               <div className="flex -space-x-2">
+                  {[1,2,3].map(i => (
+                    <div key={i} className="w-6 h-6 rounded-full border-2 border-[var(--background)] bg-ios-blue/20 flex items-center justify-center text-[10px] font-bold">A{i}</div>
+                  ))}
+               </div>
+               <span className="text-[10px] font-bold text-[#636366] uppercase">3 Linked Agents</span>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
-      {/* ═══ MAIN CONTENT GRID ═══ */}
+      {/* ═══ METRIC BENTO GRID (Varied Sizes) ═══ */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-5">
+        
+        {/* Large Stat: Network Value */}
+        <motion.div variants={item} className="col-span-2 lg:col-span-2 liquid-glass-card rounded-[28px] p-8 relative group overflow-hidden min-h-[180px]">
+          <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity group-hover:scale-110 duration-700">
+            <DollarSign className="w-24 h-24 text-ios-blue" />
+          </div>
+          <div className="relative z-10 flex flex-col justify-between h-full">
+            <div>
+              <p className="text-[13px] font-bold text-[#8E8E93] uppercase tracking-widest mb-1">Aggregate Network Value</p>
+              <h2 className="text-[42px] font-black text-label-primary tracking-tighter leading-none">
+                <AnimatedNumber target={isDBEmpty ? 2.4 : metrics.networkValue / 1000} />{isDBEmpty ? 'B' : 'K'}
+              </h2>
+            </div>
+            <div className="flex items-center gap-2 text-ios-green text-[14px] font-bold mt-4">
+              <TrendingUp className="w-4 h-4" />
+              +12.5% <span className="text-[#636366] font-normal italic ml-1">last 24h</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Medium Stats: Dynamic Resource Heatmap */}
+        <motion.div variants={item} className="col-span-2 lg:col-span-2 liquid-glass-card rounded-[28px] p-6 group relative overflow-hidden">
+           <div className="flex items-center justify-between mb-4">
+              <p className="text-[13px] text-[#8E8E93] font-bold uppercase tracking-wider">Demand Heatmap</p>
+              <TrendingUp className="w-4 h-4 text-ios-green" />
+           </div>
+           <div className="grid grid-cols-4 gap-2">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className="h-6 rounded-md transition-all hover:scale-110" style={{ 
+                  backgroundColor: `rgba(0, 122, 255, ${0.1 + (Math.random() * 0.8)})`,
+                  border: '1px solid rgba(255,255,255,0.05)'
+                }} />
+              ))}
+           </div>
+           <p className="text-[10px] text-[#636366] mt-4 font-bold uppercase tracking-widest">Global Sector: Energy & Compute</p>
+        </motion.div>
+
+        {/* Large Stat: AI Efficiency (Horizontal/Varied) */}
+        <motion.div variants={item} className="col-span-2 lg:col-span-1 liquid-glass-card rounded-[28px] p-6 bg-gradient-to-br from-ios-purple/10 to-transparent flex flex-col justify-between border border-ios-purple/20">
+           <div className="flex justify-between items-start">
+              <div className="w-10 h-10 rounded-[14px] flex items-center justify-center bg-ios-purple/10">
+                 <Sparkles className="w-5 h-5 text-ios-purple" strokeWidth={2} />
+              </div>
+              <div className="flex items-center gap-1 text-ios-purple text-[11px] font-black uppercase tracking-widest border border-ios-purple/20 px-2 py-1 rounded-md">
+                 Optimal
+              </div>
+           </div>
+           <div>
+              <h2 className="text-[32px] font-black text-label-primary tracking-tight">{isDBEmpty ? '99.7%' : `${metrics.aiEfficiency}%`}</h2>
+              <p className="text-[13px] text-ios-purple/80 font-bold uppercase tracking-widest">Match Efficiency</p>
+           </div>
+        </motion.div>
+      </div>
+
+      {/* ═══ CORE INFRASTRUCTURE VISUALS ═══ */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* Network Activity Chart */}
-        <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2">
-                <Activity className="w-4 h-4 text-ios-blue" />
-                Network Activity
-              </h3>
-              <p className="text-[13px] text-[#8E8E93] mt-0.5">Trade volume & activity over the last 7 days</p>
+        {/* Main Intelligence Chart (Modern Bento) */}
+        <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[32px] p-8 relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-ios-blue/10 flex items-center justify-center border border-ios-blue/20">
+                 <Activity className="w-6 h-6 text-ios-blue" strokeWidth={2} />
+              </div>
+              <div>
+                <h3 className="text-[18px] font-bold text-label-primary">Trade Flux Analysis</h3>
+                <p className="text-[13px] text-[#8E8E93] font-medium tracking-tight">AI-predicted volatility vs. actual exchange density</p>
+              </div>
             </div>
-            <div className="flex bg-[var(--liquid-glass-bg)] rounded-[10px] p-0.5 border border-[var(--liquid-glass-border)]">
+            
+            <div className="flex bg-[var(--background)] rounded-full p-1 border border-white/5">
               {['1D', '7D', '1M'].map((range) => (
                 <button 
                   key={range} 
                   onClick={() => setSelectedRange(range)}
-                  className={`px-3 py-1.5 text-[12px] font-medium rounded-[8px] transition-all ${
+                  className={`px-4 py-2 text-[12px] font-bold rounded-full transition-all ${
                     selectedRange === range 
-                      ? 'bg-ios-blue text-label-primary shadow-md' 
+                      ? 'bg-ios-blue text-label-primary shadow-lg scale-105' 
                       : 'text-[#8E8E93] hover:text-label-primary'
                   }`}
                 >
@@ -319,267 +385,138 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
-          <div className="h-[280px] w-full">
+          
+          <div className="h-[320px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={networkData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorVolume" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#007AFF" stopOpacity={0.35}/>
-                    <stop offset="95%" stopColor="#007AFF" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#C88A54" stopOpacity={0.4}/>
+                    <stop offset="95%" stopColor="#C88A54" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
-                <XAxis dataKey="name" stroke="var(--text-secondary)" fontSize={12} tickLine={false} axisLine={false} dy={10} />
-                <YAxis stroke="var(--text-secondary)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `${val / 1000}k`} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
+                <XAxis dataKey="name" stroke="#636366" fontSize={11} fontWeight={600} tickLine={false} axisLine={false} dy={10} />
+                <YAxis stroke="#636366" fontSize={11} fontWeight={600} tickLine={false} axisLine={false} tickFormatter={(val) => `${val / 1000}k`} />
                 <RechartsTooltip 
-                  contentStyle={{ backgroundColor: 'var(--background-elevated)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', color: 'var(--text-primary)', padding: '12px 16px' }}
-                  itemStyle={{ color: 'var(--text-primary)' }}
-                  cursor={{ stroke: 'rgba(0,122,255,0.3)', strokeWidth: 1, strokeDasharray: '4 4' }}
+                  contentStyle={{ backgroundColor: 'rgba(28,22,20,0.9)', backdropFilter: 'blur(30px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px' }}
+                  itemStyle={{ color: 'var(--text-primary)', fontWeight: 700 }}
+                  cursor={{ stroke: 'rgba(200,138,84,0.3)', strokeWidth: 2 }}
                 />
-                <Area type="monotone" dataKey="volume" stroke="#007AFF" strokeWidth={2.5} fillOpacity={1} fill="url(#colorVolume)" activeDot={{ r: 6, fill: '#007AFF', stroke: '#fff', strokeWidth: 2 }} />
+                <Area type="monotone" dataKey="volume" stroke="#C88A54" strokeWidth={4} fillOpacity={1} fill="url(#colorVolume)" activeDot={{ r: 8, fill: '#C88A54', stroke: '#fff', strokeWidth: 3 }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </motion.div>
 
-        {/* Resource Distribution */}
-        <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-ios-purple" />
-            Resource Distribution
-          </h3>
-          <p className="text-[13px] text-[#8E8E93] mt-0.5 mb-2">Active trades by category</p>
-          <div className="h-[200px] w-full flex items-center justify-center relative">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={distributionData} cx="50%" cy="50%" innerRadius={62} outerRadius={82} paddingAngle={5} dataKey="value" stroke="none">
-                  {distributionData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <RechartsTooltip 
-                  contentStyle={{ backgroundColor: 'var(--background-elevated)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                  itemStyle={{ color: 'var(--text-primary)' }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-[28px] font-bold text-label-primary">1.2K</span>
-              <span className="text-[11px] text-[#8E8E93] uppercase tracking-wider font-medium">Total Active</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3 mt-4">
-            {distributionData.map(d => (
-              <div key={d.name} className="flex items-center gap-2 p-2 rounded-[10px] hover:bg-[var(--liquid-glass-bg)] transition-colors cursor-pointer">
-                <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: d.color }} />
-                <span className="text-[13px] text-label-primary">{d.name}</span>
-                <span className="text-[11px] text-[#636366] ml-auto">{d.value}</span>
+        {/* AI Agent Real-time Terminal (Narrow Vertical) */}
+        <motion.div variants={item} className="lg:col-span-1 liquid-glass-card rounded-[32px] p-8 flex flex-col group border border-ios-blue/10">
+           <div className="flex items-center justify-between mb-8">
+              <h3 className="text-[17px] font-bold text-label-primary flex items-center gap-3">
+                 <Bot className="w-5 h-5 text-ios-blue" />
+                 Neural Feed
+              </h3>
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-ios-green/10 border border-ios-green/20">
+                 <div className="w-2 h-2 rounded-full bg-ios-green animate-pulse" />
+                 <span className="text-[10px] font-black text-ios-green uppercase tracking-widest">Live</span>
               </div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+           </div>
 
-      {/* ═══ SECOND ROW: AI Feed + Weekly + Achievements ═══ */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Live AI Agent Feed */}
-        <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <div className="flex items-center justify-between mb-5">
-            <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2">
-              <Bot className="w-4 h-4 text-ios-blue" />
-              AI Agent Feed
-            </h3>
-            <PulseDot color="#34C759" />
-          </div>
-          <div className="space-y-3">
-            {liveAgentFeed.map((log, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 + i * 0.1 }}
-                className="flex items-start gap-3 p-3 rounded-[14px] bg-[rgba(255,255,255,0.03)] hover:bg-[var(--liquid-glass-bg)] transition-colors cursor-pointer border border-transparent hover:border-[var(--liquid-glass-border)]"
-              >
-                <span className="text-[18px] mt-0.5">{log.emoji}</span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] leading-relaxed">
-                    <span className="font-semibold" style={{ color: log.color }}>{log.agent}</span>
-                    <span className="text-[#8E8E93]"> — {log.action}</span>
-                  </p>
-                  <p className="text-[11px] text-[#48484A] mt-0.5">{log.time}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Weekly Performance Bar Chart */}
-        <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2 mb-1">
-            <Flame className="w-4 h-4 text-ios-orange" />
-            Weekly Performance
-          </h3>
-          <p className="text-[13px] text-[#8E8E93] mb-4">Your trading streak this week</p>
-          
-          <div className="h-[180px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={weeklyBarData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
-                <XAxis dataKey="day" stroke="var(--text-secondary)" fontSize={11} tickLine={false} axisLine={false} />
-                <YAxis stroke="var(--text-secondary)" fontSize={11} tickLine={false} axisLine={false} />
-                <RechartsTooltip 
-                  contentStyle={{ backgroundColor: 'var(--background-elevated)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                  itemStyle={{ color: 'var(--text-primary)' }}
-                />
-                <Bar dataKey="value" fill="#FF9500" radius={[6, 6, 0, 0]} barSize={28} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="flex justify-between items-center mt-4 pt-4 border-t border-[var(--liquid-glass-border)]">
-            <div>
-              <p className="text-[20px] font-bold text-label-primary">325</p>
-              <p className="text-[11px] text-[#8E8E93]">Total this week</p>
-            </div>
-            <div className="flex items-center gap-1 text-ios-green text-[13px] font-medium">
-              <TrendingUp className="w-3.5 h-3.5" />
-              +18.7%
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Achievements */}
-        <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2 mb-1">
-            <Award className="w-4 h-4 text-ios-yellow" />
-            Achievements
-          </h3>
-          <p className="text-[13px] text-[#8E8E93] mb-4">Your trading milestones</p>
-
-          <div className="space-y-3">
-            {achievements.map((ach, i) => (
-              <div
-                key={i}
-                className={`flex items-center gap-3 p-3 rounded-[14px] transition-all ${
-                  ach.earned 
-                    ? 'bg-[var(--liquid-glass-bg)] border border-[var(--liquid-glass-border)]' 
-                    : 'bg-[rgba(255,255,255,0.02)] border border-[var(--liquid-glass-border)] opacity-50'
-                }`}
-              >
-                <span className="text-[22px]">{ach.icon}</span>
-                <span className="text-[14px] font-medium text-label-primary flex-1">{ach.name}</span>
-                {ach.earned ? (
-                  <CheckCircle className="w-4 h-4 text-ios-green" />
-                ) : (
-                  <Clock className="w-4 h-4 text-[#636366]" />
-                )}
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-4 pt-4 border-t border-[var(--liquid-glass-border)]">
-            <div className="flex justify-between items-center">
-              <span className="text-[13px] text-[#8E8E93]">Progress</span>
-              <span className="text-[13px] text-label-primary font-semibold">3/5</span>
-            </div>
-            <div className="mt-2 w-full h-2 bg-[var(--liquid-glass-bg)] rounded-full overflow-hidden">
-              <motion.div 
-                initial={{ width: 0 }}
-                animate={{ width: '60%' }}
-                transition={{ delay: 1, duration: 0.8, ease: 'easeOut' }}
-                className="h-full bg-gradient-to-r from-ios-blue to-ios-purple rounded-full"
-              />
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* ═══ RECENT TRADES TABLE ═══ */}
-      <motion.div variants={item} className="liquid-glass-card rounded-[24px] p-6 relative group overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-[16px] font-semibold text-label-primary flex items-center gap-2">
-            <ArrowLeftRight className="w-4 h-4 text-ios-green" />
-            Recent Trades
-          </h3>
-          <button className="text-[13px] text-ios-blue hover:text-label-primary transition-colors font-medium flex items-center gap-1 group/btn">
-            View All
-            <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
-          </button>
-        </div>
-        
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-[var(--liquid-glass-border)]">
-                <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Traders</th>
-                <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Exchange Pair</th>
-                <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">AI Score</th>
-                <th className="py-3 px-4 text-[12px] font-medium text-[#8E8E93] uppercase tracking-wider">Status</th>
-                <th className="py-3 px-4 text-right"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentTrades.map((trade, i) => (
-                <motion.tr 
-                  key={i} 
-                  initial={{ opacity: 0, y: 8 }}
+           <div className="flex-1 space-y-6 overflow-hidden">
+              {liveAgentFeed.map((log, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 + i * 0.08 }}
-                  className="border-b border-[var(--liquid-glass-border)] hover:bg-[rgba(255,255,255,0.03)] transition-colors group/row cursor-pointer"
+                  transition={{ delay: i * 0.1 }}
+                  className="relative pl-5 border-l border-white/5 py-1"
                 >
-                  <td className="py-4 px-4">
-                    <div className="flex items-center gap-2">
-                       <div className="flex -space-x-2">
-                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ios-blue to-ios-purple flex items-center justify-center text-[10px] font-bold text-label-primary border-2 border-black z-10">{trade.traders[0][0]}</div>
-                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ios-teal to-ios-green flex items-center justify-center text-[10px] font-bold text-label-primary border-2 border-black">{trade.traders[1][0]}</div>
-                       </div>
-                       <span className="text-[14px] text-label-primary flex flex-col leading-tight ml-2">
-                         <span className="font-medium">{trade.traders[0]}</span>
-                         <span className="text-[12px] text-[#8E8E93]">with {trade.traders[1]}</span>
-                       </span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4">
-                    <div className="flex items-center gap-2 text-[14px] text-label-primary">
-                      <Zap className="w-4 h-4 text-ios-orange" />
-                      {trade.pair}
-                    </div>
-                  </td>
-                  <td className="py-4 px-4">
-                    <div className="flex items-center gap-2">
-                       <div className="w-full bg-[rgba(255,255,255,0.1)] h-1.5 rounded-full max-w-[80px] overflow-hidden">
-                         <div className="h-full bg-ios-blue rounded-full transition-all" style={{ width: `${trade.score}%` }} />
-                       </div>
-                       <span className="text-[13px] text-label-primary font-medium">{trade.score}%</span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4">
-                    <div className="flex items-center gap-1.5">
-                      {trade.status === 'Completed' ? <CheckCircle className="w-4 h-4 text-ios-green" /> : 
-                       trade.status === 'Pending' ? <Clock className="w-4 h-4 text-ios-orange" /> :
-                       <Activity className="w-4 h-4 text-ios-purple" />}
-                      <span className={`text-[13px] font-medium ${trade.status === 'Completed' ? 'text-ios-green' : trade.status === 'Pending' ? 'text-ios-orange' : 'text-ios-purple'}`}>
-                        {trade.status}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4 text-right">
-                    <button className="text-[#8E8E93] hover:text-label-primary p-2 rounded-lg hover:bg-[var(--liquid-glass-bg)] transition-colors">
-                      <MoreHorizontal className="w-5 h-5" />
-                    </button>
-                  </td>
-                </motion.tr>
+                  <div className="absolute left-[-4.5px] top-2 w-2 h-2 rounded-full bg-label-primary/20 group-hover:bg-ios-blue transition-colors" />
+                  <p className="text-[11px] font-bold text-ios-blue uppercase tracking-widest mb-1">{log.agent}</p>
+                  <p className="text-[13px] text-label-primary leading-tight font-medium mb-1">{log.action}</p>
+                  <p className="text-[10px] text-[#636366] font-bold">{log.time}</p>
+                </motion.div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </motion.div>
+           </div>
+           
+           <button className="w-full py-4 mt-8 rounded-[18px] bg-white/5 border border-white/5 text-[13px] font-bold text-[#8E8E93] hover:text-label-primary hover:bg-white/10 transition-all uppercase tracking-widest">
+              View All Protocol Logs
+           </button>
+        </motion.div>
+      </div>
+
+      {/* ═══ FINAL SECTION: ASYMMETRIC BENTO ═══ */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-12">
+         
+         {/* Distribution Bento */}
+         <motion.div variants={item} className="liquid-glass-card rounded-[32px] p-8 group">
+            <h3 className="text-[18px] font-bold text-label-primary mb-8 flex items-center gap-3">
+               <PieChart className="w-5 h-5 text-ios-teal" />
+               Global Liquidity Pool
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+               <div className="h-[220px] relative">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie data={distributionData} cx="50%" cy="50%" innerRadius={75} outerRadius={95} paddingAngle={8} dataKey="value" stroke="none">
+                        {distributionData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                     <span className="text-[32px] font-black text-label-primary">1.2K</span>
+                     <span className="text-[11px] text-[#636366] font-black uppercase tracking-widest">Trades</span>
+                  </div>
+               </div>
+               <div className="space-y-4">
+                  {distributionData.map(d => (
+                    <div key={d.name} className="flex flex-col gap-1 p-3 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
+                       <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: d.color }} />
+                             <span className="text-[14px] font-bold text-label-primary">{d.name}</span>
+                          </div>
+                          <span className="text-[13px] font-black text-[#8E8E93]">{d.value}</span>
+                       </div>
+                    </div>
+                  ))}
+               </div>
+            </div>
+         </motion.div>
+
+         {/* Achievements Island */}
+         <motion.div variants={item} className="liquid-glass-card rounded-[32px] p-8 group overflow-hidden">
+            <h3 className="text-[18px] font-bold text-label-primary mb-8 flex items-center justify-between">
+               <div className="flex items-center gap-3">
+                  <Award className="w-5 h-5 text-ios-yellow" />
+                  Neural Trophies
+               </div>
+               <span className="text-[12px] font-black text-[#636366] uppercase tracking-widest">3/5 Milestones</span>
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+               {achievements.map((ach, i) => (
+                 <motion.div
+                   key={i}
+                   whileHover={{ y: -4, scale: 1.02 }}
+                   className={`p-5 rounded-2xl flex items-center gap-4 transition-all relative ${
+                     ach.earned 
+                       ? 'bg-gradient-to-br from-white/10 to-transparent border border-white/10 shadow-xl' 
+                       : 'bg-white/[0.02] border border-white/5 grayscale opacity-40'
+                   }`}
+                 >
+                   <span className="text-[28px]">{ach.icon}</span>
+                   <div>
+                     <p className="text-[15px] font-bold text-label-primary leading-none mb-1">{ach.name}</p>
+                     <p className="text-[11px] text-[#8E8E93] font-medium">{ach.earned ? 'Mission Complete' : 'Protocol Locked'}</p>
+                   </div>
+                   {ach.earned && <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-ios-green shadow-[0_0_8px_rgba(52,199,89,1)]" />}
+                 </motion.div>
+               ))}
+            </div>
+         </motion.div>
+      </div>
 
     </motion.div>
   );
