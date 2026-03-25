@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { createResourceSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/resources — list + search resources
 export async function GET(req: NextRequest) {
     try {

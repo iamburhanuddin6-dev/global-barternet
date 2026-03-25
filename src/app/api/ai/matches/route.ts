@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { findMatches, runMatchingJob } from '@/lib/ai-matching';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/ai/matches?resourceId=xxx — get AI matches for a resource
 export async function GET(req: NextRequest) {
     try {

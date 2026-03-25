@@ -1,0 +1,4 @@
+
+> global-barternet@0.1.0 build
+> rm -rf .next && prisma generate && next build
+

@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { respondExchangeSchema } from '@/lib/validations';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/exchanges/[id] — get exchange details
 export async function GET(
     req: NextRequest,
