@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Bot, Search, ArrowRight, Zap, Play, CheckCircle2, Shield, ArrowLeftRight, Trophy } from 'lucide-react';
 
