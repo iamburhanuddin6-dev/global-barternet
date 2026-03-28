@@ -193,13 +193,13 @@ export default function DashboardPage() {
   }));
 
   return (
-    <motion.div variants={container} initial="hidden" animate="show" className="space-y-8 max-w-[1500px] mx-auto pb-20">
+    <motion.div variants={container} initial="hidden" animate="show" className="space-y-6 md:space-y-8 max-w-[1500px] mx-auto pb-20 px-4 md:px-0">
       
       {/* ═══ UNIQUE BENTO ISLAND HERO ═══ */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
         
         {/* Left: Interactive Welcome Island (Large) */}
-        <motion.div variants={item} className="lg:col-span-3 relative overflow-hidden rounded-[32px] liquid-glass-hero p-8 md:p-12 min-h-[300px] flex flex-col justify-center">
+        <motion.div variants={item} className="lg:col-span-3 relative overflow-hidden rounded-[24px] md:rounded-[32px] liquid-glass-hero p-6 md:p-12 min-h-[auto] md:min-h-[300px] flex flex-col justify-center">
           {/* Holographic Background Orbs */}
           <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-ios-blue/[0.12] rounded-full blur-[100px] animate-pulse-soft" />
           <div className="absolute bottom-[-20%] left-[10%] w-[300px] h-[300px] bg-ios-purple/[0.1] rounded-full blur-[80px]" />
@@ -216,7 +216,7 @@ export default function DashboardPage() {
               <span className="text-[11px] font-bold text-ios-green uppercase tracking-[0.15em]">Neural Link: Active</span>
             </motion.div>
             
-            <h1 className="text-[36px] md:text-[48px] font-black text-label-primary tracking-tighter leading-[1.1] mb-4">
+            <h1 className="text-[28px] sm:text-[36px] md:text-[48px] font-black text-label-primary tracking-tighter leading-[1.1] mb-4">
               {greeting}, <br/>
               <span className="bg-gradient-to-r from-ios-blue via-ios-purple to-ios-orange bg-clip-text text-transparent italic">
                 {userName}.
@@ -227,21 +227,21 @@ export default function DashboardPage() {
               The aggregate network liquidity has grown by <span className="text-ios-blue">₿ 12.4M</span> today. Our AI matched <span className="text-label-primary">42 high-value trades</span> for your assets.
             </p>
             
-            <div className="flex flex-wrap items-center gap-4 mt-10">
+            <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-6 md:mt-10">
               <motion.button 
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-ios-blue text-label-primary text-[15px] font-bold px-8 py-4 rounded-[20px] flex items-center gap-3 shadow-[0_12px_40px_rgba(0,122,255,0.3)] hover:shadow-[0_15px_45px_rgba(0,122,255,0.4)] transition-all"
+                className="w-full sm:w-auto bg-ios-blue text-label-primary text-[14px] md:text-[15px] font-bold px-6 md:px-8 py-3.5 md:py-4 rounded-[16px] md:rounded-[20px] flex items-center justify-center gap-3 shadow-[0_12px_40px_rgba(0,122,255,0.3)] hover:shadow-[0_15px_45px_rgba(0,122,255,0.4)] transition-all"
               >
-                <Sparkles className="w-5 h-5" />
+                <Sparkles className="w-4 h-4 md:w-5 md:h-5" />
                 Start Trading
               </motion.button>
               <motion.button 
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="liquid-glass-btn text-label-primary text-[15px] font-bold px-8 py-4 rounded-[20px] border border-white/10 flex items-center gap-3"
+                className="w-full sm:w-auto liquid-glass-btn text-label-primary text-[14px] md:text-[15px] font-bold px-6 md:px-8 py-3.5 md:py-4 rounded-[16px] md:rounded-[20px] border border-white/10 flex items-center justify-center gap-3"
               >
-                <Bot className="w-5 h-5 text-ios-purple" />
+                <Bot className="w-4 h-4 md:w-5 md:h-5 text-ios-purple" />
                 Watch AI Demo
               </motion.button>
             </div>
@@ -298,17 +298,17 @@ export default function DashboardPage() {
       </div>
 
       {/* ═══ METRIC BENTO GRID (Varied Sizes) ═══ */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
         
         {/* Large Stat: Network Value */}
-        <motion.div variants={item} className="col-span-2 lg:col-span-2 liquid-glass-card rounded-[28px] p-8 relative group overflow-hidden min-h-[180px]">
+        <motion.div variants={item} className="col-span-1 sm:col-span-2 lg:col-span-2 liquid-glass-card rounded-[24px] md:rounded-[28px] p-6 md:p-8 relative group overflow-hidden min-h-[160px] md:min-h-[180px]">
           <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity group-hover:scale-110 duration-700">
             <DollarSign className="w-24 h-24 text-ios-blue" />
           </div>
           <div className="relative z-10 flex flex-col justify-between h-full">
             <div>
-              <p className="text-[13px] font-bold text-[#8E8E93] uppercase tracking-widest mb-1">Aggregate Network Value</p>
-              <h2 className="text-[42px] font-black text-label-primary tracking-tighter leading-none">
+              <p className="text-[11px] md:text-[13px] font-bold text-[#8E8E93] uppercase tracking-widest mb-1">Aggregate Network Value</p>
+              <h2 className="text-[32px] md:text-[42px] font-black text-label-primary tracking-tighter leading-none">
                 <AnimatedNumber target={isDBEmpty ? 2.4 : metrics.networkValue / 1000} />{isDBEmpty ? 'B' : 'K'}
               </h2>
             </div>
@@ -320,7 +320,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Medium Stats: Dynamic Resource Heatmap */}
-        <motion.div variants={item} className="col-span-2 lg:col-span-2 liquid-glass-card rounded-[28px] p-6 group relative overflow-hidden">
+        <motion.div variants={item} className="col-span-1 sm:col-span-2 lg:col-span-2 liquid-glass-card rounded-[24px] md:rounded-[28px] p-5 md:p-6 group relative overflow-hidden">
            <div className="flex items-center justify-between mb-4">
               <p className="text-[13px] text-[#8E8E93] font-bold uppercase tracking-wider">Demand Heatmap</p>
               <TrendingUp className="w-4 h-4 text-ios-green" />
@@ -337,18 +337,18 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Large Stat: AI Efficiency (Horizontal/Varied) */}
-        <motion.div variants={item} className="col-span-2 lg:col-span-1 liquid-glass-card rounded-[28px] p-6 bg-gradient-to-br from-ios-purple/10 to-transparent flex flex-col justify-between border border-ios-purple/20">
+        <motion.div variants={item} className="col-span-1 sm:col-span-2 lg:col-span-1 liquid-glass-card rounded-[24px] md:rounded-[28px] p-5 md:p-6 bg-gradient-to-br from-ios-purple/10 to-transparent flex flex-col justify-between border border-ios-purple/20">
            <div className="flex justify-between items-start">
-              <div className="w-10 h-10 rounded-[14px] flex items-center justify-center bg-ios-purple/10">
-                 <Sparkles className="w-5 h-5 text-ios-purple" strokeWidth={2} />
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-[10px] md:rounded-[14px] flex items-center justify-center bg-ios-purple/10">
+                 <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-ios-purple" strokeWidth={2} />
               </div>
-              <div className="flex items-center gap-1 text-ios-purple text-[11px] font-black uppercase tracking-widest border border-ios-purple/20 px-2 py-1 rounded-md">
+              <div className="flex items-center gap-1 text-ios-purple text-[10px] md:text-[11px] font-black uppercase tracking-widest border border-ios-purple/20 px-2 py-1 rounded-md">
                  Optimal
               </div>
            </div>
            <div>
-              <h2 className="text-[32px] font-black text-label-primary tracking-tight">{isDBEmpty ? '99.7%' : `${metrics.aiEfficiency}%`}</h2>
-              <p className="text-[13px] text-ios-purple/80 font-bold uppercase tracking-widest">Match Efficiency</p>
+              <h2 className="text-[28px] md:text-[32px] font-black text-label-primary tracking-tight">{isDBEmpty ? '99.7%' : `${metrics.aiEfficiency}%`}</h2>
+              <p className="text-[11px] md:text-[13px] text-ios-purple/80 font-bold uppercase tracking-widest">Match Efficiency</p>
            </div>
         </motion.div>
       </div>
@@ -357,19 +357,19 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Main Intelligence Chart (Modern Bento) */}
-        <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[32px] p-8 relative overflow-hidden group">
-          <div className="flex items-center justify-between mb-8">
+        <motion.div variants={item} className="lg:col-span-2 liquid-glass-card rounded-[24px] md:rounded-[32px] p-6 md:p-8 relative overflow-hidden group">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-ios-blue/10 flex items-center justify-center border border-ios-blue/20">
-                 <Activity className="w-6 h-6 text-ios-blue" strokeWidth={2} />
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-ios-blue/10 flex items-center justify-center border border-ios-blue/20">
+                 <Activity className="w-5 h-5 md:w-6 md:h-6 text-ios-blue" strokeWidth={2} />
               </div>
               <div>
-                <h3 className="text-[18px] font-bold text-label-primary">Trade Flux Analysis</h3>
-                <p className="text-[13px] text-[#8E8E93] font-medium tracking-tight">AI-predicted volatility vs. actual exchange density</p>
+                <h3 className="text-[16px] md:text-[18px] font-bold text-label-primary">Trade Flux Analysis</h3>
+                <p className="text-[12px] md:text-[13px] text-[#8E8E93] font-medium tracking-tight">AI-predicted volatility vs. actual exchange density</p>
               </div>
             </div>
             
-            <div className="flex bg-[var(--background)] rounded-full p-1 border border-white/5">
+            <div className="flex bg-[var(--background)] rounded-full p-1 border border-white/5 self-start sm:self-auto">
               {['1D', '7D', '1M'].map((range) => (
                 <button 
                   key={range} 
@@ -448,74 +448,74 @@ export default function DashboardPage() {
       {/* ═══ FINAL SECTION: ASYMMETRIC BENTO ═══ */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-12">
          
-         {/* Distribution Bento */}
-         <motion.div variants={item} className="liquid-glass-card rounded-[32px] p-8 group">
-            <h3 className="text-[18px] font-bold text-label-primary mb-8 flex items-center gap-3">
-               <PieChart className="w-5 h-5 text-ios-teal" />
-               Global Liquidity Pool
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-               <div className="h-[220px] relative">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie data={distributionData} cx="50%" cy="50%" innerRadius={75} outerRadius={95} paddingAngle={8} dataKey="value" stroke="none">
-                        {distributionData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                     <span className="text-[32px] font-black text-label-primary">1.2K</span>
-                     <span className="text-[11px] text-[#636366] font-black uppercase tracking-widest">Trades</span>
-                  </div>
-               </div>
-               <div className="space-y-4">
-                  {distributionData.map(d => (
-                    <div key={d.name} className="flex flex-col gap-1 p-3 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
-                       <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: d.color }} />
-                             <span className="text-[14px] font-bold text-label-primary">{d.name}</span>
-                          </div>
-                          <span className="text-[13px] font-black text-[#8E8E93]">{d.value}</span>
-                       </div>
-                    </div>
-                  ))}
-               </div>
-            </div>
-         </motion.div>
-
-         {/* Achievements Island */}
-         <motion.div variants={item} className="liquid-glass-card rounded-[32px] p-8 group overflow-hidden">
-            <h3 className="text-[18px] font-bold text-label-primary mb-8 flex items-center justify-between">
-               <div className="flex items-center gap-3">
-                  <Award className="w-5 h-5 text-ios-yellow" />
-                  Neural Trophies
-               </div>
-               <span className="text-[12px] font-black text-[#636366] uppercase tracking-widest">3/5 Milestones</span>
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               {achievements.map((ach, i) => (
-                 <motion.div
-                   key={i}
-                   whileHover={{ y: -4, scale: 1.02 }}
-                   className={`p-5 rounded-2xl flex items-center gap-4 transition-all relative ${
-                     ach.earned 
-                       ? 'bg-gradient-to-br from-white/10 to-transparent border border-white/10 shadow-xl' 
-                       : 'bg-white/[0.02] border border-white/5 grayscale opacity-40'
-                   }`}
-                 >
-                   <span className="text-[28px]">{ach.icon}</span>
-                   <div>
-                     <p className="text-[15px] font-bold text-label-primary leading-none mb-1">{ach.name}</p>
-                     <p className="text-[11px] text-[#8E8E93] font-medium">{ach.earned ? 'Mission Complete' : 'Protocol Locked'}</p>
+          {/* Distribution Bento */}
+          <motion.div variants={item} className="liquid-glass-card rounded-[24px] md:rounded-[32px] p-6 md:p-8 group">
+             <h3 className="text-[16px] md:text-[18px] font-bold text-label-primary mb-6 md:mb-8 flex items-center gap-3">
+                <PieChart className="w-4 h-4 md:w-5 md:h-5 text-ios-teal" />
+                Global Liquidity Pool
+             </h3>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
+                <div className="h-[180px] md:h-[220px] relative">
+                   <ResponsiveContainer width="100%" height="100%">
+                     <PieChart>
+                       <Pie data={distributionData} cx="50%" cy="50%" innerRadius={Math.min(60, 75)} outerRadius={Math.min(75, 95)} paddingAngle={8} dataKey="value" stroke="none">
+                         {distributionData.map((entry, index) => (
+                           <Cell key={`cell-${index}`} fill={entry.color} />
+                         ))}
+                       </Pie>
+                     </PieChart>
+                   </ResponsiveContainer>
+                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                      <span className="text-[24px] md:text-[32px] font-black text-label-primary">1.2K</span>
+                      <span className="text-[9px] md:text-[11px] text-[#636366] font-black uppercase tracking-widest">Trades</span>
                    </div>
-                   {ach.earned && <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-ios-green shadow-[0_0_8px_rgba(52,199,89,1)]" />}
-                 </motion.div>
-               ))}
-            </div>
-         </motion.div>
+                </div>
+                <div className="space-y-3 md:space-y-4">
+                   {distributionData.map(d => (
+                     <div key={d.name} className="flex flex-col gap-1 p-2.5 md:p-3 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
+                        <div className="flex items-center justify-between">
+                           <div className="flex items-center gap-2">
+                              <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full" style={{ backgroundColor: d.color }} />
+                              <span className="text-[12px] md:text-[14px] font-bold text-label-primary">{d.name}</span>
+                           </div>
+                           <span className="text-[11px] md:text-[13px] font-black text-[#8E8E93]">{d.value}</span>
+                        </div>
+                     </div>
+                   ))}
+                </div>
+             </div>
+          </motion.div>
+ 
+          {/* Achievements Island */}
+          <motion.div variants={item} className="liquid-glass-card rounded-[24px] md:rounded-[32px] p-6 md:p-8 group overflow-hidden">
+             <h3 className="text-[16px] md:text-[18px] font-bold text-label-primary mb-6 md:mb-8 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                   <Award className="w-4 h-4 md:w-5 md:h-5 text-ios-yellow" />
+                   Neural Trophies
+                </div>
+                <span className="text-[10px] md:text-[12px] font-black text-[#636366] uppercase tracking-widest">3/5 Milestones</span>
+             </h3>
+             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                {achievements.map((ach, i) => (
+                  <motion.div
+                    key={i}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    className={`p-4 md:p-5 rounded-2xl flex items-center gap-3 md:gap-4 transition-all relative ${
+                      ach.earned 
+                        ? 'bg-gradient-to-br from-white/10 to-transparent border border-white/10 shadow-xl' 
+                        : 'bg-white/[0.02] border border-white/5 grayscale opacity-40'
+                    }`}
+                  >
+                    <span className="text-[24px] md:text-[28px]">{ach.icon}</span>
+                    <div>
+                      <p className="text-[14px] md:text-[15px] font-bold text-label-primary leading-none mb-1">{ach.name}</p>
+                      <p className="text-[10px] md:text-[11px] text-[#8E8E93] font-medium">{ach.earned ? 'Mission Complete' : 'Protocol Locked'}</p>
+                    </div>
+                    {ach.earned && <div className="absolute top-3 right-3 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-ios-green shadow-[0_0_8px_rgba(52,199,89,1)]" />}
+                  </motion.div>
+                ))}
+             </div>
+          </motion.div>
       </div>
 
     </motion.div>
