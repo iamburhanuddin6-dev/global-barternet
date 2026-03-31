@@ -301,11 +301,11 @@ export default function ResourcesPage() {
                                             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                                             className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-label-primary focus:outline-none focus:bg-fill-tertiary transition-colors"
                                         >
-                                            <option value="">Select...</option>
-                                            <option value="Computing">Computing</option>
-                                            <option value="Data">Data</option>
-                                            <option value="Services">Services</option>
-                                            <option value="Education">Education</option>
+                                            <option value="" className="bg-[#1C1C1E] text-[#F5F5F7]">Select...</option>
+                                            <option value="Computing" className="bg-[#1C1C1E] text-[#F5F5F7]">Computing</option>
+                                            <option value="Data" className="bg-[#1C1C1E] text-[#F5F5F7]">Data</option>
+                                            <option value="Services" className="bg-[#1C1C1E] text-[#F5F5F7]">Services</option>
+                                            <option value="Education" className="bg-[#1C1C1E] text-[#F5F5F7]">Education</option>
                                         </select>
                                     </div>
                                     <div>
