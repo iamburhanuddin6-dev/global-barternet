@@ -39,12 +39,31 @@ const generateData = () => {
 
 export default function LiveNetworkGraph() {
     const fgRef = useRef<any>();
-    const [graphData, setGraphData] = useState({ nodes: [], links: [] });
+    const [graphData, setGraphData] = useState<{nodes: any[], links: any[]}>({ nodes: [], links: [] });
     const containerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 400, height: 250 });
 
     useEffect(() => {
         setGraphData(generateData() as any);
+        
+        // REAL-TIME: Dynamic Node connecting over time to simulate active network bridging
+        const interval = setInterval(() => {
+            setGraphData((prev: any) => {
+                const newData = { nodes: [...prev.nodes], links: [...prev.links] };
+                if (newData.nodes.length > 5) {
+                    const source = newData.nodes[Math.floor(Math.random() * newData.nodes.length)].id;
+                    const target = newData.nodes[Math.floor(Math.random() * newData.nodes.length)].id;
+                    if (source !== target) {
+                        newData.links.push({ source, target });
+                        // Prevent the graph from becoming a spaghetti mess
+                        if (newData.links.length > 50) {
+                            newData.links.shift();
+                        }
+                    }
+                }
+                return newData;
+            });
+        }, 2500);
         
         const updateDimensions = () => {
             if (containerRef.current) {
@@ -58,7 +77,10 @@ export default function LiveNetworkGraph() {
         window.addEventListener('resize', updateDimensions);
         updateDimensions();
         
-        return () => window.removeEventListener('resize', updateDimensions);
+        return () => {
+            window.removeEventListener('resize', updateDimensions);
+            clearInterval(interval);
+        };
     }, []);
 
     return (

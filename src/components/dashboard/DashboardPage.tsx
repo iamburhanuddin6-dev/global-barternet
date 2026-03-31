@@ -95,12 +95,6 @@ const weeklyBarData = [
   { day: 'T', value: 68 }, { day: 'F', value: 55 }, { day: 'S', value: 30 }, { day: 'S', value: 44 },
 ];
 
-const liveAgentFeed = [
-  { agent: 'NOVA', action: 'Found 96.2% match: GPU Hours ↔ ML Dataset', time: 'Just now', color: '#007AFF', emoji: '🤖' },
-  { agent: 'ATLAS', action: 'Negotiating trade #1247 — counter-offer sent', time: '2m ago', color: '#AF52DE', emoji: '🧠' },
-  { agent: 'SENTINEL', action: 'Verified tx: 0xabc...def on Ethereum ✓', time: '5m ago', color: '#34C759', emoji: '🛡️' },
-  { agent: 'ORACLE', action: 'Market insight: Tech resources trending +23%', time: '12m ago', color: '#5AC8FA', emoji: '🔮' },
-];
 
 const recentTrades = [
   { traders: ['Alex C.', 'Maria S.'], pair: 'GPU Time ↔ ML Dataset', score: 98, status: 'Completed', time: '2m ago' },
@@ -125,11 +119,37 @@ export default function DashboardPage() {
   const { data: session } = useSession();
   const [selectedRange, setSelectedRange] = useState('7D');
   const [greeting, setGreeting] = useState('');
+  const [liveAgentFeed, setLiveAgentFeed] = useState([
+    { agent: 'NOVA', action: 'Neural Link: Initializing core systems.', time: 'Just now', color: '#007AFF', emoji: '🤖' }
+  ]);
 
   useEffect(() => {
+    // Initial fetch
     fetchMetrics();
     fetchResources({ limit: 6 });
     fetchExchanges({ limit: 4 });
+
+    // REAL-TIME: Database Metric Polling
+    const metricsInterval = setInterval(() => {
+        fetchMetrics();
+    }, 10000);
+
+    // REAL-TIME: SSE Neural Agent Feed connection
+    const feedStream = new EventSource('/api/stream/feed');
+    feedStream.onmessage = (event) => {
+       try {
+          const data = JSON.parse(event.data);
+          if (data.type === 'agent_action') {
+              setLiveAgentFeed(prev => [data, ...prev].slice(0, 4));
+          }
+       } catch (e) {
+          console.error("Stream parse error", e);
+       }
+    };
+    return () => {
+        feedStream.close();
+        clearInterval(metricsInterval);
+    };
   }, [fetchMetrics, fetchResources, fetchExchanges]);
 
   useEffect(() => {
