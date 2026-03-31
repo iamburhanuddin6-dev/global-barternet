@@ -250,7 +250,7 @@ export default function ResourcesPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 pb-[100px]"
                     >
                         <div className="absolute inset-0 bg-background/50 backdrop-blur-sm" onClick={() => setShowAddModal(false)} />
                         <motion.div
@@ -258,15 +258,15 @@ export default function ResourcesPage() {
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: 12 }}
                             transition={{ duration: 0.25, ease: [0.28, 0.84, 0.42, 1] }}
-                            className="relative w-full max-w-lg ios-material-ultra rounded-[20px] border border-separator shadow-ios-xl"
+                            className="relative w-full max-w-lg max-h-[85vh] flex flex-col ios-material-ultra rounded-[20px] border border-separator shadow-ios-xl"
                         >
-                            <div className="flex items-center justify-between p-5 border-b border-separator">
+                            <div className="flex items-center justify-between p-5 border-b border-separator shrink-0">
                                 <h2 className="text-[17px] font-bold text-label-primary">List New Resource</h2>
                                 <button onClick={() => setShowAddModal(false)} className="p-1 rounded-full hover:bg-fill-tertiary text-label-tertiary">
                                     <X className="w-5 h-5" strokeWidth={1.8} />
                                 </button>
                             </div>
-                            <div className="p-5 space-y-4">
+                            <div className="p-5 space-y-4 overflow-y-auto">
                                 <div>
                                     <label className="text-[13px] text-label-secondary block mb-1.5 flex items-center gap-1">
                                         <FileText className="w-3 h-3" strokeWidth={1.8} />
@@ -333,7 +333,7 @@ export default function ResourcesPage() {
                                     />
                                 </div>
                             </div>
-                            <div className="flex items-center justify-end gap-3 p-5 border-t border-separator">
+                            <div className="flex items-center justify-end gap-3 p-5 border-t border-separator shrink-0">
                                 <button
                                     onClick={() => setShowAddModal(false)}
                                     className="px-5 py-2.5 rounded-full bg-fill-tertiary text-label-secondary text-[14px] font-medium"
