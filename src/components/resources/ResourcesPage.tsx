@@ -16,6 +16,7 @@ import {
     DollarSign,
     FileText,
     Loader2,
+    ChevronDown
 } from 'lucide-react';
 
 const container = {
@@ -32,6 +33,7 @@ export default function ResourcesPage() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [isCategoryOpen, setIsCategoryOpen] = useState(false);
     
     // Form state
     const [formData, setFormData] = useState({
@@ -296,17 +298,46 @@ export default function ResourcesPage() {
                                             <Tag className="w-3 h-3" strokeWidth={1.8} />
                                             Category *
                                         </label>
-                                        <select
-                                            value={formData.category}
-                                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                            className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-label-primary focus:outline-none focus:bg-fill-tertiary transition-colors"
-                                        >
-                                            <option value="" className="bg-[#1C1C1E] text-[#F5F5F7]">Select...</option>
-                                            <option value="Computing" className="bg-[#1C1C1E] text-[#F5F5F7]">Computing</option>
-                                            <option value="Data" className="bg-[#1C1C1E] text-[#F5F5F7]">Data</option>
-                                            <option value="Services" className="bg-[#1C1C1E] text-[#F5F5F7]">Services</option>
-                                            <option value="Education" className="bg-[#1C1C1E] text-[#F5F5F7]">Education</option>
-                                        </select>
+                                        <div className="relative">
+                                            <div 
+                                                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                                                className="w-full bg-fill-quaternary rounded-[12px] px-4 py-3 text-[15px] text-label-primary cursor-pointer hover:bg-fill-tertiary transition-colors flex justify-between items-center border border-[rgba(255,255,255,0.05)]"
+                                            >
+                                                <span className={formData.category ? 'text-label-primary' : 'text-label-quaternary'}>
+                                                    {formData.category || 'Select...'}
+                                                </span>
+                                                <ChevronDown className={`w-4 h-4 text-label-tertiary transition-transform duration-300 ${isCategoryOpen ? 'rotate-180' : ''}`} />
+                                            </div>
+                                            
+                                            <AnimatePresence>
+                                                {isCategoryOpen && (
+                                                    <motion.div 
+                                                        initial={{ opacity: 0, y: -5, scale: 0.98 }}
+                                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                        exit={{ opacity: 0, y: -5, scale: 0.98 }}
+                                                        transition={{ duration: 0.15 }}
+                                                        className="absolute top-[calc(100%+8px)] left-0 right-0 bg-[#1c1c1e] border border-[rgba(255,255,255,0.1)] rounded-[12px] overflow-hidden z-[100] shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
+                                                    >
+                                                        {['Computing', 'Data', 'Services', 'Education', 'Design'].map((cat) => (
+                                                            <div 
+                                                                key={cat}
+                                                                onClick={() => {
+                                                                    setFormData({ ...formData, category: cat });
+                                                                    setIsCategoryOpen(false);
+                                                                }}
+                                                                className={`px-4 py-3 text-[14px] cursor-pointer transition-colors flex items-center justify-between ${
+                                                                    formData.category === cat 
+                                                                        ? 'bg-ios-blue/15 text-ios-blue font-bold' 
+                                                                        : 'text-label-primary hover:bg-fill-tertiary'
+                                                                }`}
+                                                            >
+                                                                {cat}
+                                                            </div>
+                                                        ))}
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+                                        </div>
                                     </div>
                                     <div>
                                         <label className="text-[13px] text-label-secondary block mb-1.5 flex items-center gap-1">

@@ -14,6 +14,7 @@ import {
     Shield,
     Send,
 } from 'lucide-react';
+import { useBarterStore } from '@/store/barterStore';
 
 const container = {
     hidden: { opacity: 0 },
@@ -44,10 +45,29 @@ const statusConfig: Record<string, { color: string; icon: any }> = {
 export default function TradesPage() {
     const [activeFilter, setActiveFilter] = useState('All');
     const [expandedTrade, setExpandedTrade] = useState<string | null>(null);
+    const { exchanges } = useBarterStore();
+    
+    // Using local state from the store instead of overwriting with mocked fetch
+    // so that the simulation trade persists
+    
+    const dynamicTrades = [
+        ...exchanges.map((e: any) => ({
+            id: e.id,
+            myResource: e.offeredResource?.name || 'Barter Credits',
+            theirResource: e.requestedResource?.name || 'Unknown Resource',
+            counterparty: e.receiver?.name || e.sender?.name || 'Unknown User',
+            status: e.status,
+            aiScore: e.aiMatchScore || Math.floor(Math.random() * 20 + 80),
+            date: 'Just now',
+            blockchainTx: e.blockchainTxHash || null,
+            negotiationSteps: e.status === 'completed' ? 5 : 3
+        })),
+        ...myTrades
+    ];
 
     const filteredTrades = activeFilter === 'All'
-        ? myTrades
-        : myTrades.filter(t =>
+        ? dynamicTrades
+        : dynamicTrades.filter(t =>
             activeFilter === 'Active' ? ['pending', 'negotiating'].includes(t.status) :
                 activeFilter === 'Completed' ? t.status === 'completed' :
                     t.status === 'cancelled'
